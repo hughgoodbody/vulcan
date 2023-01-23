@@ -1,8 +1,72 @@
-allow_embedding: false
-package_name: M3_App_1
-name: M3 App 1
-startup_form: Form1
-renamed: true
-runtime_options: {version: 2, client_version: '3', server_version: python3-full, server_spec: null}
 dependencies: []
-services: []
+services:
+- source: /runtime/services/tables.yml
+  client_config: {}
+  server_config: {}
+- source: /runtime/services/anvil/users.yml
+  client_config: {allow_signup: true, enable_automatically: true, use_email: true,
+    confirm_email: true, allow_remember_me: true, remember_me_days: 0.3333}
+  server_config: {user_table: users}
+- source: /runtime/services/anvil/secrets.yml
+  client_config: {}
+  server_config: {}
+- source: /runtime/services/stripe.yml
+  client_config: {}
+  server_config: {}
+- source: /runtime/services/anvil/email.yml
+  client_config: {}
+  server_config: {}
+package_name: Vulcan
+allow_embedding: false
+name: Vulcan
+runtime_options: {version: 2, client_version: '3', server_version: python3-full, server_spec: null}
+startup_form: Form1
+db_schema:
+  users:
+    title: Users
+    client: none
+    server: full
+    columns:
+    - name: email
+      admin_ui: {width: 200}
+      type: string
+    - name: enabled
+      admin_ui: {width: 200}
+      type: bool
+    - name: last_login
+      admin_ui: {width: 200}
+      type: datetime
+    - name: password_hash
+      admin_ui: {width: 200}
+      type: string
+    - name: n_password_failures
+      admin_ui: {width: 200}
+      type: number
+    - name: confirmed_email
+      admin_ui: {width: 200}
+      type: bool
+    - name: remembered_logins
+      admin_ui: {width: 200}
+      type: simpleObject
+    - name: signed_up
+      admin_ui: {width: 200}
+      type: datetime
+  files:
+    title: Files
+    client: none
+    server: full
+    columns:
+    - name: path
+      admin_ui: {width: 200}
+      type: string
+    - name: file
+      admin_ui: {width: 200}
+      type: media
+    - name: file_version
+      admin_ui: {width: 200}
+      type: string
+secrets:
+  onshape_encryption_key:
+    type: key
+    value: {? '' : FhipgXbyKvQLVcJ/FyaB75ENSBbMeJwvJxmbrqcZp5sDH9WNo3NoFKipXD4FttLa321wUdF64+9tNHfaZu/yFY6Nb+zDYgWQ0prD+T6xm6wrzsAq9OgFHqYVMDmhpH6JN6jlrD2rK8YPtg+omGAZq1WKuG7O6Rc=}
+renamed: true
