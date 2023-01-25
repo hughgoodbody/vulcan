@@ -13,4 +13,12 @@ currentUserConfig = {
    "Order Reference":None
 }
 currentUser = anvil.users.get_user()
-currentUserConfig['User'] = currentUser
+if currentUser is not None:
+  currentUserConfig['User'] = currentUser
+  currentUserConfig['Encoded Access Key'] = currentUser['onshape_access_key_encoded']
+  currentUserConfig['Encoded Secret Key'] = currentUser['onshape_secret_key_encoded']
+  currentUserConfig['Order ID'] = app_tables.numbers.client_readable().get(owner=currentUser)['RefNumber']
+  currentUserConfig['Order Prefix'] = app_tables.numbers.client_readable().get(owner=currentUser)['RefPrefix']
+  currentUserConfig['Users Suppliers'] = app_tables.suppliers.client_readable().search(owner=[currentUser])
+else:
+  anvil.alert('No User Logged In')

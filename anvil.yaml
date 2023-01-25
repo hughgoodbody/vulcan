@@ -51,6 +51,12 @@ db_schema:
     - name: signed_up
       admin_ui: {width: 200}
       type: datetime
+    - name: onshape_access_key_encoded
+      admin_ui: {width: 200}
+      type: string
+    - name: onshape_secret_key_encoded
+      admin_ui: {width: 200}
+      type: string
   files:
     title: Files
     client: none
@@ -63,6 +69,63 @@ db_schema:
       admin_ui: {width: 200}
       type: media
     - name: file_version
+      admin_ui: {width: 200}
+      type: string
+  suppliers:
+    title: Suppliers
+    client: search
+    server: full
+    columns:
+    - name: supplierName
+      admin_ui: {width: 200}
+      type: string
+    - name: owner
+      admin_ui: {width: 200}
+      type: link_multiple
+      target: users
+    - name: process
+      admin_ui: {width: 200}
+      type: link_multiple
+      target: process
+    - name: bedLength
+      admin_ui: {width: 200}
+      type: number
+    - name: bedWidth
+      admin_ui: {width: 200}
+      type: number
+    - name: steelThickness
+      admin_ui: {width: 200}
+      type: number
+    - name: aluminiumThickness
+      admin_ui: {width: 200}
+      type: number
+    - name: stainlessThickness
+      admin_ui: {width: 200}
+      type: number
+    - name: email
+      admin_ui: {width: 200}
+      type: string
+  process:
+    title: Process
+    client: none
+    server: full
+    columns:
+    - name: process
+      admin_ui: {width: 200}
+      type: string
+  numbers:
+    title: Numbers
+    client: search
+    server: full
+    columns:
+    - name: RefNumber
+      admin_ui: {width: 200}
+      type: number
+    - name: owner
+      admin_ui: {width: 200}
+      type: link_single
+      target: users
+    - name: RefPrefix
       admin_ui: {width: 200}
       type: string
 secrets:
