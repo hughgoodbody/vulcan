@@ -1,0 +1,46 @@
+container:
+  type: ColumnPanel
+  properties: {col_widths: '{}'}
+components:
+- type: Link
+  properties: {role: null, url: '', align: left, tooltip: '', border: '', foreground: '',
+    visible: true, text: '', font_size: 22, wrap_on: mobile, font: '', col_spacing: medium,
+    spacing_above: small, icon_align: left, col_widths: '', spacing_below: small,
+    italic: false, background: '', bold: false, underline: false, icon: 'data:image/png;base64,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'}
+  name: lnkDownloadSupplier
+  layout_properties: {grid_position: 'JEHQSB,EFQNRM'}
+- type: Button
+  properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
+    foreground: '', visible: true, text: Email Supplier, font_size: null, font: '',
+    spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '',
+    bold: false, underline: false, icon: 'fa:envelope'}
+  name: btnEmail
+  layout_properties: {grid_position: 'JEHQSB,MHXFKJ'}
+- type: FileLoader
+  properties:
+    role: null
+    show_state: true
+    align: center
+    tooltip: ''
+    border: ''
+    file_types: null
+    enabled: true
+    files: []
+    foreground: ''
+    visible: true
+    text: Upload Sheet Metal Drawings
+    font_size: null
+    font: ''
+    spacing_above: small
+    icon_align: left
+    spacing_below: small
+    italic: false
+    file: null
+    background: ''
+    bold: false
+    underline: false
+    multiple: false
+    icon: fa:upload
+  name: file_loader_1
+  layout_properties: {grid_position: 'JEHQSB,NZTZGG'}
+is_package: true
