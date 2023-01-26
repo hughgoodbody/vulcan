@@ -129,7 +129,7 @@ db_schema:
       admin_ui: {width: 200}
       type: string
 secrets:
-  onshape_encryption_key:
+  vc_onshape_encryption_key:
     type: key
-    value: {? '' : FhipgXbyKvQLVcJ/FyaB75ENSBbMeJwvJxmbrqcZp5sDH9WNo3NoFKipXD4FttLa321wUdF64+9tNHfaZu/yFY6Nb+zDYgWQ0prD+T6xm6wrzsAq9OgFHqYVMDmhpH6JN6jlrD2rK8YPtg+omGAZq1WKuG7O6Rc=}
+    value: {? '' : baHAvO8UwKy2WL1314YiiJKZlQRTp0R62AY1GEF5+gr+h2xNVCZ9m5zGb+8n17oBp+vRSlte3wk/EMKo4CH9FcitLYHgC9fyLEuQmy9uoqV0rKxuGCn/25ZD1gOw0Rwu9nmX38y4qA3GOPUCnNV9vZc3MwP7mJc=}
 renamed: true
