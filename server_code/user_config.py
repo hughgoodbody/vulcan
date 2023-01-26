@@ -22,9 +22,19 @@ def userConfig():
     currentUserConfig['User'] = currentUser
     currentUserConfig['Encoded Access Key'] = currentUser['onshape_access_key_encoded']
     currentUserConfig['Encoded Secret Key'] = currentUser['onshape_secret_key_encoded']
-    currentUserConfig['Order ID'] = app_tables.numbers.client_readable().get(owner=currentUser)['RefNumber']
-    currentUserConfig['Order Prefix'] = app_tables.numbers.client_readable().get(owner=currentUser)['RefPrefix']
-    currentUserConfig['Users Suppliers'] = app_tables.suppliers.client_readable().search(owner=[currentUser])
+    currentUserConfig['Order ID'] = app_tables.numbers.get(owner=currentUser)['RefNumber']
+    currentUserConfig['Order Prefix'] = app_tables.numbers.get(owner=currentUser)['RefPrefix']
+    currentUserConfig['Users Suppliers'] = app_tables.suppliers.search(owner=[currentUser])
+    
+    #Clear out existing files from the table
+    usersFiles = app_tables.files.search(owner=currentUser)
+    for row in usersFiles:
+      row.delete()
+    #Clear out existing temporary data from the table
+    tempData = app_tables.transfertable.search(owner=currentUser)
+    for row in tempData:
+      row.delete()
+
     return currentUserConfig
   else:
     return None
@@ -49,3 +59,4 @@ def onshapeApiKeyAdd(user, access, secret):
   encryptedSecret = anvil.secrets.encrypt_with_key('vc_onshape_encryption_key', secret)
   user.update(onshape_access_key_encrypted=encryptedAccess, onshape_secret_key_encrypted=encryptedSecret)
   return
+

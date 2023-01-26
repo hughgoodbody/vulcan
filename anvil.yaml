@@ -71,6 +71,13 @@ db_schema:
     - name: file_version
       admin_ui: {width: 200}
       type: string
+    - name: owner
+      admin_ui: {width: 200}
+      type: link_single
+      target: users
+    - name: type
+      admin_ui: {width: 200}
+      type: string
   suppliers:
     title: Suppliers
     client: search
@@ -118,6 +125,9 @@ db_schema:
     client: search
     server: full
     columns:
+    - name: RefPrefix
+      admin_ui: {width: 200}
+      type: string
     - name: RefNumber
       admin_ui: {width: 200}
       type: number
@@ -125,9 +135,21 @@ db_schema:
       admin_ui: {width: 200}
       type: link_single
       target: users
-    - name: RefPrefix
+  transfertable:
+    title: TransferTable
+    client: none
+    server: full
+    columns:
+    - name: Column0
       admin_ui: {width: 200}
       type: string
+    - name: Column1
+      admin_ui: {width: 200}
+      type: string
+    - name: Column2
+      admin_ui: {width: 200}
+      type: link_single
+      target: users
 secrets:
   vc_onshape_encryption_key:
     type: key

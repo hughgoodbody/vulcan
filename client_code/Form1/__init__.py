@@ -26,6 +26,6 @@ class Form1(Form1Template):
     currentUser = currentUserConfig['User']
     print(currentUserConfig)
     print(currentUserConfig['Users Suppliers'][0]['supplierName'])
-    user_data.userData = currentUserConfig
-    open_form('Form2')
+    user_data.userData = currentUserConfig 
+    
     print ("My program took", time.time() - start_time, "to run")
