@@ -1,0 +1,22 @@
+container:
+  type: ColumnPanel
+  properties: {col_widths: '{}'}
+components:
+- type: GridPanel
+  properties: {}
+  name: grid_panel_1
+  layout_properties: {grid_position: 'UCYAWV,OZUHMJ'}
+  components:
+  - type: Label
+    properties: {}
+    name: lblList
+    layout_properties: {row: KNMMYA, width_xs: 3, col_xs: 1}
+  - type: DropDown
+    properties: {}
+    name: dropConfigOptions
+    layout_properties: {row: KNMMYA, width_xs: 5, col_xs: 4}
+  - type: Label
+    properties: {}
+    name: lblParamId
+    layout_properties: {row: KNMMYA, width_xs: 2, col_xs: 10}
+is_package: true

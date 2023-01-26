@@ -1,0 +1,36 @@
+container:
+  type: ColumnPanel
+  properties: {col_widths: '{}'}
+components:
+- type: GridPanel
+  properties: {}
+  name: grid_panel_1
+  layout_properties: {grid_position: 'DTGGGB,XEITDT'}
+  components:
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: Access Key, font_size: null, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: label_1
+    layout_properties: {grid_position: 'JYFOVH,JYVIEM', row: EYLHOL, width_xs: 2,
+      col_xs: 2}
+  - type: TextBox
+    properties: {}
+    name: txtAccessKey
+    layout_properties: {grid_position: 'BBUBOE,EVEYZD', row: EYLHOL, width_xs: 6,
+      col_xs: 4}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: Secret Key, font_size: null, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: label_2
+    layout_properties: {grid_position: 'BBUBOE,OAGKYN', row: MJZUNN, width_xs: 2,
+      col_xs: 2}
+  - type: TextBox
+    properties: {}
+    name: txtSecretKey
+    layout_properties: {grid_position: 'JYFOVH,XQCMKR', row: MJZUNN, width_xs: 6,
+      col_xs: 4}
+is_package: true

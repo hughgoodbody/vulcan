@@ -1,3 +1,5 @@
+import time
+start_time = time.time()
 from ._anvil_designer import Form1Template
 from anvil import *
 import anvil.server
@@ -6,6 +8,8 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.users
+from .. import user_data
+
 
 
 class Form1(Form1Template):
@@ -22,3 +26,6 @@ class Form1(Form1Template):
     currentUser = currentUserConfig['User']
     print(currentUserConfig)
     print(currentUserConfig['Users Suppliers'][0]['supplierName'])
+    user_data.userData = currentUserConfig
+    open_form('Form2')
+    print ("My program took", time.time() - start_time, "to run")
