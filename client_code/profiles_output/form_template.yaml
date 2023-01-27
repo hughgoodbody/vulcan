@@ -10,7 +10,7 @@ components:
   name: label_1
   layout_properties: {grid_position: 'JJLDPN,UISCAG'}
 - type: RepeatingPanel
-  properties: {item_template: ProfilesOutput.downloadTemplate}
+  properties: {item_template: profiles_output.downloadTemplate}
   name: repeating_panel_1
   layout_properties: {grid_position: 'QRWGTD,CRVCKQ'}
 - type: Link

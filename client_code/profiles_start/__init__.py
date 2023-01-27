@@ -1,4 +1,4 @@
-from ._anvil_designer import ProfileExporter_InteractiveTemplate
+from ._anvil_designer import profiles_startTemplate
 from anvil import *
 import anvil.server
 import stripe.checkout
@@ -7,7 +7,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 
-class ProfileExporter_Interactive(ProfileExporter_InteractiveTemplate):
+class profiles_start(profiles_startTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)

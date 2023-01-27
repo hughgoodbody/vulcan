@@ -1,4 +1,4 @@
-from ._anvil_designer import ProfilesOutputTemplate
+from ._anvil_designer import dxf_optionsTemplate
 from anvil import *
 import anvil.server
 import stripe.checkout
@@ -7,7 +7,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 
-class ProfilesOutput(ProfilesOutputTemplate):
+class dxf_options(dxf_optionsTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
