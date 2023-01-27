@@ -6,55 +6,69 @@ components:
   layout_properties: {column: GDKJOS}
 - type: Link
   properties: {}
-  name: link_1
+  name: lnkUrl
   layout_properties: {column: QWHKOW}
+  data_bindings:
+  - {property: text, code: 'self.item[''Part Number'']'}
 - type: Label
   properties: {}
   name: label_1
   layout_properties: {column: DTJGKS}
 - type: TextBox
   properties: {}
-  name: text_box_1
+  name: txtMaterial
   layout_properties: {column: ATMSYC}
+  data_bindings:
+  - {property: text, code: 'self.item[''Material'']', writeback: true}
 - type: TextBox
   properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
-    border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null,
+    border: '', enabled: true, foreground: '', visible: true, text: '0', font_size: null,
     font: '', spacing_above: small, type: number, spacing_below: small, italic: false,
     background: '', bold: false, underline: false}
-  name: text_box_3
+  name: txtQtyAdd
   layout_properties: {column: XVOHMG}
+  data_bindings:
+  - {property: text, code: 'self.item[''Additional'']', writeback: true}
 - type: DropDown
   properties: {}
-  name: drop_down_1
+  name: dropHoles
   layout_properties: {column: AGNYFH}
+  data_bindings:
+  - {property: selected_value, code: 'self.item[''Undersize Holes'']', writeback: true}
 - type: CheckBox
   properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
     foreground: '', allow_indeterminate: false, visible: true, text: '', font_size: null,
     font: '', spacing_above: small, spacing_below: small, italic: false, background: '',
     bold: false, checked: false, underline: false}
-  name: check_box_1
+  name: chkDrillTemplate
   layout_properties: {column: EMERFH}
+  data_bindings:
+  - {property: checked, code: 'self.item[''Drill Template'']', writeback: true}
 - type: DropDown
   properties: {}
-  name: drop_down_2
+  name: dropProcess
   layout_properties: {column: SBTZDI}
+  data_bindings:
+  - {property: selected_value, code: 'self.item[''Process'']', writeback: true}
 - type: DropDown
   properties: {}
-  name: drop_down_3
+  name: dropSupplier
   layout_properties: {column: BQHQSP}
   event_bindings: {change: drop_down_3_change}
+  data_bindings:
+  - {property: selected_value, code: 'self.item[''Supplier'']', writeback: true}
 - type: Label
   properties: {role: null, align: left, tooltip: '', border: '', foreground: '', visible: true,
     text: '', font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small,
     italic: false, background: '', bold: false, underline: false, icon: 'fa:exclamation-triangle'}
-  name: label_2
+  name: lblWarnings
   layout_properties: {column: DQQXAI}
 - type: CheckBox
   properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
     foreground: '', allow_indeterminate: false, visible: true, text: '', font_size: null,
     font: '', spacing_above: small, spacing_below: small, italic: false, background: '',
     bold: false, checked: false, underline: false}
-  name: check_box_2
+  name: chkDelete
   layout_properties: {column: NPOWRL}
   event_bindings: {change: check_box_2_change}
 - type: Label

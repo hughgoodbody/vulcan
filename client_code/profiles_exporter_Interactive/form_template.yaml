@@ -92,18 +92,18 @@ components:
   properties:
     role: null
     columns:
-    - {id: GDKJOS, title: Thumbnail, data_key: column_1, $$hashKey: 'object:40975'}
-    - {id: QWHKOW, title: Part Number, data_key: column_2, $$hashKey: 'object:40976'}
-    - {id: DTJGKS, title: Thickness, data_key: column_3, $$hashKey: 'object:40977'}
-    - {id: ATMSYC, title: Material, data_key: column_4, $$hashKey: 'object:13426'}
-    - {id: LCRXCG, title: Quantity, data_key: column_5, $$hashKey: 'object:13428'}
-    - {id: XVOHMG, title: Additional Qty, data_key: column_6, $$hashKey: 'object:13430'}
-    - {id: AGNYFH, title: Undersize Holes, data_key: column_7, $$hashKey: 'object:13432'}
-    - {id: EMERFH, title: Drill Template, data_key: column_8, $$hashKey: 'object:13434'}
-    - {id: SBTZDI, title: Process, data_key: column_9, $$hashKey: 'object:13436'}
-    - {id: BQHQSP, title: Supplier, data_key: column_10, $$hashKey: 'object:13438'}
-    - {id: DQQXAI, title: Warnings, data_key: column_11, $$hashKey: 'object:13440'}
-    - {id: NPOWRL, title: Remove, data_key: column_12, $$hashKey: 'object:13442'}
+    - {id: GDKJOS, title: Thumbnail, data_key: Thumbnail, $$hashKey: 'object:40975'}
+    - {id: QWHKOW, title: Part Number, data_key: Part Number, $$hashKey: 'object:40976'}
+    - {id: DTJGKS, title: Thickness, data_key: Thickness, $$hashKey: 'object:40977'}
+    - {id: ATMSYC, title: Material, data_key: Material, $$hashKey: 'object:13426'}
+    - {id: LCRXCG, title: Quantity, data_key: Quantity, $$hashKey: 'object:13428'}
+    - {id: XVOHMG, title: Additional Qty, data_key: Additional Qty, $$hashKey: 'object:13430'}
+    - {id: AGNYFH, title: Undersize Holes, data_key: Undersize Holes, $$hashKey: 'object:13432'}
+    - {id: EMERFH, title: Drill Template, data_key: Drill Template, $$hashKey: 'object:13434'}
+    - {id: SBTZDI, title: Process, data_key: Process, $$hashKey: 'object:13436'}
+    - {id: BQHQSP, title: Supplier, data_key: Supplier, $$hashKey: 'object:13438'}
+    - {id: DQQXAI, title: Warnings, data_key: Warnings, $$hashKey: 'object:13440'}
+    - {id: NPOWRL, title: Remove, data_key: Remove, $$hashKey: 'object:13442'}
     auto_header: true
     tooltip: ''
     border: ''
@@ -127,13 +127,13 @@ components:
     foreground: '', visible: true, text: Process Profiles, font_size: null, font: '',
     spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '',
     bold: false, underline: false, icon: 'fa:magic'}
-  name: button_1
+  name: btnExecute
   layout_properties: {grid_position: 'LEFWFI,MQCZBX'}
 - type: Button
   properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
     foreground: '', visible: true, text: Update Table, font_size: null, font: '',
     spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '',
     bold: false, underline: false, icon: 'fa:refresh'}
-  name: button_2
+  name: btnUpdate
   layout_properties: {grid_position: 'LEFWFI,TGXQQG'}
 is_package: true

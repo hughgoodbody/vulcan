@@ -24,7 +24,14 @@ components:
   properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
     foreground: '', visible: true, text: Find Configurations, font_size: null, font: '',
     spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '',
-    bold: false, underline: false, icon: 'fa:binoculars'}
-  name: button_1
+    bold: false, underline: false, icon: 'fa:cogs'}
+  name: btnGetConfigs
   layout_properties: {grid_position: 'ULCEYI,ARVRXW'}
+- type: Button
+  properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
+    foreground: '', visible: true, text: Find Parts, font_size: null, font: '', spacing_above: small,
+    icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+    underline: false, icon: 'fa:binoculars'}
+  name: btnExecute
+  layout_properties: {grid_position: 'ULCEYI,ZNUGWR'}
 is_package: true

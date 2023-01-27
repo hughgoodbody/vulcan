@@ -30,53 +30,63 @@ components:
     layout_properties: {row: ZOLXJE, width_xs: 4, col_xs: 8, width: 303.333}
   - type: RadioButton
     properties: {role: null, selected: false, align: left, tooltip: '', border: '',
-      enabled: true, foreground: '', value: '', visible: true, text: Ignore thickness / diameter ratio,
+      enabled: true, foreground: '', value: ignore, visible: true, text: Ignore thickness / diameter ratio,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
       background: '', bold: false, group_name: radioGroup1, underline: false}
-    name: radio_button_1
-    layout_properties: {row: VKFPQE, width_xs: 4, col_xs: 0, width: 136.667}
+    name: radRatio
+    layout_properties: {row: VKFPQE, width_xs: 4, col_xs: 0, width: 303.333}
+    data_bindings:
+    - {property: tag, code: 'self.item[''Hole Options'']'}
   - type: CheckBox
     properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
       foreground: '', allow_indeterminate: false, visible: true, text: Etch component part number,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
       background: '', bold: false, checked: false, underline: false}
-    name: check_box_1
+    name: chkEtchPart
     layout_properties: {row: VKFPQE, width_xs: 4, col_xs: 4, width: 136.667}
+    data_bindings:
+    - {property: checked, code: 'self.item[''Etch Part Number'']', writeback: true}
   - type: CheckBox
     properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
       foreground: '', allow_indeterminate: false, visible: true, text: Create contact sheet,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
       background: '', bold: false, checked: false, underline: false}
-    name: check_box_3
+    name: chkContactSheet
     layout_properties: {row: VKFPQE, width_xs: 4, col_xs: 8, width: 136.667}
+    data_bindings:
+    - {property: checked, code: 'self.item[''Contact Sheet'']', writeback: true}
   - type: RadioButton
     properties: {role: null, selected: false, align: left, tooltip: '', border: '',
-      enabled: true, foreground: '', value: '', visible: true, text: Etch undersize holes,
+      enabled: true, foreground: '', value: etch, visible: true, text: Etch undersize holes,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
       background: '', bold: false, group_name: radioGroup1, underline: false}
-    name: radio_button_2
-    layout_properties: {row: ZWDNNL, width_xs: 4, col_xs: 0, width: 136.667}
+    name: radEtchHoles
+    layout_properties: {row: ZWDNNL, width_xs: 4, col_xs: 0, width: 303.333}
   - type: CheckBox
     properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
       foreground: '', allow_indeterminate: false, visible: true, text: Etch bend line marks,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
       background: '', bold: false, checked: false, underline: false}
-    name: check_box_2
+    name: chkEtchBend
     layout_properties: {row: ZWDNNL, width_xs: 4, col_xs: 4, width: 136.667}
+    data_bindings:
+    - {property: checked, code: 'self.item[''Bend Line Marks'']', writeback: true}
   - type: CheckBox
     properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
       foreground: '', allow_indeterminate: false, visible: true, text: Create CSV file,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
       background: '', bold: false, checked: false, underline: false}
-    name: check_box_4
+    name: chkCsvFile
     layout_properties: {row: ZWDNNL, width_xs: 4, col_xs: 8, width: 136.667}
+    data_bindings:
+    - {property: checked, code: 'self.item[''CSV File'']', writeback: true}
   - type: RadioButton
     properties: {role: null, selected: false, align: left, tooltip: '', border: '',
-      enabled: true, foreground: '', value: '', visible: true, text: Drill undersize holes,
+      enabled: true, foreground: '', value: drill, visible: true, text: Drill undersize holes,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
-      background: '', bold: false, group_name: radioGroup1, underline: false}
-    name: radio_button_3
-    layout_properties: {row: JYBATV, width_xs: 4, col_xs: 0, width: 136.667}
+      background: '', bold: false, group_name: radGroupHoleOptions, underline: false}
+    name: radDrillHoles
+    layout_properties: {row: JYBATV, width_xs: 4, col_xs: 0, width: 303.333}
   - type: Spacer
     properties: {height: 3}
     name: spacer_1
@@ -93,7 +103,7 @@ components:
       border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null,
       font: '', spacing_above: small, type: number, spacing_below: small, italic: false,
       background: '', bold: false, underline: false}
-    name: text_box_2
+    name: txtMultiplier
     layout_properties: {row: JSVRPN, width_xs: 2, col_xs: 6, width: 104.667}
   - type: Label
     properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
@@ -104,11 +114,13 @@ components:
     layout_properties: {row: HFRWTO, width_xs: 2, col_xs: 3, width: 136.667}
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
-      border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null,
+      border: '', enabled: true, foreground: '', visible: true, text: '25', font_size: null,
       font: '', spacing_above: small, type: number, spacing_below: small, italic: false,
       background: '', bold: false, underline: false}
-    name: text_box_3
+    name: txtThickness
     layout_properties: {row: HFRWTO, width_xs: 2, col_xs: 6, width: 104.667}
+    data_bindings:
+    - {property: text, code: 'self.item[''Max Thickness'']', writeback: true}
   - type: Label
     properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
       visible: true, text: Default Supplier, font_size: 16, font: '', spacing_above: small,
@@ -118,8 +130,10 @@ components:
     layout_properties: {row: RMNRUE, width_xs: 2, col_xs: 3, width: 136.667}
   - type: DropDown
     properties: {}
-    name: drop_down_1
+    name: dropSupplier
     layout_properties: {row: RMNRUE, width_xs: 2, col_xs: 6}
+    data_bindings:
+    - {property: selected_value, code: 'self.item[''Supplier'']', writeback: true}
   - type: Spacer
     properties: {height: 6}
     name: spacer_2
@@ -133,6 +147,8 @@ components:
     layout_properties: {row: LOPQPY, width_xs: 2, col_xs: 1, width: 136.667}
   - type: TextBox
     properties: {}
-    name: text_box_1
+    name: txtRef
     layout_properties: {row: LOPQPY, width_xs: 8, col_xs: 3}
+    data_bindings:
+    - {property: text, code: 'self.item[''Reference'']', writeback: true}
 is_package: true

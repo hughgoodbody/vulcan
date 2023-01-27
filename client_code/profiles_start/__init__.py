@@ -6,6 +6,7 @@ import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+from .. import user_data
 
 class profiles_start(profiles_startTemplate):
   def __init__(self, **properties):
