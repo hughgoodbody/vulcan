@@ -1,5 +1,6 @@
 from ._anvil_designer import api_key_alertTemplate
 from anvil import *
+import anvil.server
 
 class api_key_alert(api_key_alertTemplate):
   def __init__(self, **properties):

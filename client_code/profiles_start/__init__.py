@@ -7,6 +7,9 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 from .. import user_data
+from ..ConfigurationsPanel import ConfigurationsPanel
+from ..dxf_options import dxf_options
+from ..profiles_exporter_Interactive import profiles_exporter_Interactive
 
 class profiles_start(profiles_startTemplate):
   def __init__(self, **properties):
@@ -14,11 +17,11 @@ class profiles_start(profiles_startTemplate):
     self.init_components(**properties)
 
     # Any code you write here will run before the form opens.
+    #Put configurations form into config panel   
+    self.btnExecute.visible = False #Hide execute button
+    self.configs = ConfigurationsPanel() #THIS IS WHAT NEEDS TO BE DONE IN ORDER TO GET CHILD VALUES OUT OF FORM
+    self.pnlConfigPanel.add_component(self.configs)
     
 
-  def btnGetConfigs_click(self, **event_args):
-    """This method is called when the button is clicked"""       
-    self.elements, self.elementType, self.configOptions = anvil.server.call('get_elements_configurations', user_data.userData, self.txtUrl.text) #From document_info module
-    print(self.elementType)
-    pass
+
 
