@@ -1,5 +1,3 @@
-import time
-start_time = time.time()
 from ._anvil_designer import mainTemplate
 from anvil import *
 import anvil.server
@@ -25,11 +23,11 @@ class main(mainTemplate):
     #Get the current user data which will be required throughout the use of the app, saves repeated calls to tables
     currentUserConfig = anvil.server.call('userConfig')
     currentUser = currentUserConfig['User']
-    print(currentUserConfig)
-    print(currentUserConfig['Users Suppliers'][0]['supplierName'])
+    #print(currentUserConfig)
+    #print(currentUserConfig['Users Suppliers'][0]['supplierName'])
     user_data.userData = currentUserConfig 
     
-    print ("My program took", time.time() - start_time, "to run")
+
 
   def lnkSettings_click(self, **event_args):
     """This method is called when the link is clicked"""

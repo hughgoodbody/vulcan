@@ -21,8 +21,6 @@ class index(indexTemplate):
     #Get the current user data which will be required throughout the use of the app, saves repeated calls to tables
     currentUserConfig = anvil.server.call('userConfig')
     currentUser = currentUserConfig['User']
-    print(currentUserConfig)
-    print(currentUserConfig['Users Suppliers'][0]['supplierName'])
     user_data.userData = currentUserConfig   
     open_form('main') 
     pass

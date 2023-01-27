@@ -11,8 +11,8 @@ def userConfig():
   currentUserConfig = {
    "User":None,
    "Users Suppliers":[],
-   "Encoded Access Key":None,
-   "Encoded Secret Key":None,
+   "Access Key":None,
+   "Secret Key":None,
    "Order ID":None,
    "Order Prefix":None,
    "Order Reference":None
@@ -34,7 +34,6 @@ def userConfig():
     tempData = app_tables.transfertable.search(owner=currentUser)
     for row in tempData:
       row.delete()
-
     return currentUserConfig
   else:
     return None

@@ -52,3 +52,8 @@ def get_elements_configurations(userData, url):
   configOptions = onshape.request(method, url, query=params, body=payload)
   configOptions = json.loads(configOptions.content)
   return elements, elementType, configOptions
+
+@anvil.server.callable
+def encodeConfigurations(userData, url, configParams):
+  encodeString = ''
+  return encodeString
