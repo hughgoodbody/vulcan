@@ -45,7 +45,7 @@ def get_elements_configurations(userData, url):
   
 
   #Get element configurations
-  url = '/api/v5/elements/d/%s/w/%s/e/%s/configuration' % (did, wid, eid)
+  url = '/api/v1/elements/d/%s/w/%s/e/%s/configuration' % (did, wid, eid)
   method = 'GET'  
   payload = {}
   params = {}

@@ -22,6 +22,7 @@ class ConfigurationsPanel(ConfigurationsPanelTemplate):
   def btnGetConfigs_click(self, **event_args):
     """This method is called when the button is clicked"""
     self.url = self.parent.parent.txtUrl.text #Get url which is in a parent form
+    self.btnGetConfigs.visible = False    
     self.elements, self.elementType, self.configOptions = anvil.server.call('get_elements_configurations', user_data.userData, self.url) #From document_info module
     #Store information in user_data module, for access from other forms
     user_data.elements = self.elements
@@ -30,6 +31,7 @@ class ConfigurationsPanel(ConfigurationsPanelTemplate):
     if len((self.configOptions['configurationParameters'])) != 0:
       for i in self.configOptions['configurationParameters']:      
         #If a list
+        print(i)
         if i['typeName'] == 'BTMConfigurationParameterEnum':
           configParamEnumOptions = []
           #create list of tuples of options for dropdown box
@@ -70,13 +72,13 @@ class ConfigurationsPanel(ConfigurationsPanelTemplate):
 
       #For the list items, we need to get the
           
-      else:
-        #No configurations
-        self.ncLabel = ConfigurationTemplates.NoConfigsTemplate()
-        self.panelConfigPanel.add_component(self.ncLabel)
-        self.ncLabel.lblNoConfigs.text = 'No configurations'        
+    else:
+      #No configurations
+      self.ncLabel = ConfigurationTemplates.NoConfigsTemplate()
+      self.panelConfigPanel.add_component(self.ncLabel)
+      self.ncLabel.lblNoConfigs.text = 'No configurations'        
 
-      self.parent.parent.btnExecute.visible = True #Show execute button on parent form
+    self.parent.parent.btnExecute.visible = True #Show execute button on parent form
     pass
 
   def encodeConfigurations_onClick(self, **event_args):

@@ -12,11 +12,32 @@ components:
     name: lblList
     layout_properties: {row: KNMMYA, width_xs: 3, col_xs: 1}
   - type: DropDown
-    properties: {}
+    properties:
+      role: null
+      align: full
+      tooltip: ''
+      placeholder: ''
+      border: ''
+      enabled: true
+      foreground: ''
+      items: []
+      visible: true
+      font_size: null
+      font: ''
+      spacing_above: small
+      spacing_below: small
+      italic: false
+      background: ''
+      bold: false
+      underline: false
+      include_placeholder: false
     name: dropConfigOptions
-    layout_properties: {row: KNMMYA, width_xs: 5, col_xs: 4}
+    layout_properties: {row: KNMMYA, width_xs: 5, col_xs: 4, width: 295}
   - type: Label
-    properties: {}
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: false, text: '', font_size: null, font: '', spacing_above: small, icon_align: left,
+      spacing_below: small, italic: false, background: '', bold: false, underline: false,
+      icon: ''}
     name: lblParamId
-    layout_properties: {row: KNMMYA, width_xs: 2, col_xs: 10}
+    layout_properties: {row: KNMMYA, width_xs: 2, col_xs: 10, width: 100}
 is_package: true

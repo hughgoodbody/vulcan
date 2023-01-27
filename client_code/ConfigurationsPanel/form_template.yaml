@@ -9,6 +9,7 @@ components:
     bold: false, underline: false, icon: 'fa:cogs'}
   name: btnGetConfigs
   layout_properties: {grid_position: 'JLOEUP,FEVFJO'}
+  event_bindings: {click: btnGetConfigs_click}
 - type: ColumnPanel
   properties: {}
   name: panelConfigPanel
