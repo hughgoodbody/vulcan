@@ -1,7 +1,6 @@
 from ._anvil_designer import profiles_startTemplate
 from anvil import *
 import anvil.server
-import stripe.checkout
 import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
@@ -17,6 +16,8 @@ class profiles_start(profiles_startTemplate):
     self.init_components(**properties)
 
     # Any code you write here will run before the form opens.
+    #Clear table
+    anvil.server.call('clear_files_table', user_data.userData['User'])
     #Put configurations form into config panel   
     self.btnExecute.visible = False #Hide execute button
     self.configs = ConfigurationsPanel() #THIS IS WHAT NEEDS TO BE DONE IN ORDER TO GET CHILD VALUES OUT OF FORM

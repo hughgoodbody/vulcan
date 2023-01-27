@@ -59,3 +59,10 @@ def onshapeApiKeyAdd(user, access, secret):
   user.update(onshape_access_key_encrypted=encryptedAccess, onshape_secret_key_encrypted=encryptedSecret)
   return
 
+@anvil.server.callable
+def clear_files_table(currentUser):
+  usersFiles = app_tables.files.search(owner=currentUser)
+  for row in usersFiles:
+    row.delete()
+  
+
