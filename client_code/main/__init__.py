@@ -1,6 +1,6 @@
 import time
 start_time = time.time()
-from ._anvil_designer import Form1Template
+from ._anvil_designer import mainTemplate
 from anvil import *
 import anvil.server
 import stripe.checkout
@@ -12,7 +12,7 @@ from .. import user_data
 
 
 
-class Form1(Form1Template):
+class main(mainTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
