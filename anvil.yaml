@@ -52,11 +52,11 @@ db_schema:
     - name: signed_up
       admin_ui: {width: 200}
       type: datetime
-    - name: onshape_access_key_encoded
-      admin_ui: {width: 200}
+    - name: onshape_access_key_encrypted
+      admin_ui: {width: 167}
       type: string
-    - name: onshape_secret_key_encoded
-      admin_ui: {width: 200}
+    - name: onshape_secret_key_encrypted
+      admin_ui: {width: 262}
       type: string
   files:
     title: Files
@@ -147,7 +147,7 @@ db_schema:
     - name: Column1
       admin_ui: {width: 200}
       type: string
-    - name: Column2
+    - name: owner
       admin_ui: {width: 200}
       type: link_single
       target: users

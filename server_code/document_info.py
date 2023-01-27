@@ -11,11 +11,11 @@ def get_elements_configurations(userData, url):
   import requests
   import math
   from pprint import pprint  
-  from .geometryFunctions import findExportFaces
-  from .Onshape_api.onshape import Onshape
+  #from .geometryFunctions import findExportFaces
+  from .onshape_api.onshape import Onshape
 
-  ak = userData['Encoded Access Key']
-  sk = userData['Encoded Secret Key']
+  ak = userData['Access Key']
+  sk = userData['Secret Key']
   onshape = Onshape('https://cad.onshape.com', ak, sk, logging=False)  
 
   #Get id's from url passed in
@@ -29,17 +29,19 @@ def get_elements_configurations(userData, url):
   eid = docUrl[6]
 
   #Get elements in document
-  url = '/api/v5/documnets/d/%s/%s/%s/elements' % (did, wvm_type, wid, eid) 
+  url = '/api/v5/documents/d/%s/%s/%s/elements' % (did, wvm_type, wid) 
   method = 'GET'  
   payload = {}  
   params = {}
   elements = onshape.request(method, url, query=params, body=payload)
   elements = json.loads(elements.content)
 
+
   #Get pasted element type
   #Find element id in list of elements and then get elementType
-
-  elementType = ''
+  for elem in elements:
+    if eid == elem['id']:
+      elementType = elem['elementType']
   
 
   #Get element configurations
@@ -47,6 +49,6 @@ def get_elements_configurations(userData, url):
   method = 'GET'  
   payload = {}
   params = {}
-  config = onshape.request(method, url, query=params, body=payload)
-  config = json.loads(config.content)
-  return elements, elementType, config
+  configOptions = onshape.request(method, url, query=params, body=payload)
+  configOptions = json.loads(configOptions.content)
+  return elements, elementType, configOptions

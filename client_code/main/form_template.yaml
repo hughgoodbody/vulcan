@@ -24,33 +24,33 @@ components:
       foreground: '', visible: true, text: Profile Exporter, font_size: null, font: '',
       spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: 'fa:download'}
-    name: button_4
+    name: btnProfileExporter
     layout_properties: {grid_position: 'GLMGRB,GUWLGV'}
-    event_bindings: {click: button_4_click}
+    event_bindings: {click: btnProfileExporter_click}
   - type: Button
     properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: Frames Exporter, font_size: null, font: '',
       spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: 'fa:download'}
-    name: button_3
-    layout_properties: {grid_position: 'GLMGRB,SQIQNK'}
+    name: btnFramesExporter
+    layout_properties: {grid_position: 'GLMGRB,MWVGNH'}
   - type: Button
     properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: Batch Drawings Exporter, font_size: null,
       font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: 'fa:download'}
-    name: button_2
+    name: btnBatchExporter
     layout_properties: {grid_position: 'GLMGRB,LTJPAN'}
   - type: Button
     properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: DXF Annotator, font_size: null, font: '',
       spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: 'fa:tags'}
-    name: button_1
+    name: btnAnnotator
     layout_properties: {grid_position: 'GLMGRB,SNTAWM'}
   - type: ColumnPanel
     properties: {}
-    name: column_panel_1
+    name: column_application
     layout_properties: {grid_position: 'NTSVPO,OUJDRU'}
 - type: FlowPanel
   properties: {}
@@ -62,21 +62,22 @@ components:
       visible: true, text: '', font_size: null, wrap_on: mobile, font: '', col_spacing: medium,
       spacing_above: small, icon_align: left, col_widths: '', spacing_below: small,
       italic: false, background: '', bold: false, underline: false, icon: 'fa:cog'}
-    name: link_3
+    name: lnkSettings
     layout_properties: {}
+    event_bindings: {click: lnkSettings_click}
   - type: Link
     properties: {role: null, url: '', align: left, tooltip: '', border: '', foreground: '',
       visible: true, text: '', font_size: null, wrap_on: mobile, font: '', col_spacing: medium,
       spacing_above: small, icon_align: left, col_widths: '', spacing_below: small,
       italic: false, background: '', bold: false, underline: false, icon: 'fa:home'}
-    name: link_2
+    name: lnkHome
     layout_properties: {}
   - type: Link
     properties: {role: null, url: '', align: left, tooltip: '', border: '', foreground: '',
       visible: true, text: '', font_size: null, wrap_on: mobile, font: '', col_spacing: medium,
       spacing_above: small, icon_align: left, col_widths: '', spacing_below: small,
       italic: false, background: '', bold: false, underline: false, icon: 'fa:user'}
-    name: link_1
+    name: lnkAccount
     layout_properties: {}
 - type: Label
   properties: {role: null, align: left, tooltip: '', border: '', foreground: '', visible: true,

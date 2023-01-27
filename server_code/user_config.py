@@ -20,8 +20,8 @@ def userConfig():
   currentUser = anvil.users.get_user()
   if currentUser is not None:
     currentUserConfig['User'] = currentUser
-    currentUserConfig['Encoded Access Key'] = currentUser['onshape_access_key_encoded']
-    currentUserConfig['Encoded Secret Key'] = currentUser['onshape_secret_key_encoded']
+    currentUserConfig['Access Key'] = anvil.secrets.decrypt_with_key('vc_onshape_encryption_key', currentUser['onshape_access_key_encrypted'])
+    currentUserConfig['Secret Key'] = anvil.secrets.decrypt_with_key('vc_onshape_encryption_key', currentUser['onshape_secret_key_encrypted'])
     currentUserConfig['Order ID'] = app_tables.numbers.get(owner=currentUser)['RefNumber']
     currentUserConfig['Order Prefix'] = app_tables.numbers.get(owner=currentUser)['RefPrefix']
     currentUserConfig['Users Suppliers'] = app_tables.suppliers.search(owner=[currentUser])

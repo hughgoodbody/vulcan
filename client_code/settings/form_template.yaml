@@ -58,6 +58,7 @@ components:
       background: '', bold: false, underline: false, icon: ''}
     name: btnOnshapeKey
     layout_properties: {row: CLSLSD, width_xs: 3, col_xs: 2, width: 136.667}
+    event_bindings: {click: btnOnshapeKey_click}
   - type: Link
     properties: {role: null, url: '', align: left, tooltip: '', border: '', foreground: '',
       visible: true, text: Link to Onshape developer portal - To create API key, font_size: null,

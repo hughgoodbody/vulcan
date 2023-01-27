@@ -9,6 +9,7 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.users
 from .. import user_data
+from ..profiles_start import profiles_start
 
 
 
@@ -29,5 +30,25 @@ class main(mainTemplate):
     user_data.userData = currentUserConfig 
     
     print ("My program took", time.time() - start_time, "to run")
+
+  def lnkSettings_click(self, **event_args):
+    """This method is called when the link is clicked"""
+    open_form('settings')
+    pass
+
+  def btnProfileExporter_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    self.column_application.clear()
+    self.profileExporter = profiles_start() #THIS IS WHAT NEEDS TO BE DONE IN ORDER TO GET CHILD VALUES OUT OF FORM
+    self.column_application.add_component(self.profileExporter)
+    pass
+
+
+
+
+
+
+
+
 
 

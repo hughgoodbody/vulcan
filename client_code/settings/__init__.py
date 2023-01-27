@@ -1,12 +1,12 @@
 from ._anvil_designer import settingsTemplate
 from anvil import *
 import anvil.server
-
 import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 from .. import user_data
+from ..api_key_alert import api_key_alert
 
 class settings(settingsTemplate):
   def __init__(self, **properties):
@@ -21,7 +21,7 @@ class settings(settingsTemplate):
 
     # Any code you write here will run before the form opens.
 
-  def button_1_click(self, **event_args):
+  def btnOnshapeKey_click(self, **event_args):
     """This method is called when the button is clicked"""
     if self.btnOnshapeKey.text == 'Delete API Key':
       anvil.server.call('onshapeApiKeyRemove', self.user)
@@ -29,7 +29,7 @@ class settings(settingsTemplate):
 
 
     elif self.btnOnshapeKey.text == 'Add API Key':
-      apk=ApiKeyForm()
+      apk=api_key_alert()
       result = alert(content=apk, title="Enter API Key", large=True, buttons=[('OK',True),('Cancel',False)])
       if result:
         #print(apk.secretKey,apk.accessKey)      
