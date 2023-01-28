@@ -4,6 +4,8 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
 
+
+
 @anvil.server.callable
 def get_elements_configurations(userData, url):
   from urllib.parse import urlparse  
@@ -17,26 +19,30 @@ def get_elements_configurations(userData, url):
   ak = userData['Access Key']
   sk = userData['Secret Key']
   onshape = Onshape('https://cad.onshape.com', ak, sk, logging=False)  
+  #Put the first API call of the app in a Try except statement to see if the url is valid
+  try:
+    #Get id's from url passed in
+    docUrl = url
+    docUrl = urlparse(docUrl).path
+    docUrl = docUrl.split('/')
+      
+    did = docUrl[2]
+    wvm_type = docUrl[3]
+    wid = docUrl[4]
+    eid = docUrl[6]
+  
+    documentInfo = {'Document Id': did, 'Workspace Type': wvm_type, 'Workspace Id': wid, 'Element Id': eid}
 
-  #Get id's from url passed in
-  docUrl = url
-  docUrl = urlparse(docUrl).path
-  docUrl = docUrl.split('/')
+    #Get elements in document
+    url = '/api/v5/documents/d/%s/%s/%s/elements' % (did, wvm_type, wid) 
+    method = 'GET'  
+    payload = {}  
+    params = {}
+    elements = onshape.request(method, url, query=params, body=payload)
+    elements = json.loads(elements.content)
+  except:
+    raise Exception("Invalid URL, Please try again...") 
     
-  did = docUrl[2]
-  wvm_type = docUrl[3]
-  wid = docUrl[4]
-  eid = docUrl[6]
-
-  documentInfo = {'Document Id': did, 'Workspace Type': wvm_type, 'Workspace Id': wid, 'Element Id': eid}
-
-  #Get elements in document
-  url = '/api/v5/documents/d/%s/%s/%s/elements' % (did, wvm_type, wid) 
-  method = 'GET'  
-  payload = {}  
-  params = {}
-  elements = onshape.request(method, url, query=params, body=payload)
-  elements = json.loads(elements.content)
 
 
   #Get pasted element type

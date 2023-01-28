@@ -16,12 +16,16 @@ class profiles_start(profiles_startTemplate):
     self.init_components(**properties)
 
     # Any code you write here will run before the form opens.
+    #Check for API key
+    if user_data.userData['Access Key'] is None or user_data.userData['Secret Key'] is None:
+      alert('Please create API key in Settings')
+      return
     #Clear table
     anvil.server.call('clear_files_table', user_data.userData['User'])
     #Put configurations form into config panel   
     self.btnExecute.visible = False #Hide execute button
     self.configs = ConfigurationsPanel() #THIS IS WHAT NEEDS TO BE DONE IN ORDER TO GET CHILD VALUES OUT OF FORM
-    self.pnlConfigPanel.add_component(self.configs)
+    self.pnlConfigPanel.add_component(self.configs, full_width_row=True)
 
     #Create DXF Options panel
     self.dxfOptions = dxf_options() #THIS IS WHAT NEEDS TO BE DONE IN ORDER TO GET CHILD VALUES OUT OF FORM

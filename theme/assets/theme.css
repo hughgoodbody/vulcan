@@ -199,7 +199,7 @@ color: %color:On Primary Container%;
   padding: 8px;
 }
 
-@media(min-width:991px) {
+@media(min-width:998px) {
   .content > * > .anvil-container {
     padding: 16px 24px;
   }
@@ -774,7 +774,7 @@ input.anvil-component, textarea.anvil-component, .anvil-component select, .anvil
 }
 
 .anvil-dropdown select option {
-  background-color: green;
+  background-color: lightgray;
 }
 
 .anvil-component select {
@@ -1046,3 +1046,8 @@ div.plot-container.plotly svg.main-svg {
   box-shadow: 0px 0px 100px 100px %color:Surface Variant%;
 }
 
+.anvil-role-config-options {
+  background-color: %color:Config Options%;
+  tw-ring-color: %color:Config Options%;
+  
+}

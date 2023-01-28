@@ -24,6 +24,7 @@ class ConfigurationsPanel(ConfigurationsPanelTemplate):
     self.url = self.parent.parent.txtUrl.text #Get url which is in a parent form
     self.btnGetConfigs.visible = False    
     self.elements, self.elementType, self.configOptions, self.documentInfo = anvil.server.call('get_elements_configurations', user_data.userData, self.url) #From document_info module
+      
     #Store information in user_data module, for access from other forms
     user_data.elements = self.elements
     user_data.configOptions = self.configOptions
@@ -52,7 +53,7 @@ class ConfigurationsPanel(ConfigurationsPanelTemplate):
         #create a text box to enter a number between range indicated
           #pprint(i['message']['parameterName'] + '  Enter Value')
           self.quantity = ConfigurationTemplates.ValueItemTemplate()
-          self.panelConfigPanel.add_component(self.quantity)
+          self.pnlValues.add_component(self.quantity)
           self.quantity.txtValue.text = i['message']['rangeAndDefault']['message']['minValue']
           self.quantity.lblValue.text = i['message']['parameterName']
           self.quantity.lblMin.text = ('Min: ' + str(i['message']['rangeAndDefault']['message']['minValue']) + ' ( ' + i['message']['rangeAndDefault']['message']['units'] + ' ) ')
@@ -67,7 +68,7 @@ class ConfigurationsPanel(ConfigurationsPanelTemplate):
           #create a checkbox
           #pprint(i['message']['parameterName'] + '  Checkbox')
           self.booleanBox = ConfigurationTemplates.BooleanItemTemplate()
-          self.panelConfigPanel.add_component(self.booleanBox)
+          self.pnlCheck.add_component(self.booleanBox)
           self.booleanBox.lblBoolean.text = i['message']['parameterName']
           
 

@@ -3,7 +3,8 @@ container:
   properties: {col_widths: '{}'}
 components:
 - type: GridPanel
-  properties: {}
+  properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
+    border: '', visible: true, role: dxf-options, tooltip: ''}
   name: grid_panel_1
   layout_properties: {grid_position: 'QPHHKN,MRETHF'}
   components:
@@ -29,7 +30,7 @@ components:
     name: label_3
     layout_properties: {row: ZOLXJE, width_xs: 4, col_xs: 8, width: 303.333}
   - type: RadioButton
-    properties: {role: null, selected: false, align: left, tooltip: '', border: '',
+    properties: {role: dxf-options, selected: false, align: left, tooltip: '', border: '',
       enabled: true, foreground: '', value: ignore, visible: true, text: Ignore thickness / diameter ratio,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
       background: '', bold: false, group_name: radioGroup1, underline: false}
@@ -38,50 +39,51 @@ components:
     data_bindings:
     - {property: tag, code: 'self.item[''Hole Options'']'}
   - type: CheckBox
-    properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+    properties: {role: dxf-options, align: left, tooltip: '', border: '', enabled: true,
       foreground: '', allow_indeterminate: false, visible: true, text: Etch component part number,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
       background: '', bold: false, checked: false, underline: false}
     name: chkEtchPart
-    layout_properties: {row: VKFPQE, width_xs: 4, col_xs: 4, width: 136.667}
+    layout_properties: {row: VKFPQE, width_xs: 4, col_xs: 4, width: 303.333}
     data_bindings:
     - {property: checked, code: 'self.item[''Etch Part Number'']', writeback: true}
   - type: CheckBox
-    properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+    properties: {role: dxf-options, align: left, tooltip: '', border: '', enabled: true,
       foreground: '', allow_indeterminate: false, visible: true, text: Create contact sheet,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
       background: '', bold: false, checked: false, underline: false}
     name: chkContactSheet
-    layout_properties: {row: VKFPQE, width_xs: 4, col_xs: 8, width: 136.667}
+    layout_properties: {row: VKFPQE, width_xs: 4, col_xs: 8, width: 303.333}
     data_bindings:
     - {property: checked, code: 'self.item[''Contact Sheet'']', writeback: true}
   - type: RadioButton
-    properties: {role: null, selected: false, align: left, tooltip: '', border: '',
+    properties: {role: dxf-options, selected: false, align: left, tooltip: '', border: '',
       enabled: true, foreground: '', value: etch, visible: true, text: Etch undersize holes,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
       background: '', bold: false, group_name: radioGroup1, underline: false}
     name: radEtchHoles
     layout_properties: {row: ZWDNNL, width_xs: 4, col_xs: 0, width: 303.333}
+    event_bindings: {}
   - type: CheckBox
-    properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+    properties: {role: dxf-options, align: left, tooltip: '', border: '', enabled: true,
       foreground: '', allow_indeterminate: false, visible: true, text: Etch bend line marks,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
       background: '', bold: false, checked: false, underline: false}
     name: chkEtchBend
-    layout_properties: {row: ZWDNNL, width_xs: 4, col_xs: 4, width: 136.667}
+    layout_properties: {row: ZWDNNL, width_xs: 4, col_xs: 4, width: 303.333}
     data_bindings:
     - {property: checked, code: 'self.item[''Bend Line Marks'']', writeback: true}
   - type: CheckBox
-    properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+    properties: {role: dxf-options, align: left, tooltip: '', border: '', enabled: true,
       foreground: '', allow_indeterminate: false, visible: true, text: Create CSV file,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
       background: '', bold: false, checked: false, underline: false}
     name: chkCsvFile
-    layout_properties: {row: ZWDNNL, width_xs: 4, col_xs: 8, width: 136.667}
+    layout_properties: {row: ZWDNNL, width_xs: 4, col_xs: 8, width: 303.333}
     data_bindings:
     - {property: checked, code: 'self.item[''CSV File'']', writeback: true}
   - type: RadioButton
-    properties: {role: null, selected: false, align: left, tooltip: '', border: '',
+    properties: {role: dxf-options, selected: false, align: left, tooltip: '', border: '',
       enabled: true, foreground: '', value: drill, visible: true, text: Drill undersize holes,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
       background: '', bold: false, group_name: radGroupHoleOptions, underline: false}

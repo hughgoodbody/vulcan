@@ -11,6 +11,7 @@ from ..profiles_start import profiles_start
 
 
 
+
 class main(mainTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
@@ -36,9 +37,10 @@ class main(mainTemplate):
 
   def btnProfileExporter_click(self, **event_args):
     """This method is called when the button is clicked"""
-    self.column_application.clear()
-    self.profileExporter = profiles_start() #THIS IS WHAT NEEDS TO BE DONE IN ORDER TO GET CHILD VALUES OUT OF FORM
-    self.column_application.add_component(self.profileExporter)
+    #self.column_application.clear()
+    #self.profileExporter = profiles_start() #THIS IS WHAT NEEDS TO BE DONE IN ORDER TO GET CHILD VALUES OUT OF FORM
+    #self.column_application.add_component(self.profileExporter)
+    open_form('profiles_start')
     pass
 
 

@@ -1,6 +1,6 @@
 container:
   type: ColumnPanel
-  properties: {col_widths: '{}'}
+  properties: {col_widths: '{"UFBTCO":20,"ZGFXTS":20,"FBBLZF":20}'}
 components:
 - type: Button
   properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
@@ -8,10 +8,20 @@ components:
     spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '',
     bold: false, underline: false, icon: 'fa:cogs'}
   name: btnGetConfigs
-  layout_properties: {grid_position: 'JLOEUP,FEVFJO'}
+  layout_properties: {grid_position: 'JLOEUP,FEVFJO', full_width_row: false}
   event_bindings: {click: btnGetConfigs_click}
 - type: ColumnPanel
-  properties: {}
+  properties: {role: null, tooltip: '', border: '', foreground: '', visible: true,
+    wrap_on: mobile, col_spacing: medium, spacing_above: small, col_widths: '', spacing_below: small,
+    background: ''}
   name: panelConfigPanel
-  layout_properties: {grid_position: 'NBFCVU,UFBTCO'}
+  layout_properties: {grid_position: 'NBFCVU,UFBTCO', full_width_row: true}
+- type: ColumnPanel
+  properties: {}
+  name: pnlValues
+  layout_properties: {grid_position: 'NBFCVU,ZGFXTS', full_width_row: true}
+- type: ColumnPanel
+  properties: {}
+  name: pnlCheck
+  layout_properties: {grid_position: 'NBFCVU,FBBLZF', full_width_row: true}
 is_package: true

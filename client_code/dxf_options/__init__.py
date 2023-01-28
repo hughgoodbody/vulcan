@@ -17,3 +17,5 @@ class dxf_options(dxf_optionsTemplate):
     self.dropSupplier.items = [(r['supplierName']) for r in app_tables.suppliers.search()]
     self.txtThickness.text = 25
     self.txtMultiplier.text = 1
+
+
