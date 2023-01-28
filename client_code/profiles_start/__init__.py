@@ -22,6 +22,12 @@ class profiles_start(profiles_startTemplate):
     self.btnExecute.visible = False #Hide execute button
     self.configs = ConfigurationsPanel() #THIS IS WHAT NEEDS TO BE DONE IN ORDER TO GET CHILD VALUES OUT OF FORM
     self.pnlConfigPanel.add_component(self.configs)
+
+  def btnExecute_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    listPartTask = anvil.server.call('launch_list_parts')
+    pass
+
     
 
 

@@ -28,6 +28,8 @@ def get_elements_configurations(userData, url):
   wid = docUrl[4]
   eid = docUrl[6]
 
+  documentInfo = {'Document Id': did, 'Workspace Type': wvm_type, 'Workspace Id': wid, 'Element Id': eid}
+
   #Get elements in document
   url = '/api/v5/documents/d/%s/%s/%s/elements' % (did, wvm_type, wid) 
   method = 'GET'  
@@ -51,7 +53,7 @@ def get_elements_configurations(userData, url):
   params = {}
   configOptions = onshape.request(method, url, query=params, body=payload)
   configOptions = json.loads(configOptions.content)
-  return elements, elementType, configOptions
+  return elements, elementType, configOptions, documentInfo
 
 @anvil.server.callable
 def encodeConfigurations(userData, url, configParams):

@@ -32,4 +32,5 @@ components:
     underline: false, icon: 'fa:binoculars'}
   name: btnExecute
   layout_properties: {grid_position: 'ULCEYI,ZNUGWR'}
+  event_bindings: {click: btnExecute_click}
 is_package: true
