@@ -11,6 +11,7 @@ from ..dxf_options import dxf_options
 from ..profiles_exporter_Interactive import profiles_exporter_Interactive
 from ..ConfigurationsPanel import ConfigurationsPanel
 
+
 class profiles_start(profiles_startTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
