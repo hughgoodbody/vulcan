@@ -64,5 +64,18 @@ def clear_files_table(currentUser):
   usersFiles = app_tables.files.search(owner=currentUser)
   for row in usersFiles:
     row.delete()
-  
 
+@anvil.server.callable
+def clear_transfer_table(currentUser):
+  usersFiles = app_tables.files.search(owner=currentUser)
+  for row in usersFiles:
+    row.delete()  
+
+@anvil.server.callable
+def clear_all_tables(currentUser):
+  usersFiles = app_tables.files.search(owner=currentUser)
+  for row in usersFiles:
+    row.delete() 
+  usersFiles = app_tables.transfertable.search(owner=currentUser)
+  for row in usersFiles:
+    row.delete()   

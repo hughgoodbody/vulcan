@@ -83,39 +83,51 @@ class ConfigurationsPanel(ConfigurationsPanelTemplate):
     self.parent.parent.btnExecute.visible = True #Show execute button on parent form
     pass
 
-  def encodeConfigurations_onClick(self, **event_args):
+  def configurating(self, **event_args):
     """This method is called when the button is clicked"""
     configParams = []
-    self.majorComps = self.panelConfigPanel.get_components()
-    for c in self.majorComps:
-      #Get the components in the panel to find whether it is a drop down, text or boolean, then get info accordingly
-      #c.get_components()
-      #print((c.column_panel_1.get_components()))
-      for d in c.grid_panel_1.get_components():
-        #print(d)
-        if type(d) is anvil.DropDown:
-          #Then we have a drop down box, therefore create tuple from id label and selection
-          outputTuple = (c.lblParamId.text, c.dropConfigOptions.selected_value)
-          outputDict = {"parameterId": c.lblParamId.text, "parameterValue": c.dropConfigOptions.selected_value}
-          #print(outputTuple)
-          configParams.append(outputDict)
+    self.listComps = self.panelConfigPanel.get_components() #get list components from list panel
+    self.valueComps = self.pnlValues.get_components() #get value components from value panel
+    self.checkComps = self.pnlCheck.get_components() #get check components from check panel
 
-        elif type(d) is anvil.TextBox: 
+    def get_configuration_parameter_values(componentObjects):
+      for c in componentObjects:
+        #Get the components in the panel to find whether it is a drop down, text or boolean, then get info accordingly
+        #c.get_components()
+        #print((c.column_panel_1.get_components()))
+        for d in c.grid_panel_1.get_components():
           #print(d)
-          outputTuple = (c.lblValue.text, c.txtValue.text)
-          outputDict = {"parameterId": c.lblValue.text, "parameterValue": (str(c.txtValue.text)+'*'+c.lblUnits.text)}
-          #print(outputTuple)
-          configParams.append(outputDict)
+          if type(d) is anvil.DropDown:
+            #Then we have a drop down box, therefore create tuple from id label and selection
+            outputTuple = (c.lblParamId.text, c.dropConfigOptions.selected_value)
+            outputDict = {"parameterId": c.lblParamId.text, "parameterValue": c.dropConfigOptions.selected_value}
+            #print(outputTuple)
+            configParams.append(outputDict)
+  
+          elif type(d) is anvil.TextBox: 
+            #print(d)
+            outputTuple = (c.lblValue.text, c.txtValue.text)
+            outputDict = {"parameterId": c.lblValue.text, "parameterValue": (str(c.txtValue.text)+'*'+c.lblUnits.text)}
+            #print(outputTuple)
+            configParams.append(outputDict)
+  
+          elif type(d) is anvil.CheckBox: 
+            outputTuple = (c.lblBoolean.text, c.chkBoolean.checked)
+            outputDict = {"parameterId": c.lblBoolean.text, "parameterValue": c.chkBoolean.checked}
+            #print(outputTuple)
+            configParams.append(outputDict)
+      return configParams       
 
-        elif type(d) is anvil.CheckBox: 
-          outputTuple = (c.lblBoolean.text, c.chkBoolean.checked)
-          outputDict = {"parameterId": c.lblBoolean.text, "parameterValue": c.chkBoolean.checked}
-          #print(outputTuple)
-          configParams.append(outputDict)
-
+    listParams = get_configuration_parameter_values(self.listComps)  
+    valueParams = get_configuration_parameter_values(self.valueComps) 
+    checkParams = get_configuration_parameter_values(self.checkComps) 
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1FOR SOME REASON listParams contains valueParams and checkParams without appending them !!!!!!!!!!!
     #Store in user_data module 
-    print(configParams)      
-    user_data.configSelectedParams = configParams
+    #print(listParams)      
+    #print(valueParams)
+    #print(checkParams)
+    user_data.configSelectedParams = listParams
+    #print(user_data.configSelectedParams)
 
 
 

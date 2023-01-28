@@ -21,8 +21,8 @@ class profiles_start(profiles_startTemplate):
     if user_data.userData['Access Key'] is None or user_data.userData['Secret Key'] is None:
       alert('Please create API key in Settings')
       return
-    #Clear table
-    anvil.server.call('clear_files_table', user_data.userData['User'])
+    #Clear tables
+    anvil.server.call('clear_all_tables', user_data.userData['User'])
     #Put configurations form into config panel   
     self.btnExecute.visible = False #Hide execute button
     self.configs = ConfigurationsPanel() #THIS IS WHAT NEEDS TO BE DONE IN ORDER TO GET CHILD VALUES OUT OF FORM
@@ -53,8 +53,13 @@ class profiles_start(profiles_startTemplate):
       self.profileOptions['Reference'] = self.dxfOptions.txtRef.text
       self.profileOptions['Multiplier'] = self.dxfOptions.txtMultiplier.text
       user_data.profileOptions = self.profileOptions
-      print(self.profileOptions)
-      self.configStr = ConfigurationsPanel.encodeConfigurations_onClick(self.configs)  
+      #print(self.profileOptions)
+
+      #Encode configurations and then lauch task to get parts
+      self.configStr = ConfigurationsPanel.configurating(self.configs)  
+      configurationString, searchPartsTask = anvil.server.call('launch_list_parts', user_data.userData, user_data.configSelectedParams, user_data.profileOptions, user_data.documentInfo)
+      user_data.configurationString = configurationString
+      #print(user_data.configurationString)
     pass
 
     
