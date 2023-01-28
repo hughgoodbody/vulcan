@@ -13,3 +13,7 @@ class dxf_options(dxf_optionsTemplate):
     self.init_components(**properties)
 
     # Any code you write here will run before the form opens.
+
+    self.dropSupplier.items = [(r['supplierName']) for r in app_tables.suppliers.search()]
+    self.txtThickness.text = 25
+    self.txtMultiplier.text = 1

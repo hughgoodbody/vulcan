@@ -23,6 +23,12 @@ class profiles_start(profiles_startTemplate):
     self.configs = ConfigurationsPanel() #THIS IS WHAT NEEDS TO BE DONE IN ORDER TO GET CHILD VALUES OUT OF FORM
     self.pnlConfigPanel.add_component(self.configs)
 
+    #Create DXF Options panel
+    self.dxfOptions = dxf_options() #THIS IS WHAT NEEDS TO BE DONE IN ORDER TO GET CHILD VALUES OUT OF FORM
+    self.pnlDxfOptions.add_component(self.dxfOptions)
+    self.profileOptions = {'Hole Options':'', 'Etch Part Number':'', 'Bend Line Marks':'', 'Contact Sheet':'', 'CSV File':'', 'Supplier':'', 'Max Thickness':'', 'Reference':'', 'Multiplier':''}
+    self.dxfOptions.items = self.profileOptions
+
   def btnExecute_click(self, **event_args):
     """This method is called when the button is clicked"""
     listPartTask = anvil.server.call('launch_list_parts')

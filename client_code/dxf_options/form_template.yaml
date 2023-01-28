@@ -131,7 +131,7 @@ components:
   - type: DropDown
     properties: {}
     name: dropSupplier
-    layout_properties: {row: RMNRUE, width_xs: 2, col_xs: 6}
+    layout_properties: {row: RMNRUE, width_xs: 3, col_xs: 6}
     data_bindings:
     - {property: selected_value, code: 'self.item[''Supplier'']', writeback: true}
   - type: Spacer
