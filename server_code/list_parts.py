@@ -5,7 +5,7 @@ from anvil.tables import app_tables
 import anvil.server
 
 @anvil.server.callable
-def launch_list_parts(userData, configParams, profileOptions, documentInfo):
+def launch_list_parts(userData, configParams, profileOptions, documentInfo, elementType):
   from urllib.parse import urlparse  
   import json
   import requests
@@ -29,8 +29,11 @@ def launch_list_parts(userData, configParams, profileOptions, documentInfo):
   configurationString = configEncode['queryParam'].replace('configuration=','') #remove configuration= from the string, as this is added in the query 
 
   #Launch background task to list parts
-  listPartTask = anvil.server.launch_background_task('list_parts_assembly', userData, documentInfo, configurationString)
-  return configurationString, listPartTask
+  if elementType == 'ASSEMBLY':
+   listPartTask = anvil.server.launch_background_task('list_parts_assembly', userData, documentInfo, configurationString)
+   return configurationString, listPartTask
+  elif elementType == 'PARTSTUDIO':  
+    listPartTask = anvil.server.launch_background_task('list_parts_partstudio', userData, documentInfo, configurationString)
 
 
 
@@ -48,8 +51,8 @@ def list_parts_assembly(userData, documentInfo, configurationString):
   sk = userData['Secret Key']
   onshape = Onshape('https://cad.onshape.com', ak, sk, logging=False)  
 
-  #Construct assembly URL for form link
-  masterUrl = url + '?configuration=' + configurationString
+  #Construct master URL for form link
+  masterUrl = documentInfo['URL'] + '?configuration=' + configurationString
   
   # Get thumbnail
   did = documentInfo['Document Id']
@@ -77,3 +80,26 @@ def list_parts_assembly(userData, documentInfo, configurationString):
   
     #If Composite part
   return
+
+@anvil.server.background_task
+def list_parts_partstudio(userData, documentInfo, configurationString):
+  from urllib.parse import urlparse  
+  import json
+  import requests
+  import math
+  from pprint import pprint  
+  #from .geometryFunctions import findExportFaces
+  from .onshape_api.onshape import Onshape
+  ak = userData['Access Key']
+  sk = userData['Secret Key']
+  onshape = Onshape('https://cad.onshape.com', ak, sk, logging=False)  
+
+  #Construct master URL for form link
+  masterUrl = url + '?configuration=' + configurationString
+  
+  # Get thumbnail
+  did = documentInfo['Document Id']
+  wvm_type = documentInfo['Workspace Type']
+  wid = documentInfo['Workspace Id']
+  eid = documentInfo['Element Id']
+  url = None

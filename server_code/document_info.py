@@ -31,7 +31,7 @@ def get_elements_configurations(userData, url):
     wid = docUrl[4]
     eid = docUrl[6]
   
-    documentInfo = {'Document Id': did, 'Workspace Type': wvm_type, 'Workspace Id': wid, 'Element Id': eid}
+    documentInfo = {'URL': url,'Document Id': did, 'Workspace Type': wvm_type, 'Workspace Id': wid, 'Element Id': eid}
 
     #Get elements in document
     url = '/api/v5/documents/d/%s/%s/%s/elements' % (did, wvm_type, wid) 
