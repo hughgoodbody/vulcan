@@ -33,7 +33,7 @@ class ConfigurationsPanel(ConfigurationsPanelTemplate):
     if len((self.configOptions['configurationParameters'])) != 0:
       for i in self.configOptions['configurationParameters']:      
         #If a list
-        print(i)
+        #print(i)
         if i['typeName'] == 'BTMConfigurationParameterEnum':
           configParamEnumOptions = []
           #create list of tuples of options for dropdown box
@@ -91,7 +91,7 @@ class ConfigurationsPanel(ConfigurationsPanelTemplate):
       #Get the components in the panel to find whether it is a drop down, text or boolean, then get info accordingly
       #c.get_components()
       #print((c.column_panel_1.get_components()))
-      for d in c.column_panel_1.get_components():
+      for d in c.grid_panel_1.get_components():
         #print(d)
         if type(d) is anvil.DropDown:
           #Then we have a drop down box, therefore create tuple from id label and selection
@@ -114,6 +114,7 @@ class ConfigurationsPanel(ConfigurationsPanelTemplate):
           configParams.append(outputDict)
 
     #Store in user_data module 
+    print(configParams)      
     user_data.configSelectedParams = configParams
 
 

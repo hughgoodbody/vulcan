@@ -333,8 +333,8 @@ color_scheme:
   - {name: Primary Overlay 1, color: 'rgba(103, 80, 164, 0.05)'}
   - {name: Primary Overlay 2, color: 'rgba(103, 80, 164, 0.08)'}
   - {name: Primary Overlay 3, color: 'rgba(103, 80, 164, 0.11)'}
-  - {name: Warning, color: '#000000'}
-  - {name: Waterjet, color: '#000000'}
-  - {name: Material Warning, color: '#000000'}
+  - {name: Warning, color: '#F7020E'}
+  - {name: Waterjet, color: '#3B9EFC'}
+  - {name: Material Warning, color: '#FCF83B'}
   - {name: Config Options, color: '#3FBF4C'}
-  - {name: DXF Options, color: '#000000'}
+  - {name: DXF Options, color: '#3FAEBF'}

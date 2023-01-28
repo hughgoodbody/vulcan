@@ -107,6 +107,8 @@ components:
       background: '', bold: false, underline: false}
     name: txtMultiplier
     layout_properties: {row: JSVRPN, width_xs: 2, col_xs: 6, width: 104.667}
+    data_bindings:
+    - {property: text, code: 'self.item[''Multiplier'']', writeback: true}
   - type: Label
     properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
       visible: true, text: Max Thickness, font_size: 16, font: '', spacing_above: small,
@@ -153,4 +155,5 @@ components:
     layout_properties: {row: LOPQPY, width_xs: 8, col_xs: 3}
     data_bindings:
     - {property: text, code: 'self.item[''Reference'']', writeback: true}
+  data_bindings: []
 is_package: true

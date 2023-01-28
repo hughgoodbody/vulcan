@@ -5,19 +5,14 @@ from anvil.tables import app_tables
 import anvil.server
 
 @anvil.server.callable
-def launch_list_parts(user_data, profileOptions):
-  if user_data.elementType == 'PARTSTUDIO':
-    anvil.alert('You have selected a Part Studio to process, Do you wish to continue?')
-    #Encode configuration string
-    user_data.configSelectedParams
+def launch_list_parts(configParams, profileOptions):
 
-    #Launch background task to list parts
-    listPartTask = anvil.server.launch_background_task('launch_list_parts')
+  #Encode configuration string
+
+
+  #Launch background task to list parts
+  listPartTask = anvil.server.launch_background_task('list_parts')
   return listPartTask
-
-
-
-
 
 
 
