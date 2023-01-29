@@ -197,7 +197,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                                   'Flat Pattern ID': i['itemSource']['flatId'],
                                   'Material': assignedMaterial,
                                   'BOM Qty': i['headerIdToValue'][headerDict['Quantity']]})  
-    if foundPartsInformation['Flat Pattern Id'] != None:
+    if foundPartsInformation['Flat Pattern ID'] != None:
       foundPartsInformation['Sheet Metal'] = True
     print ("My program took", time.time() - start_time, "to run")
   
