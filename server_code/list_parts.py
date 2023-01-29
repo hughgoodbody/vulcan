@@ -40,6 +40,8 @@ def launch_list_parts(userData, configParams, profileOptions, documentInfo, elem
 
 @anvil.server.background_task
 def list_parts_assembly(userData, documentInfo, configurationString, profileOptions):
+  import time
+  start_time = time.time()
   from urllib.parse import urlparse  
   import json
   import requests
@@ -84,7 +86,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
   assemblyName = api_bom['bomSource']['element']['name']
   documentName = api_bom['bomSource']['document']['name']
   assemblyName = documentName + ' < ' + assemblyName + ' > '
-  assemblyInfo = {'Assembly Url': assemblyUrl, 'Assembly Thumbnail': imageStr, 'Assembly Name': assemblyName, 'Profile Options': profileOptions} 
+  assemblyInfo = {'Assembly Url': masterUrl, 'Assembly Thumbnail': imageStr, 'Assembly Name': assemblyName, 'Profile Options': profileOptions} 
 
   foundPartsInformation = {'Parent Document Name': api_bom['bomSource']['document']['name'], 
                            'Parent Element Name': api_bom['bomSource']['element']['name'], 
@@ -92,13 +94,13 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'Parent Configuration': configurationString,
                            'Parent WVM ID': wid, 
                            'Parent WVM Type': wvm_type, 
-                           'Parent URL': assemblyUrl, 
+                           'Parent URL': masterUrl, 
                            'Parent Thumbnail': imageStr,
-                           'Order ID': None,
-                           'Order Prefix': None,
-                           'Order Reference': None,
-                           'Customer Reference': None,
-                           'Supplier': None,
+                           'Order ID': userData['Order ID'],
+                           'Order Prefix': userData['Order Prefix'],
+                           'Order Reference': userData['Order Reference'],
+                           'Customer Reference': profileOptions['Reference'],
+                           'Supplier': profileOptions['Supplier'],
                            'Process': None,
                            'Additional': None,
                            'Delete': None,
@@ -106,14 +108,15 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'Material': None,
                            'Operations': None,
                            'Thickness': None,
-                           'Undersize Holes': None,
-                           'Etch Part Number': None,
-                           'Bend Line Marks': None,
-                           'Contact Sheet': None,
-                           'CSV File': None,
-                           'Max thickness': None,
-                           'Multiplier': None,}
-  
+                           'Undersize Holes': profileOptions['Hole Options'],
+                           'Etch Part Number': profileOptions['Etch Part Number'],
+                           'Bend Line Marks': profileOptions['Bend Line Marks'],
+                           'Contact Sheet': profileOptions['Contact Sheet'],
+                           'CSV File': profileOptions['CSV File'],
+                           'Max thickness': profileOptions['Max Thickness'],
+                           'Multiplier': profileOptions['Multiplier'],}
+
+
   #Create new headers id dictionary for v5 API
   headerDict = {}
   for h in api_bom['headers']:
@@ -137,6 +140,9 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
     configId = i['itemSource']['fullConfiguration']
     partId = i['itemSource']['partId']
     elementId = i['itemSource']['elementId']
+    #Add element for a flat pattern id
+    i['itemSource'].update({'flatId':None})
+    
     #Get the parts for each element in the bom
     url = '/api/parts/d/%s/%s/%s' % (docid, wvm_type, wv)
     params = {'elementId':elementId,'includeFlatParts': True, 'configuration':configId}
@@ -159,7 +165,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
         #print(index)
         if index != None:
             #print(api_bom['rows'][index])
-            api_bom['rows'][index]['itemSource'].update({'flatId':flatId})
+            api_bom['rows'][index]['itemSource']['flatId'] = flatId        
 
 
   #Go through amended BOM and get bodies
@@ -181,14 +187,20 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                                   'Created Version Id': None,
                                   'WVM ID': wv,
                                   'WVM Type': wvm_type,
-                                  'Part ID': None,
-                                  'Part Name': None,
+                                  'Part ID': i['itemSource']['partId'],
+                                  'Part Name': i['headerIdToValue'][headerDict['Name']],
+                                  'Part Number': i['headerIdToValue'][headerDict['Part number']],
                                   'Document Name': None,
                                   'Element Name': None,
                                   'Configuration': configId,
-                                  'Sheet Metal': None,
-                                  'Flat Pattern ID': i['itemSource']['flatId']})  
-
+                                  'Sheet Metal': False,
+                                  'Flat Pattern ID': i['itemSource']['flatId'],
+                                  'Material': assignedMaterial,
+                                  'BOM Qty': i['headerIdToValue'][headerDict['Quantity']]})  
+    if foundPartsInformation['Flat Pattern Id'] != None:
+      foundPartsInformation['Sheet Metal'] = True
+    print ("My program took", time.time() - start_time, "to run")
+  
 
   
   #If Part Studio
