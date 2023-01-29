@@ -40,6 +40,8 @@ def launch_list_parts(userData, configParams, profileOptions, documentInfo, elem
 
 @anvil.server.background_task
 def list_parts_assembly(userData, documentInfo, configurationString, profileOptions):
+  allParts = []
+  partsAndFacesToTest = []
   import time
   start_time = time.time()
   from urllib.parse import urlparse  
@@ -166,39 +168,73 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
         if index != None:
             #print(api_bom['rows'][index])
             api_bom['rows'][index]['itemSource']['flatId'] = flatId        
-
-
-  #Go through amended BOM and get bodies
-  for i in api_bom['rows']:
-    docid = i['itemSource']['documentId']
-    wvm_type = i['itemSource']['wvmType']
-    wv = i['itemSource']['wvmId']
-    eid = i['itemSource']['elementId']
-    configId = i['itemSource']['fullConfiguration']
-  
+ 
     #Get material
     if i['headerIdToValue'][headerDict['Material']] != None:
       assignedMaterial = i['headerIdToValue'][headerDict['Material']]['displayName']     
     else:
       assignedMaterial = None
 
-    foundPartsInformation.update({'Document ID': docid,
-                                  'Element ID': eid,
+    foundPartsInformation.update({'Document ID': i['itemSource']['documentId'],
+                                  'Element ID': i['itemSource']['elementId'],
                                   'Created Version Id': None,
-                                  'WVM ID': wv,
-                                  'WVM Type': wvm_type,
+                                  'WVM ID': i['itemSource']['wvmId'],
+                                  'WVM Type': i['itemSource']['wvmType'],
                                   'Part ID': i['itemSource']['partId'],
                                   'Part Name': i['headerIdToValue'][headerDict['Name']],
                                   'Part Number': i['headerIdToValue'][headerDict['Part number']],
+                                  'Composite Part ID': None,
                                   'Document Name': None,
                                   'Element Name': None,
-                                  'Configuration': configId,
+                                  'Configuration': i['itemSource']['fullConfiguration'],
                                   'Sheet Metal': False,
                                   'Flat Pattern ID': i['itemSource']['flatId'],
                                   'Material': assignedMaterial,
                                   'BOM Qty': i['headerIdToValue'][headerDict['Quantity']]})  
     if foundPartsInformation['Flat Pattern ID'] != None:
       foundPartsInformation['Sheet Metal'] = True
+    allParts.append(foundPartsInformation)
+    
+    #Get Bodies
+    for part in allParts:      
+        did = part['Document ID']
+        wvm_type = part['WVM Type']
+        wv = part['WVM ID']
+        eid = part['Element ID']
+        #If sheet metal, get body details of the flat part ID
+        if part['Sheet Metal'] == True:
+          pid = part['Flat Pattern ID'] 
+        else:
+          pid = part['Part ID'] 
+        url = '/api/parts/d/%s/%s/%s/e/%s/partid/%s/bodydetails' % (docid, wvm_type, wv, eid, pid)
+        method = 'GET'  
+        payload = {}
+        params = {'configuration': part['Configuration']}
+        body_details = onshape.request(method, url, query=params, body=payload)
+        body_details = json.loads(body_details.content)
+        if len(body_details['bodies']) == 1: #Then we have only one body, therefore add the face and edge details to the dictionary
+          part['Faces'] = body_details['bodies'][0]['faces']
+          part['Edges'] = body_details['bodies'][0]['edges']
+          partsAndFacesToTest.append(part)
+        else: #we have a composite part which is either a simple composite or a cut list
+          for childPart in body_details['bodies']:
+            childPartInformation = part.copy()
+            childPartInformation['Composite Part ID'] = childPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
+            childPartInformation['Part ID'] = childPart['id']
+            childPartInformation['Faces'] = childPart['faces']
+            childPartInformation['Edges'] = childPart['edges']
+            partsAndFacesToTest.append(childPartInformation)
+          
+          
+          
+          
+        
+      
+    #If Composite part
+
+
+
+    print(partsAndFacesToTest)  
     print ("My program took", time.time() - start_time, "to run")
   
 
@@ -209,7 +245,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
   
     #If Cut List
   
-    #If Composite part
+
   return
 
 @anvil.server.background_task
