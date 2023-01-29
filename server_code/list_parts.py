@@ -221,6 +221,9 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
           partsAndFacesToTest.append(part)
         else: #we have a composite part which is either a simple composite or a cut list
           #Run featurescript code to determine if this is a cutlist
+
+
+          
           for childPart in body_details['bodies']:
             childPartInformation = part.copy()
             childPartInformation['Composite Part ID'] = childPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
