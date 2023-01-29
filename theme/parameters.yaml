@@ -336,5 +336,5 @@ color_scheme:
   - {name: Warning, color: '#F7020E'}
   - {name: Waterjet, color: '#3B9EFC'}
   - {name: Material Warning, color: '#FCF83B'}
-  - {name: Config Options, color: '#3FBF4C'}
-  - {name: DXF Options, color: '#3FAEBF'}
+  - {name: Config Options, color: 'rgba(63,191,80,0.2)'}
+  - {name: DXF Options, color: 'rgba(63,191,184,0.2)'}

@@ -1046,7 +1046,13 @@ div.plot-container.plotly svg.main-svg {
   box-shadow: 0px 0px 100px 100px %color:Surface Variant%;
 }
 
+.anvil-role-config-options{
+  background-color: %color:Config Options%;
+}
 
+.anvil-role-dxf-options{
+  background-color: %color:DXF Options%;
+}
   
 
 

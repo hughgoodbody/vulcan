@@ -222,6 +222,48 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
           partsAndFacesToTest.append(part)
         else: #we have a composite part which is either a simple composite or a cut list
           #Run featurescript code to determine if this is a cutlist
+          did = part['Document ID']
+          wvm_type = part['WVM Type']
+          wv = part['WVM ID']
+          eid = part['Element ID']
+          pid = part['Part ID']
+          url = '/api/partstudios/d/%s/%s/%s/e/%s/featurescript' % (did, wvm_type, wv, eid)
+          method = 'POST'
+          payload = {
+            'script': """function(context is Context, queries is map){
+                    // Define the function's action
+          //Create output list
+          var framesOutput = [];
+          var frameInfo = {};
+          var frameAtt = getFrameProfileAttributes(context, queries.id);
+          var cutListAtt = getCutlistAttributes(context, queries.id);
+          var bodyId = evaluateQuery(context, queries.id);
+          //If a cutlist loop to get body id etc
+          if (size(cutListAtt)!=0)
+          {
+          var currentTable = cutListAtt[0].table;
+          for (var row in currentTable.rows)
+          {
+            frameInfo = {"Item": row.columnIdToCell.Item, "BodyId": row.entities.subqueries[0].transientId, "Description": row.columnIdToCell.Description,"Qty": row.columnIdToCell.Qty, "Length": (row.columnIdToCell.Length)/meter, "CutListBodyId" : (bodyId[0].transientId)};
+            //println(frameInfo);
+            framesOutput = append(framesOutput, frameInfo);
+          }
+          }
+          return framesOutput;
+          }
+          """,
+            'queries': [{ "key" : "id", "value" : [ pid ] }]
+                    }
+          params = {}
+          resp = onshape.request(method, url, query=params, body=payload)
+          resp = json.loads(resp.content)           
+          print(resp)
+
+          
+          #CASE 1 - Composite part Cut List
+          if len(resp['result']['message']['value']) != 0:   #Then we have a cut list
+            foundPartsInformation['Cut List Qty'] = int(resp['result']['message']['value'][a]['message']['value'][5]['message']['value']['message']['value'])
+            foundPartsInformation['Part of Cut List'] = True
 
 
           
@@ -234,7 +276,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
               childPartInformation['Faces'] = childPart['faces']
               childPartInformation['Edges'] = childPart['edges']
           
-  #print(partsAndFacesToTest)  
+  print(partsAndFacesToTest)  
   print ("My program took", time.time() - start_time, "to run")
   
 

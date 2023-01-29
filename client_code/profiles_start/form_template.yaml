@@ -50,7 +50,7 @@ components:
   name: pnlConfigPanel
   layout_properties: {grid_position: 'EZRMPT,TBAEHA', full_width_row: true}
 - type: ColumnPanel
-  properties: {role: dxf-options, tooltip: '', border: '', foreground: '', visible: true,
+  properties: {role: null, tooltip: '', border: '', foreground: '', visible: true,
     wrap_on: mobile, col_spacing: medium, spacing_above: small, col_widths: '{}',
     spacing_below: small, background: ''}
   name: pnlDxfOptions
