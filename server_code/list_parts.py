@@ -224,21 +224,13 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
           for childPart in body_details['bodies']:
             childPartInformation = part.copy()
             childPartInformation['Composite Part ID'] = childPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
-            childPartInformation['Part ID'] = childPart['id']
-            childPartInformation['Faces'] = childPart['faces']
-            childPartInformation['Edges'] = childPart['edges']
-            partsAndFacesToTest.append(childPartInformation)
+            childPartInformation['Part ID'] = childPart['id']            
+            if childPartInformation['Composite Part ID'] != childPartInformation['Part ID']: #this means that the composite is not added to the list
+              partsAndFacesToTest.append(childPartInformation)
+              childPartInformation['Faces'] = childPart['faces']
+              childPartInformation['Edges'] = childPart['edges']
           
-          
-          
-          
-        
-      
-    #If Composite part
-
-
-
-  print(partsAndFacesToTest)  
+  #print(partsAndFacesToTest)  
   print ("My program took", time.time() - start_time, "to run")
   
 
