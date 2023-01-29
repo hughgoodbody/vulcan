@@ -262,27 +262,26 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
           
           #CASE 1 - Composite part Cut List
           if len(resp['result']['message']['value']) != 0:   #Then we have a cut list
-            for a in range(0,len(resp['result']['message']['value'])):  
+            for cutListPart in body_details['bodies']:
               cutListPartInformation = part.copy()
               cutListPartInformation['Composite Part ID'] = cutListPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
-              cutListPartInformation['Part ID'] = resp['result']['message']['value'][a]['message']['value'][0]['message']['value']['message']['value'] 
+              cutListPartInformation['Part ID'] = cutListPart['id']  
+              use the part id to get the cut list qty value from the list enumerate list i think here
               cutListPartInformation['Cut List Qty'] = int(resp['result']['message']['value'][a]['message']['value'][3]['message']['value']['message']['value'])
               cutListPartInformation['Part of Cut List'] = True
-              if cutListPartInformation['Composite Part ID'] != cutListPartInformation['Part ID']: #this means that the composite is not added to the list
+              if cutListPartInformation['Composite Part ID'] != cutListPartInformation['Part ID']: #this means that the composite is not added to the list                
+                cutListPartInformation['Faces'] = cutListPart['faces']
+                cutListPartInformation['Edges'] = cutListPart['edges']
                 partsAndFacesToTest.append(cutListPartInformation)
-                cutListPartInformation['Faces'] = 
-                cutListPartInformation['Edges'] = 
-
-
           
           for childPart in body_details['bodies']:
             childPartInformation = part.copy()
             childPartInformation['Composite Part ID'] = childPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
             childPartInformation['Part ID'] = childPart['id']            
-            if childPartInformation['Composite Part ID'] != childPartInformation['Part ID']: #this means that the composite is not added to the list
-              partsAndFacesToTest.append(childPartInformation)
+            if childPartInformation['Composite Part ID'] != childPartInformation['Part ID']: #this means that the composite is not added to the list              
               childPartInformation['Faces'] = childPart['faces']
               childPartInformation['Edges'] = childPart['edges']
+              partsAndFacesToTest.append(childPartInformation)
           
   print(partsAndFacesToTest)  
   print ("My program took", time.time() - start_time, "to run")
