@@ -183,7 +183,10 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                                   'Part ID': i['itemSource']['partId'],
                                   'Part Name': i['headerIdToValue'][headerDict['Name']],
                                   'Part Number': i['headerIdToValue'][headerDict['Part number']],
+                                  'Part Thumbnail': None,
                                   'Composite Part ID': None,
+                                  'Part of Cut List': False,
+                                  'Cut List Qty': 0,
                                   'Document Name': None,
                                   'Element Name': None,
                                   'Configuration': i['itemSource']['fullConfiguration'],
@@ -217,6 +220,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
           part['Edges'] = body_details['bodies'][0]['edges']
           partsAndFacesToTest.append(part)
         else: #we have a composite part which is either a simple composite or a cut list
+          #Run featurescript code to determine if this is a cutlist
           for childPart in body_details['bodies']:
             childPartInformation = part.copy()
             childPartInformation['Composite Part ID'] = childPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
@@ -234,8 +238,8 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
 
 
 
-    print(partsAndFacesToTest)  
-    print ("My program took", time.time() - start_time, "to run")
+  print(partsAndFacesToTest)  
+  print ("My program took", time.time() - start_time, "to run")
   
 
   
