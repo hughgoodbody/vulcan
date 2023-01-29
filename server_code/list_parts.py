@@ -244,7 +244,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
           var currentTable = cutListAtt[0].table;
           for (var row in currentTable.rows)
           {
-            frameInfo = {"Item": row.columnIdToCell.Item, "BodyId": row.entities.subqueries[0].transientId, "Description": row.columnIdToCell.Description,"Qty": row.columnIdToCell.Qty, "Length": (row.columnIdToCell.Length)/meter, "CutListBodyId" : (bodyId[0].transientId)};
+            frameInfo = {"Item": row.columnIdToCell.Item, "BodyId": row.entities.subqueries[0].transientId, "Description": row.columnIdToCell.Description, "Qty": row.columnIdToCell.Qty, "CutListBodyId" : (bodyId[0].transientId)};
             //println(frameInfo);
             framesOutput = append(framesOutput, frameInfo);
           }
@@ -256,14 +256,22 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                     }
           params = {}
           resp = onshape.request(method, url, query=params, body=payload)
-          resp = json.loads(resp.content)           
-          print(resp)
+          resp = json.loads(resp.content)   
+          
 
           
           #CASE 1 - Composite part Cut List
           if len(resp['result']['message']['value']) != 0:   #Then we have a cut list
-            foundPartsInformation['Cut List Qty'] = int(resp['result']['message']['value'][a]['message']['value'][5]['message']['value']['message']['value'])
-            foundPartsInformation['Part of Cut List'] = True
+            for a in range(0,len(resp['result']['message']['value'])):  
+              cutListPartInformation = part.copy()
+              cutListPartInformation['Composite Part ID'] = cutListPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
+              cutListPartInformation['Part ID'] = resp['result']['message']['value'][a]['message']['value'][0]['message']['value']['message']['value'] 
+              cutListPartInformation['Cut List Qty'] = int(resp['result']['message']['value'][a]['message']['value'][3]['message']['value']['message']['value'])
+              cutListPartInformation['Part of Cut List'] = True
+              if cutListPartInformation['Composite Part ID'] != cutListPartInformation['Part ID']: #this means that the composite is not added to the list
+                partsAndFacesToTest.append(cutListPartInformation)
+                cutListPartInformation['Faces'] = 
+                cutListPartInformation['Edges'] = 
 
 
           
