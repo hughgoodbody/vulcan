@@ -14,9 +14,15 @@ class RowTemplate(RowTemplateTemplate):
 
     # Any code you write here will run before the form opens.
 
-  def check_box_2_change(self, **event_args):
-    """This method is called when this checkbox is checked or unchecked"""
-    pass
+    #Create supplier drop down box 
+    supplier = self.item['Supplier']      
+    self.dropSupplier.items = [(r['supplierName']) for r in app_tables.suppliers.search()]
+    
+    if self.item['Supplier'] != None or self.item['Supplier'] != '':
+      supplier = self.item['Supplier']
+      self.dropSupplier.selected_value = supplier
+    else:
+      supplier = self.dropSupplier.selected_value
 
 
 

@@ -1,6 +1,7 @@
 container:
   type: ColumnPanel
   properties: {col_widths: '{"DTTZJU":10,"TYUHVR":35,"SIQFUU":15}'}
+  data_bindings: []
 components:
 - type: Spacer
   properties: {height: 32}
@@ -122,6 +123,7 @@ components:
     properties: {spacing_above: none, spacing_below: none, item_template: profiles_exporter_Interactive.RowTemplate}
     name: repeating_panel_1
     layout_properties: {}
+    data_bindings: []
 - type: Button
   properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
     foreground: '', visible: true, text: Process Profiles, font_size: null, font: '',

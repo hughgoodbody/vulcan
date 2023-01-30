@@ -317,15 +317,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       facesToProcess.append(body)
   print(f"Qty Suitable Faces Found: {len(facesToProcess)}") 
   print(f"My program took {time.time() - start_time} to run")
-  
-
-  
-  #If Part Studio
-
-  #If Assembly
-  
-    #If Cut List
-  
+  app_tables.transfertable.add_row(data=facesToProcess, type='facesList',owner=userData['User'])
 
   return
 

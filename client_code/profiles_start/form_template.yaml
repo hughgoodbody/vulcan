@@ -64,4 +64,8 @@ components:
   name: btnExecute
   layout_properties: {grid_position: 'ULCEYI,ZNUGWR', full_width_row: false}
   event_bindings: {click: btnExecute_click}
+- type: Timer
+  properties: {interval: 0}
+  name: timer_1
+  event_bindings: {tick: timer_1_tick}
 is_package: true

@@ -58,10 +58,22 @@ class profiles_start(profiles_startTemplate):
 
       #Encode configurations and then lauch task to get parts
       self.configStr = ConfigurationsPanel.configurating(self.configs)  
-      configurationString, searchPartsTask = anvil.server.call('launch_list_parts', user_data.userData, user_data.configSelectedParams, user_data.profileOptions, user_data.documentInfo, user_data.elementType)
+      configurationString, self.searchPartsTask = anvil.server.call('launch_list_parts', user_data.userData, user_data.configSelectedParams, user_data.profileOptions, user_data.documentInfo, user_data.elementType)
       user_data.configurationString = configurationString
       #print(user_data.configurationString)
+      self.timer_1.interval = 0.5
     pass
+
+  def timer_1_tick(self, **event_args):
+    """This method is called Every [interval] seconds. Does not trigger if [interval] is 0."""
+    if self.searchPartsTask.is_completed() == True:
+      self.timer_1.interval = 0
+      #Get face data from table
+      row = app_tables.transfertable.get(owner=user_data.userData['User'])
+      dataFromTable = row['data']
+      open_form('profiles_exporter_Interactive', tableData=dataFromTable)
+    pass
+
 
 
 

@@ -4,6 +4,8 @@ components:
   properties: {height: 49}
   name: image_1
   layout_properties: {column: GDKJOS}
+  data_bindings:
+  - {property: source, code: 'self.item[''Part Thumbnail'']'}
 - type: Link
   properties: {}
   name: lnkUrl
