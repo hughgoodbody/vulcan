@@ -171,7 +171,7 @@ components:
     properties: {role: dxf-options, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null,
       font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
-      background: '', bold: false, underline: false}
+      background: 'theme:DXF Options', bold: false, underline: false}
     name: txtRef
     layout_properties: {row: LOPQPY, width_xs: 8, col_xs: 3, width: 604.667}
     data_bindings:

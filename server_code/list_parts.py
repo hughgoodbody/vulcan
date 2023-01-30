@@ -10,8 +10,7 @@ def launch_list_parts(userData, configParams, profileOptions, documentInfo, elem
   import json
   import requests
   import math
-  from pprint import pprint  
-  #from .geometryFunctions import findExportFaces
+  from pprint import pprint 
   from .onshape_api.onshape import Onshape
   ak = userData['Access Key']
   sk = userData['Secret Key']
@@ -42,6 +41,7 @@ def launch_list_parts(userData, configParams, profileOptions, documentInfo, elem
 def list_parts_assembly(userData, documentInfo, configurationString, profileOptions):
   allParts = []
   partsAndFacesToTest = []
+  facesToProcess = []
   import time
   start_time = time.time()
   from urllib.parse import urlparse  
@@ -49,7 +49,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
   import requests
   import math
   from pprint import pprint  
-  #from .geometryFunctions import findExportFaces
+  from . import geometry_test
   from .onshape_api.onshape import Onshape
   ak = userData['Access Key']
   sk = userData['Secret Key']
@@ -115,7 +115,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'Bend Line Marks': profileOptions['Bend Line Marks'],
                            'Contact Sheet': profileOptions['Contact Sheet'],
                            'CSV File': profileOptions['CSV File'],
-                           'Max thickness': profileOptions['Max Thickness'],
+                           'Max Thickness': profileOptions['Max Thickness'],
                            'Multiplier': profileOptions['Multiplier'],}
 
 
@@ -286,7 +286,34 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                 childPartInformation['Edges'] = childPart['edges']
                 partsAndFacesToTest.append(childPartInformation)
           
-  #print(partsAndFacesToTest)  
+  #print(partsAndFacesToTest) 
+  #Find suitable faces for export              
+  for body in partsAndFacesToTest:
+    faceInfo = geometry_test.findExportFaces(body)
+    if faceInfo != False:
+      body['Face Info'] = faceInfo
+      #Get thumbnail
+      #Could change pid to partId and the view matrix to isometric to display the folded item
+      url = '/api/v5/parts/d/%s/%s/%s/e/%s/partid/%s/shadedviews' % (body['Document ID'], body['WVM Type'], body['WVM ID'], body['Element ID'], body['Part ID']) 
+      method = 'GET'  
+      payload = {}
+      #construct 12 element view matrix from the 16 element one we have, remove the bottom row
+      m = body['Face Info']['ViewMatrix']
+      #thumbnailMatrix = [str(m[0]), str(m[1]), str(m[2]), str(m[4]), str(m[5]), str(m[6]), str(m[8]), str(m[9]), str(m[10]), str(m[12]), str(m[13]), str(m[14])] # This is column major
+      thumbnailMatrix = [str(m[0]), str(m[4]), str(m[8]), str(m[12]), str(m[1]), str(m[5]), str(m[9]), str(m[13]), str(m[2]), str(m[6]), str(m[10]), str(m[14])] # Use row major rather than column major
+      thumbnailMatrix = ','.join(thumbnailMatrix) #Convert list to comma seperated string
+      #thumbnailMatrix = 'front'
+      params = {'viewMatrix':thumbnailMatrix, 'outputHeight':500, 'outputWidth':500, 'pixelSize':0, 'edges':'show', 'useAntiAliasing':False, 'configuration':body['Configuration']}
+      #imageStr = client.api_client.request(method, url=base + url, query_params=params, headers=headers, body=payload, _preload_content=False)
+      #imageStr = json.loads(imageStr.data)
+      imageStr = onshape.request(method, url, query=params, body=payload)
+      imageStr = json.loads(imageStr.content)
+      imageStr = imageStr['images'][0]
+      body['Part Thumbnail'] = imageStr
+
+      #Get tapped holes
+      facesToProcess.append(body)
+  print(facesToProcess)    
   print ("My program took", time.time() - start_time, "to run")
   
 

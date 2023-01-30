@@ -33,7 +33,7 @@ components:
       underline: false
       include_placeholder: false
     name: dropConfigOptions
-    layout_properties: {row: KNMMYA, width_xs: 5, col_xs: 4, width: 427.5}
+    layout_properties: {row: KNMMYA, width_xs: 5, col_xs: 4, width: 518.333}
     event_bindings: {}
   - type: Label
     properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
