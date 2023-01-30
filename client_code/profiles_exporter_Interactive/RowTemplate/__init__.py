@@ -6,6 +6,7 @@ import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+from ... import user_data
 
 class RowTemplate(RowTemplateTemplate):
   def __init__(self, **properties):
@@ -16,7 +17,8 @@ class RowTemplate(RowTemplateTemplate):
 
     #Create supplier drop down box 
     supplier = self.item['Supplier']      
-    self.dropSupplier.items = [(r['supplierName']) for r in app_tables.suppliers.search()]
+    #self.dropSupplier.items = [(r['supplierName']) for r in app_tables.suppliers.search()]
+    self.dropSupplier.items = user_data.userData['Users Suppliers']
     
     if self.item['Supplier'] != None or self.item['Supplier'] != '':
       supplier = self.item['Supplier']

@@ -24,7 +24,8 @@ def userConfig():
     currentUserConfig['Secret Key'] = anvil.secrets.decrypt_with_key('vc_onshape_encryption_key', currentUser['onshape_secret_key_encrypted'])
     currentUserConfig['Order ID'] = app_tables.numbers.get(owner=currentUser)['RefNumber']
     currentUserConfig['Order Prefix'] = app_tables.numbers.get(owner=currentUser)['RefPrefix']
-    currentUserConfig['Users Suppliers'] = app_tables.suppliers.search(owner=[currentUser])
+    #currentUserConfig['Users Suppliers'] = app_tables.suppliers.search(owner=[currentUser])
+    currentUserConfig['Users Suppliers'] = [r['supplierName'] for r in app_tables.suppliers.search(owner=[currentUser])]
     
     #Clear out existing files from the table
     usersFiles = app_tables.files.search(owner=currentUser)
