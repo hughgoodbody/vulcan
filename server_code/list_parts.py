@@ -257,11 +257,8 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
           params = {}
           resp = onshape.request(method, url, query=params, body=payload)
           resp = json.loads(resp.content)
-          print(resp)
-          
-          
+          #print(resp)  
 
-          
           #CASE 1 - Composite part Cut List
           if len(resp['result']['message']['value']) != 0:   #Then we have a cut list
             for cutListPart in resp['result']['message']['value']:
@@ -289,7 +286,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                 childPartInformation['Edges'] = childPart['edges']
                 partsAndFacesToTest.append(childPartInformation)
           
-  print(partsAndFacesToTest)  
+  #print(partsAndFacesToTest)  
   print ("My program took", time.time() - start_time, "to run")
   
 
