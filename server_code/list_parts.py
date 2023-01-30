@@ -244,7 +244,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
           var currentTable = cutListAtt[0].table;
           for (var row in currentTable.rows)
           {
-            frameInfo = {"Item": row.columnIdToCell.Item, "BodyId": row.entities.subqueries[0].transientId, "Description": row.columnIdToCell.Description, "Qty": row.columnIdToCell.Qty, "CutListBodyId" : (bodyId[0].transientId)};
+            frameInfo = {"Item": row.columnIdToCell.Item, "BodyId": row.entities.subqueries[0].transientId, "Qty": row.columnIdToCell.Qty, "CutListBodyId" : (bodyId[0].transientId)};
             //println(frameInfo);
             framesOutput = append(framesOutput, frameInfo);
           }
@@ -256,8 +256,9 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                     }
           params = {}
           resp = onshape.request(method, url, query=params, body=payload)
-          resp = json.loads(resp.content)   
+          resp = json.loads(resp.content)
           print(resp)
+          
           
 
           
