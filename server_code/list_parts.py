@@ -183,6 +183,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                                   'Part ID': i['itemSource']['partId'],
                                   'Part Name': i['headerIdToValue'][headerDict['Name']],
                                   'Part Number': i['headerIdToValue'][headerDict['Part number']],
+                                  'Part URL': None,
                                   'Part Thumbnail': None,
                                   'Composite Part ID': None,
                                   'Part of Cut List': False,
@@ -294,6 +295,8 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
     print(faceInfo)
     if faceInfo != False:
       body['Face Info'] = faceInfo
+      #Copy face info thickness to main dictinary thickness value
+      body['Thickness'] = body['Face Info']['Thickness'] 
       #Get thumbnail
       #Could change pid to partId and the view matrix to isometric to display the folded item
       url = '/api/v5/parts/d/%s/%s/%s/e/%s/partid/%s/shadedviews' % (body['Document ID'], body['WVM Type'], body['WVM ID'], body['Element ID'], body['Part ID']) 
@@ -314,6 +317,8 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       body['Part Thumbnail'] = imageStr
 
       #Get tapped holes
+      
+      
       facesToProcess.append(body)
   print(f"Qty Suitable Faces Found: {len(facesToProcess)}") 
   print(f"My program took {time.time() - start_time} to run")

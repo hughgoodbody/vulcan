@@ -66,7 +66,7 @@ def findExportFaces(body):
             partThk = pointDistance(planarFaces[descendingAreaList[0]]['surface']['origin'], planarFaces[descendingAreaList[1]]['surface']['origin'])
             partThk = float(numpy.round(partThk, 3))  #Round number
             #print(f'Part Thickness: {partThk}')
-            partThk = round(partThk*1000)
+            #partThk = round(partThk*1000)
             if partThk > body['Max Thickness']:
                 #print("Part is too thick")
                 return False
@@ -268,14 +268,14 @@ def findExportFaces(body):
 
 
         faceInfo["Face"] = largestFace0
-        faceInfo["Thickness"] = partThk
+        faceInfo["Thickness"] = partThk*1000
         faceInfo["Area"] = planarFaces[descendingAreaList[0]]['area']
         faceInfo["Origin"] = planarFaces[descendingAreaList[0]]['surface']['origin']
         faceInfo["Normal"] = planarFaces[descendingAreaList[0]]['surface']['normal']
         faceInfo["EdgePerimeter"] = perimeter
         faceInfo["LongestEdge"] = longestEdge
         faceInfo["ViewMatrix"] = viewMatrix
-        faceInfo["Description"] = str(partThk) + 'mm Laser Plate'
+        faceInfo["Description"] = str(partThk*1000) + 'mm Laser Plate'
         faceInfo["BoxMinCorner"] = facesList[largestFace0_index]['box']['minCorner']
         faceInfo["BoxMaxCorner"] = facesList[largestFace0_index]['box']['maxCorner'] 
 

@@ -68,10 +68,7 @@ class profiles_start(profiles_startTemplate):
     """This method is called Every [interval] seconds. Does not trigger if [interval] is 0."""
     if self.searchPartsTask.is_completed() == True:
       self.timer_1.interval = 0
-      #Get face data from table
-      row = app_tables.transfertable.get(owner=user_data.userData['User'])
-      dataFromTable = row['data']
-      open_form('profiles_exporter_Interactive', tableData=dataFromTable)
+      open_form('profiles_exporter_Interactive')
     pass
 
 

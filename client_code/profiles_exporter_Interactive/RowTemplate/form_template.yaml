@@ -1,4 +1,6 @@
-container: {type: DataRowPanel}
+container:
+  type: DataRowPanel
+  data_bindings: []
 components:
 - type: Image
   properties: {height: 49}
@@ -6,16 +8,6 @@ components:
   layout_properties: {column: GDKJOS}
   data_bindings:
   - {property: source, code: 'self.item[''Part Thumbnail'']'}
-- type: Link
-  properties: {}
-  name: lnkUrl
-  layout_properties: {column: QWHKOW}
-  data_bindings:
-  - {property: text, code: 'self.item[''Part Number'']'}
-- type: Label
-  properties: {}
-  name: label_1
-  layout_properties: {column: DTJGKS}
 - type: TextBox
   properties: {}
   name: txtMaterial
@@ -73,8 +65,10 @@ components:
   name: chkDelete
   layout_properties: {column: NPOWRL}
   event_bindings: {change: check_box_2_change}
-- type: Label
+- type: Link
   properties: {}
-  name: label_3
-  layout_properties: {column: LCRXCG}
+  name: lnkUrl
+  layout_properties: {column: QWHKOW}
+  data_bindings:
+  - {property: text, code: 'self.item[''Part Number'']'}
 is_package: true

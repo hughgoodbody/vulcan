@@ -7,6 +7,8 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 from ... import user_data
+import base64
+
 
 class RowTemplate(RowTemplateTemplate):
   def __init__(self, **properties):
@@ -14,6 +16,23 @@ class RowTemplate(RowTemplateTemplate):
     self.init_components(**properties)
 
     # Any code you write here will run before the form opens.
+    if self.item['Cut List Qty'] != 0:
+      self.item['Quantity'] = self.item['BOM Qty'] * self.item['Cut List Qty']
+    else:  
+      self.item['Quantity'] = self.item['BOM Qty']
+
+    #Set thumbnail image from the 'thumbnail' field - decode from base64
+    #print(self.item['Thumbnail'])
+    self.imgdata = base64.b64decode(self.item['Part Thumbnail'])    
+    mymedia = anvil.BlobMedia('image/png', self.imgdata)
+    self.image_1.source = mymedia 
+
+    #Set Material and row colour
+    self.txtMaterial.text = self.item['Material']
+    if self.txtMaterial.text == '':      
+      self.background = 'theme:Material Warning'
+      #self.item['Warnings'] = 'No material'
+      self.lblWarnings.text = 'No material'
 
     #Create supplier drop down box 
     supplier = self.item['Supplier']      
@@ -25,6 +44,13 @@ class RowTemplate(RowTemplateTemplate):
       self.dropSupplier.selected_value = supplier
     else:
       supplier = self.dropSupplier.selected_value
+
+    #Set hole options override drop down
+    self.dropHoles.items = ['Ignore', 'Etch', 'Drill']  
+    self.item['Undersize Holes'] = self.dropHoles.selected_value
+    #Set drill template option
+    self.chkDrillTemplate.align = 'center'
+    self.item['Drill Template'] = self.chkDrillTemplate.checked  
 
 
 
