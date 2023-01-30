@@ -291,6 +291,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
   print(f"Qty Parts to Test {len(partsAndFacesToTest)}")
   for body in partsAndFacesToTest:
     faceInfo = geometry_test.findExportFaces(body)
+    print(faceInfo)
     if faceInfo != False:
       body['Face Info'] = faceInfo
       #Get thumbnail

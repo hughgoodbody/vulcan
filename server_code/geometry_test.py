@@ -27,7 +27,7 @@ def findExportFaces(body):
     global test_normal
     test_normal = 0
     faceInfo = {}   #Create dictionary of export data
-    faceInfo['Operations'] = ''
+    faceInfo['Operations'] = None
     tolerance = 0.0001
     tolerance2 = 0.0000000001
     perimeter = 0
