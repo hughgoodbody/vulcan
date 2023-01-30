@@ -128,6 +128,13 @@ components:
     data_bindings: []
 - type: Button
   properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
+    foreground: '', visible: true, text: Add Row, font_size: null, font: '', spacing_above: small,
+    icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+    underline: false, icon: ''}
+  name: button_1
+  layout_properties: {grid_position: 'IRYTQN,SMFQVV'}
+- type: Button
+  properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
     foreground: '', visible: true, text: Process Profiles, font_size: null, font: '',
     spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '',
     bold: false, underline: false, icon: 'fa:magic'}

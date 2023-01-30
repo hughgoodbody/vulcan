@@ -66,7 +66,10 @@ components:
   layout_properties: {column: NPOWRL}
   event_bindings: {change: check_box_2_change}
 - type: Link
-  properties: {}
+  properties: {role: null, url: '', align: left, tooltip: '', border: '', foreground: '',
+    visible: true, text: '', font_size: null, wrap_on: mobile, font: '', col_spacing: medium,
+    spacing_above: small, icon_align: left, col_widths: '', spacing_below: small,
+    italic: false, background: '', bold: false, underline: false, icon: 'fa:link'}
   name: lnkUrl
   layout_properties: {column: QWHKOW}
   data_bindings:
