@@ -39,6 +39,12 @@ class RowTemplate(RowTemplateTemplate):
     #self.dropSupplier.items = [(r['supplierName']) for r in app_tables.suppliers.search()]
     #self.dropSupplier.items = user_data.userData['Users Suppliers']
     self.dropSupplier.items = [(r['supplierName']) for r in user_data.userData['Users Suppliers']]
+
+    #Create process drop down box based on chosen supplier
+    processList = [(p['process']) for p in user_data.userData['Users Suppliers']['Supplier']]
+    self.dropProcess.items = processList
+    self.dropProcess.selected_value = processList[0]   
+    self.item['Process'] = self.dropProcess.selected_value
     
     if self.item['Supplier'] != None or self.item['Supplier'] != '':
       supplier = self.item['Supplier']
