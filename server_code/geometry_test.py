@@ -68,7 +68,7 @@ def findExportFaces(body):
             #print(f'Part Thickness: {partThk}')
             partThk = round(partThk*1000)
             if partThk > body['Max Thickness']:
-                print("Part is too thick")
+                #print("Part is too thick")
                 return False
             #print(partThk)
             #print(f"Origin-0: {planarFaces[descendingAreaList[0]]['surface']['origin']}")

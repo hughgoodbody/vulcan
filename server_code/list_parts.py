@@ -287,7 +287,8 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                 partsAndFacesToTest.append(childPartInformation)
           
   #print(partsAndFacesToTest) 
-  #Find suitable faces for export              
+  #Find suitable faces for export
+  print(f"Qty Parts to Test {len(partsAndFacesToTest)}")
   for body in partsAndFacesToTest:
     faceInfo = geometry_test.findExportFaces(body)
     if faceInfo != False:
@@ -313,8 +314,8 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
 
       #Get tapped holes
       facesToProcess.append(body)
-  print(facesToProcess)    
-  print ("My program took", time.time() - start_time, "to run")
+  print(f"Qty Suitable Faces Found: {len(facesToProcess)}") 
+  print(f"My program took {time.time() - start_time} to run")
   
 
   
