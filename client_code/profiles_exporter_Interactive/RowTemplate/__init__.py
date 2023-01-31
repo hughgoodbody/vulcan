@@ -16,10 +16,7 @@ class RowTemplate(RowTemplateTemplate):
     self.init_components(**properties)
 
     # Any code you write here will run before the form opens.
-    if self.item['Cut List Qty'] != 0:
-      self.item['Quantity'] = self.item['BOM Qty'] * self.item['Cut List Qty']
-    else:  
-      self.item['Quantity'] = self.item['BOM Qty']
+
 
     #Set Part Number or Name
     self.lnkUrl.url = self.item['Part URL']
@@ -160,6 +157,11 @@ class RowTemplate(RowTemplateTemplate):
         self.lblWarnings.text = None
         self.lblWarnings.icon = None
       pass    
+
+  def chkDrillTemplate_change(self, **event_args):
+    """This method is called when this checkbox is checked or unchecked"""
+    pass
+
 
 
 

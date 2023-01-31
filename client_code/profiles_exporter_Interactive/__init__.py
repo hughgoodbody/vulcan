@@ -50,6 +50,10 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     
     self.dropAddSelector.items = additionalList 
     self.dropAddSelector.selected_value = ''
+    
+    
+
+    
 
   def btnAddRow_click(self, **event_args):
     """This method is called when the button is clicked"""
@@ -57,6 +61,9 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     print(self.additionalParts)
     self.panel2.items = self.additionalParts
     pass
+
+
+
 
       
      

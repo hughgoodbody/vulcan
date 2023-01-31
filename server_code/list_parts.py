@@ -118,6 +118,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'Max Thickness': profileOptions['Max Thickness'],
                            'Multiplier': profileOptions['Multiplier'],
                            'Remove': False,
+                           'Quantity': 0,
                            'Additional Variations': [],}
 
 
@@ -221,6 +222,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
         if len(body_details['bodies']) == 1: #Then we have only one body, therefore add the face and edge details to the dictionary
           part['Faces'] = body_details['bodies'][0]['faces']
           part['Edges'] = body_details['bodies'][0]['edges']
+          part['Quantity'] = part['BOM Qty']
           partsAndFacesToTest.append(part)
         else: #we have a composite part which is either a simple composite or a cut list
           #Run featurescript code to determine if this is a cutlist
@@ -268,6 +270,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
               cutListPartInformation['Composite Part ID'] = cutListPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
               cutListPartInformation['Part ID'] = cutListPart['message']['value'][0]['message']['value']['message']['value']
               cutListPartInformation['Cut List Qty'] = int(cutListPart['message']['value'][3]['message']['value']['message']['value'])
+              cutListPartInformation['Quantity'] = cutListPartInformation['Cut List Qty'] * cutListPartInformation['BOM Qty']
               cutListPartInformation['Part of Cut List'] = True
               if cutListPartInformation['Composite Part ID'] != cutListPartInformation['Part ID']: #this means that the composite is not added to the list                
                 #Now get the faces and edges from body details by looking for the cutlistpart body id
@@ -286,11 +289,12 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
               childPartInformation['Composite Part ID'] = childPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
               childPartInformation['Part ID'] = childPart['id'] 
               childPartInformation['Part Name'] = childPart['properties']['name'] 
+              childPartInformation['Quantity'] = childPartInformation['BOM Qty']
               if childPartInformation['Composite Part ID'] != childPartInformation['Part ID']: #this means that the composite is not added to the list              
                 childPartInformation['Faces'] = childPart['faces']
                 childPartInformation['Edges'] = childPart['edges']
                 partsAndFacesToTest.append(childPartInformation)
-          
+        
   #print(partsAndFacesToTest) 
   #Find suitable faces for export
   print(f"Qty Parts to Test {len(partsAndFacesToTest)}")
