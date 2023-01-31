@@ -36,4 +36,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     self.lblDate.text = today.strftime("%d/%m/%Y")
 
      
-
+    for r in user_data.userData['Users Suppliers']:
+      processList = r['process'][0]
+      print(processList)
+    
