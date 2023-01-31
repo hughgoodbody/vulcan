@@ -126,6 +126,10 @@ components:
     name: repeating_panel_1
     layout_properties: {}
     data_bindings: []
+- type: DropDown
+  properties: {}
+  name: dropAdditionals
+  layout_properties: {grid_position: 'MOQIIX,BIFQEY'}
 - type: Button
   properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
     foreground: '', visible: true, text: Add Part Variations, font_size: null, font: '',
