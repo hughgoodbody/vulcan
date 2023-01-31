@@ -39,21 +39,24 @@ class RowTemplate(RowTemplateTemplate):
     #self.dropSupplier.items = [(r['supplierName']) for r in app_tables.suppliers.search()]
     #self.dropSupplier.items = user_data.userData['Users Suppliers']
     self.dropSupplier.items = [(r['supplierName']) for r in user_data.userData['Users Suppliers']]
-
-    for i in user_data.userData['Users Suppliers']:
-      if i['supplierName'] == supplier:
-        pass
-
-    
-
-    #self.dropProcess.selected_value = self.dropProcess.items[0]  
-    #self.item['Process'] = self.dropProcess.selected_value
-    
     if self.item['Supplier'] != None or self.item['Supplier'] != '':
       supplier = self.item['Supplier']
       self.dropSupplier.selected_value = supplier
     else:
       supplier = self.dropSupplier.selected_value
+
+    #Create the process list
+    processList = []
+    for i in user_data.userData['Users Suppliers']:
+      if i['supplierName'] == supplier:
+        for j in i['process']:
+          #print(j[0][1])
+          processList.append(j[0][1])
+    self.dropProcess.items = processList
+    self.dropProcess.selected_value = self.dropProcess.items[0]  
+    self.item['Process'] = self.dropProcess.selected_value
+    
+
 
     #Set hole options override drop down
     self.dropHoles.items = ['Ignore', 'Etch', 'Drill']  

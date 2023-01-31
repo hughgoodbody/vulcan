@@ -35,8 +35,13 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     # dd/mm/YY
     self.lblDate.text = today.strftime("%d/%m/%Y")
 
+    #Check here if there is no part number
+    additionalList = []
+    for i in self.dataFromTable:      
+      additionalList.append(i['Part Name'])
+
+    self.dropAdditionals.items = additionalList  
+      
      
-    for r in user_data.userData['Users Suppliers']:
-      processList = r['process'][0]
-      print(processList)
+
     

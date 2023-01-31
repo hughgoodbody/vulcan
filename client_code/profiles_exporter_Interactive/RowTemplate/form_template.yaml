@@ -48,7 +48,7 @@ components:
   properties: {}
   name: dropSupplier
   layout_properties: {column: BQHQSP}
-  event_bindings: {change: drop_down_3_change}
+  event_bindings: {}
   data_bindings:
   - {property: selected_value, code: 'self.item[''Supplier'']', writeback: true}
 - type: Label
@@ -64,7 +64,7 @@ components:
     bold: false, checked: false, underline: false}
   name: chkDelete
   layout_properties: {column: NPOWRL}
-  event_bindings: {change: check_box_2_change}
+  event_bindings: {}
 - type: Link
   properties: {role: null, url: '', align: left, tooltip: '', border: '', foreground: '',
     visible: true, text: '', font_size: null, wrap_on: mobile, font: '', col_spacing: medium,

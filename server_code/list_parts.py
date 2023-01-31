@@ -211,13 +211,13 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
           pid = part['Flat Pattern ID'] 
         else:
           pid = part['Part ID'] 
-        url = '/api/parts/d/%s/%s/%s/e/%s/partid/%s/bodydetails' % (docid, wvm_type, wv, eid, pid)
+        url = '/api/v5/parts/d/%s/%s/%s/e/%s/partid/%s/bodydetails' % (docid, wvm_type, wv, eid, pid)
         method = 'GET'  
         payload = {}
         params = {'configuration': part['Configuration']}
-        #print(part['Part Name'])
-        body_details = onshape.request(method, url, query=params, body=payload)
+        body_details = onshape.request(method, url, query=params, body=payload)        
         body_details = json.loads(body_details.content)
+        print(body_details['properties']['name'])
         if len(body_details['bodies']) == 1: #Then we have only one body, therefore add the face and edge details to the dictionary
           part['Faces'] = body_details['bodies'][0]['faces']
           part['Edges'] = body_details['bodies'][0]['edges']
@@ -273,16 +273,19 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                 #Now get the faces and edges from body details by looking for the cutlistpart body id
                 tempId = None #temp id so we don't get multiples of same body
                 for body in body_details['bodies']:
+                  print(body)
                   if cutListPartInformation['Part ID'] == body['id'] and tempId != body['id']:
                     tempId = cutListPartInformation['Part ID']
                     cutListPartInformation['Faces'] = body['faces']
                     cutListPartInformation['Edges'] = body['edges']
+                    #cutListPartInformation['Part Name'] = body['properties']['name'] 
                     partsAndFacesToTest.append(cutListPartInformation)
           else: #No cut list, just a composite part          
             for childPart in body_details['bodies']:
               childPartInformation = part.copy()
               childPartInformation['Composite Part ID'] = childPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
-              childPartInformation['Part ID'] = childPart['id']            
+              childPartInformation['Part ID'] = childPart['id'] 
+              #childPartInformation['Part Name'] = childPart['properties']['name'] 
               if childPartInformation['Composite Part ID'] != childPartInformation['Part ID']: #this means that the composite is not added to the list              
                 childPartInformation['Faces'] = childPart['faces']
                 childPartInformation['Edges'] = childPart['edges']
