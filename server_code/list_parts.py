@@ -184,7 +184,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                                   'Part ID': i['itemSource']['partId'],
                                   'Part Name': i['headerIdToValue'][headerDict['Name']],
                                   'Part Number': i['headerIdToValue'][headerDict['Part number']],
-                                  'Part URL': None,
+                                  'Part URL': i['viewHref'],
                                   'Part Thumbnail': None,
                                   'Composite Part ID': None,
                                   'Part of Cut List': False,
