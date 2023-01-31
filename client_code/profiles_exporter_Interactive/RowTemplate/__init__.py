@@ -40,10 +40,15 @@ class RowTemplate(RowTemplateTemplate):
     #self.dropSupplier.items = user_data.userData['Users Suppliers']
     self.dropSupplier.items = [(r['supplierName']) for r in user_data.userData['Users Suppliers']]
 
-    #Create process drop down box based on chosen supplier
-    processList = [(p['process']) for p in user_data.userData['Users Suppliers']['Supplier']]
-    self.dropProcess.items = processList
-    self.dropProcess.selected_value = processList[0]   
+    for i in range(0,len(user_data.userData['Users Suppliers'])):
+      if user_data.userData['Users Suppliers'][i]['supplierName'] == supplier:
+        print(user_data.userData['Users Suppliers'][i]['supplierName'])
+        print(user_data.userData['Users Suppliers'][i]['process'][0])
+        print(user_data.userData['Users Suppliers'][i]['process'])
+
+    
+
+    self.dropProcess.selected_value = self.dropProcess.items[0]  
     self.item['Process'] = self.dropProcess.selected_value
     
     if self.item['Supplier'] != None or self.item['Supplier'] != '':

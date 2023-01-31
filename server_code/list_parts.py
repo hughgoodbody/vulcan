@@ -116,7 +116,8 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'Contact Sheet': profileOptions['Contact Sheet'],
                            'CSV File': profileOptions['CSV File'],
                            'Max Thickness': profileOptions['Max Thickness'],
-                           'Multiplier': profileOptions['Multiplier'],}
+                           'Multiplier': profileOptions['Multiplier'],
+                           'Additional Variations': [],}
 
 
   #Create new headers id dictionary for v5 API
