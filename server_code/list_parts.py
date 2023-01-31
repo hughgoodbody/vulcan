@@ -117,6 +117,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'CSV File': profileOptions['CSV File'],
                            'Max Thickness': profileOptions['Max Thickness'],
                            'Multiplier': profileOptions['Multiplier'],
+                           'Remove': False,
                            'Additional Variations': [],}
 
 
@@ -184,7 +185,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                                   'Part ID': i['itemSource']['partId'],
                                   'Part Name': i['headerIdToValue'][headerDict['Name']],
                                   'Part Number': i['headerIdToValue'][headerDict['Part number']],
-                                  'Part URL': i['viewHref'],
+                                  'Part URL': i['itemSource']['viewHref'],
                                   'Part Thumbnail': None,
                                   'Composite Part ID': None,
                                   'Part of Cut List': False,

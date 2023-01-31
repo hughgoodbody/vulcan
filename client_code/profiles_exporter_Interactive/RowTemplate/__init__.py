@@ -21,6 +21,13 @@ class RowTemplate(RowTemplateTemplate):
     else:  
       self.item['Quantity'] = self.item['BOM Qty']
 
+    #Set Part Number or Name
+    self.lnkUrl.url = self.item['Part URL']
+    if self.item['Part Number'] is None:
+      self.lnkUrl.text = self.item['Part Name']
+    else:  
+      self.lnkUrl.text = self.item['Part Number']
+
     #Set thumbnail image from the 'thumbnail' field - decode from base64
     #print(self.item['Thumbnail'])
     self.imgdata = base64.b64decode(self.item['Part Thumbnail'])    
@@ -33,6 +40,7 @@ class RowTemplate(RowTemplateTemplate):
       self.background = 'theme:Material Warning'
       #self.item['Warnings'] = 'No material'
       self.lblWarnings.text = 'No material'
+      self.lblWarnings.icon = 'fa:exclamation-triangle'
 
     #Create supplier drop down box 
     supplier = self.item['Supplier']      
@@ -64,6 +72,94 @@ class RowTemplate(RowTemplateTemplate):
     #Set drill template option
     self.chkDrillTemplate.align = 'center'
     self.item['Drill Template'] = self.chkDrillTemplate.checked  
+
+    #Set drill template option
+    self.chkDrillTemplate.align = 'center'
+    self.item['Drill Template'] = self.chkDrillTemplate.checked
+
+
+  def dropSupplier_change(self, **event_args):
+    """This method is called when an item is selected"""
+    supplier = self.dropSupplier.selected_value
+    #Create the process list
+    processList = []
+    for i in user_data.userData['Users Suppliers']:
+      if i['supplierName'] == supplier:
+        for j in i['process']:
+          #print(j[0][1])
+          processList.append(j[0][1])
+    self.dropProcess.items = processList
+    self.dropProcess.selected_value = self.dropProcess.items[0]  
+    self.item['Process'] = self.dropProcess.selected_value    
+    #Set row colours
+    if self.dropProcess.selected_value == 'Waterjet' and self.txtMaterial.text == '':
+      self.background = 'theme:Material Warning'
+      self.lblWarnings.text = 'No material'
+      self.lblWarnings.icon = 'fa:exclamation-triangle'
+    else:      
+      if self.txtMaterial.text == '':   
+        #print(self.txtMaterial.text)
+        self.background = 'theme:Material Warning'
+        #self.item['Warnings'] = 'No material'
+        self.lblWarnings.text = 'No material'
+        self.lblWarnings.icon = 'fa:exclamation-triangle'
+      
+      elif self.dropProcess.selected_value == 'Waterjet':
+        self.background = 'theme:Waterjet'
+        self.lblWarnings.text = None
+      else:
+        self.background = 'theme:Default'
+        self.lblWarnings.text = None
+
+    pass
+
+  def dropProcess_change(self, **event_args):
+    """This method is called when an item is selected"""
+    #Set row colours
+    if self.dropProcess.selected_value == 'Waterjet' and self.txtMaterial.text == '':
+      self.background = 'theme:Material Warning' 
+      self.lblWarnings.text = 'No material'
+      self.lblWarnings.icon = 'fa:exclamation-triangle'
+    else:      
+      if self.txtMaterial.text == None:   
+        #print(self.txtMaterial.text)
+        self.background = 'theme:Material Warning'
+        #self.item['Warnings'] = 'No material'
+        self.lblWarnings.text = 'No material'
+        self.lblWarnings.icon = 'fa:exclamation-triangle'
+      
+      elif self.dropProcess.selected_value == 'Waterjet':
+        self.background = 'theme:Waterjet' 
+        self.lblWarnings.text = None
+      else:
+        self.background = 'theme:Default'
+        self.lblWarnings.text = None
+
+  def txtMaterial_change(self, **event_args):
+    """This method is called when the TextBox loses focus"""
+    #print(self.txtMaterial.select())
+    #Set row colours
+    if self.dropProcess.selected_value == 'Waterjet' and self.txtMaterial.text == '':
+      self.background = 'theme:Material Warning'
+      self.lblWarnings.text = 'No material'
+      self.lblWarnings.icon = 'fa:exclamation-triangle'
+    else:      
+      if self.txtMaterial.text == '':   
+        #print(self.txtMaterial.text)
+        self.background = 'theme:Material Warning'
+        #self.item['Warnings'] = 'No material' 
+        self.lblWarnings.text = 'No material'
+        self.lblWarnings.icon = 'fa:exclamation-triangle'
+      
+      elif self.dropProcess.selected_value == 'Waterjet':
+        self.background = 'theme:Waterjet' 
+        self.lblWarnings.text = None
+        self.lblWarnings.icon = None
+      else:
+        self.background = 'theme:Default' 
+        self.lblWarnings.text = None
+        self.lblWarnings.icon = None
+      pass    
 
 
 

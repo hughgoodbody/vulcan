@@ -77,6 +77,7 @@ components:
       background: '', bold: true, underline: false}
     name: txtReference
     layout_properties: {row: JLBKTL, width_xs: 3, col_xs: 9, width: 156.6}
+    data_bindings: []
 - type: GridPanel
   properties: {}
   name: grid_panel_3
@@ -126,10 +127,6 @@ components:
     name: repeating_panel_1
     layout_properties: {}
     data_bindings: []
-- type: DropDown
-  properties: {}
-  name: dropAdditionals
-  layout_properties: {grid_position: 'MOQIIX,BIFQEY'}
 - type: Button
   properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
     foreground: '', visible: true, text: Add Part Variations, font_size: null, font: '',
@@ -137,6 +134,78 @@ components:
     bold: false, underline: false, icon: ''}
   name: button_1
   layout_properties: {grid_position: 'IRYTQN,SMFQVV'}
+- type: ColumnPanel
+  properties: {col_widths: '{}'}
+  name: column_panel_1
+  layout_properties: {grid_position: 'KBTKKA,PNVGXY'}
+  components:
+  - type: DataGrid
+    properties:
+      role: null
+      columns:
+      - {id: UKHRXT, title: Part Number, data_key: column_2, $$hashKey: 'object:10383'}
+      - {id: SJNAOT, title: Thickness, data_key: column_3, $$hashKey: 'object:10384'}
+      - {id: GHXHLX, title: Material, data_key: column_4, $$hashKey: 'object:10388'}
+      - {id: MEVHUE, title: Quantity, data_key: column_5, $$hashKey: 'object:10390'}
+      - {id: PBBTLD, title: '', data_key: '', $$hashKey: 'object:15847'}
+      auto_header: true
+      tooltip: ''
+      border: ''
+      foreground: ''
+      rows_per_page: 11
+      visible: true
+      wrap_on: never
+      show_page_controls: true
+      spacing_above: small
+      spacing_below: small
+      background: ''
+    name: gridAdditional
+    layout_properties: {grid_position: 'CDGTPQ,ITBXJD', full_width_row: false}
+    components:
+    - type: DataRowPanel
+      properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+        auto_display_data: true, visible: true, item: null, font_size: null, font: '',
+        spacing_above: none, spacing_below: large, italic: false, background: '',
+        bold: false, underline: false}
+      name: data_row_panel_1
+      layout_properties: {pinned: true}
+      components:
+      - type: DropDown
+        properties: {}
+        name: dropAddSelector
+        layout_properties: {column: UKHRXT}
+      - type: TextBox
+        properties: {}
+        name: txtAddMat
+        layout_properties: {column: GHXHLX}
+      - type: TextBox
+        properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+          border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null,
+          font: '', spacing_above: small, type: number, spacing_below: small, italic: false,
+          background: '', bold: false, underline: false}
+        name: txtAddQty
+        layout_properties: {column: MEVHUE}
+      - type: Button
+        properties: {role: filled-button, align: center, tooltip: '', border: '',
+          enabled: true, foreground: '', visible: true, text: Add, font_size: null,
+          font: '', spacing_above: small, icon_align: left, spacing_below: small,
+          italic: false, background: '', bold: false, underline: false, icon: 'fa:plus'}
+        name: btnAddRow
+        layout_properties: {column: PBBTLD}
+        event_bindings: {click: btnAddRow_click}
+      - type: TextBox
+        properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+          border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null,
+          font: '', spacing_above: small, type: number, spacing_below: small, italic: false,
+          background: '', bold: false, underline: false}
+        name: txtaddThk
+        layout_properties: {column: SJNAOT}
+    - type: RepeatingPanel
+      properties: {role: null, tooltip: '', border: '', foreground: '', items: null,
+        visible: true, spacing_above: large, spacing_below: none, item_template: profiles_exporter_Interactive.AdditionalsRowTemplate,
+        background: ''}
+      name: repeating_panel_2
+      layout_properties: {}
 - type: Button
   properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
     foreground: '', visible: true, text: Process Profiles, font_size: null, font: '',

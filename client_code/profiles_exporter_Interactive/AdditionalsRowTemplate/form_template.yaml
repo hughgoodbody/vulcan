@@ -1,0 +1,33 @@
+container: {type: DataRowPanel}
+components:
+- type: DropDown
+  properties: {}
+  name: drop_down_1
+  layout_properties: {column: UKHRXT}
+  data_bindings:
+  - {property: selected_value, code: 'self.item[''Part Number'']', writeback: true}
+- type: TextBox
+  properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+    border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null,
+    font: '', spacing_above: small, type: number, spacing_below: small, italic: false,
+    background: '', bold: false, underline: false}
+  name: text_box_1
+  layout_properties: {column: SJNAOT}
+  data_bindings:
+  - {property: text, code: 'self.item[''Thickness'']', writeback: true}
+- type: TextBox
+  properties: {}
+  name: text_box_2
+  layout_properties: {column: GHXHLX}
+  data_bindings:
+  - {property: text, code: 'self.item[''Material'']', writeback: true}
+- type: TextBox
+  properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+    border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null,
+    font: '', spacing_above: small, type: number, spacing_below: small, italic: false,
+    background: '', bold: false, underline: false}
+  name: text_box_3
+  layout_properties: {column: MEVHUE}
+  data_bindings:
+  - {property: text, code: 'self.item[''Quantity'']', writeback: true}
+is_package: true
