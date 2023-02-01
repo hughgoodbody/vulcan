@@ -103,8 +103,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'Order Reference': userData['Order Reference'],
                            'Customer Reference': profileOptions['Reference'],
                            'Supplier': profileOptions['Supplier'],
-                           'Process': None,
-                           'Additional': None,
+                           'Process': None,                           
                            'Delete': None,
                            'Drill template': None,
                            'Material': None,
@@ -119,7 +118,8 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'Multiplier': profileOptions['Multiplier'],
                            'Remove': False,
                            'Quantity': 0,
-                           'Additional Variations': False,}
+                           'Additional Variations': False,
+                           'Additional Qty': 0,}
 
 
   #Create new headers id dictionary for v5 API
@@ -332,6 +332,10 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       facesToProcess.append(body)
   print(f"Qty Suitable Faces Found: {len(facesToProcess)}") 
   print(f"My program took {time.time() - start_time} to run")
+  #Clear out existing files from the table
+  usersFiles = app_tables.files.search(owner=currentUser, type='facesList')
+  for row in usersFiles:
+    row.delete()
   app_tables.transfertable.add_row(data=facesToProcess, type='facesList',owner=userData['User'])
 
   return

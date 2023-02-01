@@ -8,42 +8,6 @@ components:
   layout_properties: {column: GDKJOS}
   data_bindings:
   - {property: source, code: 'self.item[''Part Thumbnail'']'}
-- type: TextBox
-  properties: {}
-  name: txtMaterial
-  layout_properties: {column: ATMSYC}
-  data_bindings:
-  - {property: text, code: 'self.item[''Material'']', writeback: true}
-  event_bindings: {change: txtMaterial_change}
-- type: TextBox
-  properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
-    border: '', enabled: true, foreground: '', visible: true, text: '0', font_size: null,
-    font: '', spacing_above: small, type: number, spacing_below: small, italic: false,
-    background: '', bold: false, underline: false}
-  name: txtQtyAdd
-  layout_properties: {column: XVOHMG}
-  data_bindings:
-  - {property: text, code: 'self.item[''Additional'']', writeback: true}
-- type: DropDown
-  properties: {}
-  name: dropHoles
-  layout_properties: {column: AGNYFH}
-  data_bindings:
-  - {property: selected_value, code: 'self.item[''Undersize Holes'']', writeback: true}
-- type: DropDown
-  properties: {}
-  name: dropProcess
-  layout_properties: {column: SBTZDI}
-  data_bindings:
-  - {property: selected_value, code: 'self.item[''Process'']', writeback: true}
-  event_bindings: {change: dropProcess_change}
-- type: DropDown
-  properties: {}
-  name: dropSupplier
-  layout_properties: {column: BQHQSP}
-  event_bindings: {change: dropSupplier_change}
-  data_bindings:
-  - {property: selected_value, code: 'self.item[''Supplier'']', writeback: true}
 - type: Label
   properties: {role: null, align: left, tooltip: '', border: '', foreground: '', visible: true,
     text: '', font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small,

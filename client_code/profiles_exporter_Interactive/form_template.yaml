@@ -99,7 +99,7 @@ components:
     - {id: DTJGKS, title: Thickness, data_key: Thickness, $$hashKey: 'object:40977'}
     - {id: ATMSYC, title: Material, data_key: '', $$hashKey: 'object:13426'}
     - {id: LCRXCG, title: Quantity, data_key: Quantity, $$hashKey: 'object:13428'}
-    - {id: XVOHMG, title: Additional Qty, data_key: '', $$hashKey: 'object:13430'}
+    - {id: XVOHMG, title: Adjust Qty (+/-), data_key: '', $$hashKey: 'object:13430'}
     - {id: AGNYFH, title: Undersize Holes, data_key: '', $$hashKey: 'object:13432'}
     - {id: EMERFH, title: Drill Template, data_key: '', $$hashKey: 'object:13434'}
     - {id: SBTZDI, title: Process, data_key: '', $$hashKey: 'object:13436'}

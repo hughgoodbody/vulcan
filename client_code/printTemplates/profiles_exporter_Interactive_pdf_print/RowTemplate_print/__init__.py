@@ -6,7 +6,7 @@ import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
-from ... import user_data
+from .... import user_data
 import base64
 
 
@@ -32,132 +32,21 @@ class RowTemplate_print(RowTemplate_printTemplate):
     self.image_1.source = mymedia
 
     #Set Material and row colour
-    self.txtMaterial.text = self.item['Material']
-    if self.txtMaterial.text == '':
+    
+    if self.item['Material'] == '' or self.item['Material'] == None:
       self.background = 'theme:Material Warning'
       #self.item['Warnings'] = 'No material'
       self.lblWarnings.text = 'No material'
       self.lblWarnings.icon = 'fa:exclamation-triangle'
 
-    #Create supplier drop down box
-    supplier = self.item['Supplier']
-    #self.dropSupplier.items = [(r['supplierName']) for r in app_tables.suppliers.search()]
-    #self.dropSupplier.items = user_data.userData['Users Suppliers']
-    self.dropSupplier.items = [(r['supplierName']) for r in user_data.userData['Users Suppliers']]
-    if self.item['Supplier'] != None or self.item['Supplier'] != '':
-      supplier = self.item['Supplier']
-      self.dropSupplier.selected_value = supplier
-    else:
-      supplier = self.dropSupplier.selected_value
 
-    #Create the process list
-    processList = []
-    for i in user_data.userData['Users Suppliers']:
-      if i['supplierName'] == supplier:
-        for j in i['process']:
-          #print(j[0][1])
-          processList.append(j[0][1])
-    self.dropProcess.items = processList
-    self.dropProcess.selected_value = self.dropProcess.items[0]
-    self.item['Process'] = self.dropProcess.selected_value
-
-
-
-    #Set hole options override drop down
-    self.dropHoles.items = ['Ignore', 'Etch', 'Drill']
-    self.item['Undersize Holes'] = self.dropHoles.selected_value
-    #Set drill template option
-    self.chkDrillTemplate.align = 'center'
-    self.item['Drill Template'] = self.chkDrillTemplate.checked
 
     #Set drill template option
     self.chkDrillTemplate.align = 'center'
-    self.item['Drill Template'] = self.chkDrillTemplate.checked
+    self.chkDrillTemplate.checked = self.item['Drill Template'] 
 
 
-  def dropSupplier_change(self, **event_args):
-    """This method is called when an item is selected"""
-    supplier = self.dropSupplier.selected_value
-    #Create the process list
-    processList = []
-    for i in user_data.userData['Users Suppliers']:
-      if i['supplierName'] == supplier:
-        for j in i['process']:
-          #print(j[0][1])
-          processList.append(j[0][1])
-    self.dropProcess.items = processList
-    self.dropProcess.selected_value = self.dropProcess.items[0]
-    self.item['Process'] = self.dropProcess.selected_value
-    #Set row colours
-    if self.dropProcess.selected_value == 'Waterjet' and self.txtMaterial.text == '':
-      self.background = 'theme:Material Warning'
-      self.lblWarnings.text = 'No material'
-      self.lblWarnings.icon = 'fa:exclamation-triangle'
-    else:
-      if self.txtMaterial.text == '':
-        #print(self.txtMaterial.text)
-        self.background = 'theme:Material Warning'
-        #self.item['Warnings'] = 'No material'
-        self.lblWarnings.text = 'No material'
-        self.lblWarnings.icon = 'fa:exclamation-triangle'
 
-      elif self.dropProcess.selected_value == 'Waterjet':
-        self.background = 'theme:Waterjet'
-        self.lblWarnings.text = None
-      else:
-        self.background = 'theme:Default'
-        self.lblWarnings.text = None
 
-    pass
 
-  def dropProcess_change(self, **event_args):
-    """This method is called when an item is selected"""
-    #Set row colours
-    if self.dropProcess.selected_value == 'Waterjet' and self.txtMaterial.text == '':
-      self.background = 'theme:Material Warning'
-      self.lblWarnings.text = 'No material'
-      self.lblWarnings.icon = 'fa:exclamation-triangle'
-    else:
-      if self.txtMaterial.text == None:
-        #print(self.txtMaterial.text)
-        self.background = 'theme:Material Warning'
-        #self.item['Warnings'] = 'No material'
-        self.lblWarnings.text = 'No material'
-        self.lblWarnings.icon = 'fa:exclamation-triangle'
 
-      elif self.dropProcess.selected_value == 'Waterjet':
-        self.background = 'theme:Waterjet'
-        self.lblWarnings.text = None
-      else:
-        self.background = 'theme:Default'
-        self.lblWarnings.text = None
-
-  def txtMaterial_change(self, **event_args):
-    """This method is called when the TextBox loses focus"""
-    #print(self.txtMaterial.select())
-    #Set row colours
-    if self.dropProcess.selected_value == 'Waterjet' and self.txtMaterial.text == '':
-      self.background = 'theme:Material Warning'
-      self.lblWarnings.text = 'No material'
-      self.lblWarnings.icon = 'fa:exclamation-triangle'
-    else:
-      if self.txtMaterial.text == '':
-        #print(self.txtMaterial.text)
-        self.background = 'theme:Material Warning'
-        #self.item['Warnings'] = 'No material'
-        self.lblWarnings.text = 'No material'
-        self.lblWarnings.icon = 'fa:exclamation-triangle'
-
-      elif self.dropProcess.selected_value == 'Waterjet':
-        self.background = 'theme:Waterjet'
-        self.lblWarnings.text = None
-        self.lblWarnings.icon = None
-      else:
-        self.background = 'theme:Default'
-        self.lblWarnings.text = None
-        self.lblWarnings.icon = None
-      pass
-
-  def chkDrillTemplate_change(self, **event_args):
-    """This method is called when this checkbox is checked or unchecked"""
-    pass

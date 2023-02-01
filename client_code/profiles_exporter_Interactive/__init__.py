@@ -23,7 +23,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     self.panel = self.repeating_panel_1
     self.panel.items = self.dataFromTable
     self.panel2 = self.repeating_panel_2
-    self.orderId = self.dataFromTable['Order ID']
+    self.orderId = self.dataFromTable[0]['Order ID']
 
     #Set thumbnail image from the 'thumbnail' field - decode from base64
     self.imgdata = base64.b64decode(self.panel.items[0]['Parent Thumbnail'])    
@@ -77,11 +77,14 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
         if a['Part Number'] == b['Part Number'] or a['Part Number'] == b['Part Name']:
           #b['Additional Variations'] = True #Set this in original dictionary so that it will not be tested again
           #Copy element
-          copiedElement = b
+          copiedElement = b.copy()
           #Update element with thickness, material, quantity and additional variation boolean
           copiedElement['Thickness'] = a['Thickness']
           copiedElement['Material'] = a['Material']
-          copiedElement['Quantity'] = a['Quantity']          
+          copiedElement['Quantity'] = a['Quantity']    
+          copiedElement['Drill Template'] = False
+          copiedElement['Remove'] = False
+          copiedElement['Additional Qty'] = 0
           #Append element to list
           #self.dataFromTable.append(copiedElement)
           self.panel.items.append(copiedElement)

@@ -7,7 +7,15 @@
 7. Create version
 8. Variations key in dictioanry
 9. Update table
-10. Processes in suppliers as a list rather than linked table throw
+10. Processes in suppliers as a list rather than linked table 
 11. Clear data table at start of background task also
 12 Create new list of just hole tapping data and filename when doing the export
+13. Adjustments (+ / -)
+14. DXF lineweight,  change version to 2000 or newer     
+
+Two titles for printed PDF's
+Supplier Summary: Lasershape Order Id: 783
+Order Summary: 783-786
   
+BUGS:
+Thumbnail view matrix

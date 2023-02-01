@@ -17,10 +17,10 @@ import anvil.server
 #   return 42
 #
 @anvil.server.callable
-def createOutputPdf(userData, inputList, orderId, reference, type, supplier):
+def createOutputPdf(userData, inputList, orderId, type, supplier):
   import anvil.pdf
   from anvil.pdf import PDFRenderer
-  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=str(orderId) + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, orderId, reference)
+  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=str(orderId) + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, orderId)
   app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
   return pdf
   pass

@@ -23,7 +23,7 @@ components:
   name: txtQtyAdd
   layout_properties: {column: XVOHMG}
   data_bindings:
-  - {property: text, code: 'self.item[''Additional'']', writeback: true}
+  - {property: text, code: 'self.item[''Additional Qty'']', writeback: true}
 - type: DropDown
   properties: {}
   name: dropHoles
