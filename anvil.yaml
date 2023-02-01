@@ -79,6 +79,9 @@ db_schema:
     - name: type
       admin_ui: {width: 200}
       type: string
+    - name: supplier
+      admin_ui: {order: 5, width: 200}
+      type: string
   suppliers:
     title: Suppliers
     client: none
