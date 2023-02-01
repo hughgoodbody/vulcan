@@ -115,22 +115,22 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       #print(f"Exporting for {s}: {len(supplierSpecificParts)} files")
       #print(supplierSpecificParts) 
       #Create PDF Summary forms, get the id number here and pass to server as argument, allows individual forms to be made
-      anvil.server.call_s('createOutputPdf',user_data.userData, supplierSpecificParts, self.idRef, 'FORM_PDF',s)      
-      self.processTask = anvil.server.call('launchProcessProfiles', supplierSpecificParts, self.idRef, s)
+      anvil.server.call_s('createOutputPdf', user_data.userData, supplierSpecificParts, self.idRef, 'FORM_PDF',s)      
+      #self.processTask = anvil.server.call('launchProcessProfiles', supplierSpecificParts, self.idRef, s)
       self.idRef = self.idRef + 1
       #Add task id to list
-      self.supplierProcessList.append(self.processTask.get_id())
+      #self.supplierProcessList.append(self.processTask.get_id())
       if self.nSup == self.x:
         #Start Timer
         self.timer_1.interval = 0.5
-        print(self.supplierProcessList)
+        #print(self.supplierProcessList)
       else:  
         self.x = self.x+1
       #print(f"Output List for {s}: {foundItems}") 
       #print(len(foundItems))
     #Create Master PDF Summary
     self.idRef = str(self.idRefStart) + ' - ' + str(self.idRef)  
-    anvil.server.call_s('createOutputPdf', self.inputList, self.idRef, 'MASTER_PDF', None) 
+    anvil.server.call_s('createOutputPdf', user_data.userData, self.inputList, self.idRef, 'MASTER_PDF', None) 
     
     #Update order id in table
     pass
