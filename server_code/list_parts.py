@@ -118,7 +118,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'Multiplier': profileOptions['Multiplier'],
                            'Remove': False,
                            'Quantity': 0,
-                           'Additional Variations': False,
+                           'Variation': False,
                            'Additional Qty': 0,}
 
 

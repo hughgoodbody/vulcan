@@ -126,7 +126,7 @@ db_schema:
       type: string
   numbers:
     title: Numbers
-    client: search
+    client: full
     server: full
     columns:
     - name: RefPrefix

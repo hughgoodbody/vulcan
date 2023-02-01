@@ -201,6 +201,7 @@ components:
           background: '', bold: false, underline: false}
         name: txtaddThk
         layout_properties: {column: SJNAOT}
+        data_bindings: []
     - type: RepeatingPanel
       properties: {role: null, tooltip: '', border: '', foreground: '', items: null,
         visible: true, spacing_above: large, spacing_below: none, item_template: profiles_exporter_Interactive.AdditionalsRowTemplate,

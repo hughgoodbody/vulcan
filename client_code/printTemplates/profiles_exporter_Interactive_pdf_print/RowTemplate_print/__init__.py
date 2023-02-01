@@ -33,13 +33,6 @@ class RowTemplate_print(RowTemplate_printTemplate):
 
     #Set Material and row colour
     
-    if self.item['Material'] == '' or self.item['Material'] == None:
-      self.background = 'theme:Material Warning'
-      #self.item['Warnings'] = 'No material'
-      self.lblWarnings.text = 'No material'
-      self.lblWarnings.icon = 'fa:exclamation-triangle'
-
-
 
     #Set drill template option
     self.chkDrillTemplate.align = 'center'

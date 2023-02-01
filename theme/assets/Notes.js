@@ -11,7 +11,10 @@
 11. Clear data table at start of background task also
 12 Create new list of just hole tapping data and filename when doing the export
 13. Adjustments (+ / -)
-14. DXF lineweight,  change version to 2000 or newer     
+14. DXF lineweight,  change version to 2000 or newer   
+15. Operations in pdf instead of warnings
+safe filename
+https://stackoverflow.com/questions/7406102/create-sane-safe-filename-from-any-unsafe-string
 
 Two titles for printed PDF's
 Supplier Summary: Lasershape Order Id: 783

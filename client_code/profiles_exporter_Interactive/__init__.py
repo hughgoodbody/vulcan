@@ -85,6 +85,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
           copiedElement['Drill Template'] = False
           copiedElement['Remove'] = False
           copiedElement['Additional Qty'] = 0
+          copiedElement['Variation'] = True
           #Append element to list
           #self.dataFromTable.append(copiedElement)
           self.panel.items.append(copiedElement)
@@ -119,7 +120,8 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       #print(f"Exporting for {s}: {len(supplierSpecificParts)} files")
       #print(supplierSpecificParts) 
       #Create PDF Summary forms, get the id number here and pass to server as argument, allows individual forms to be made
-      anvil.server.call_s('createOutputPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, 'FORM_PDF',s)      
+      
+      anvil.server.call_s('createOutputPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, 'FORM_PDF',s)      
       self.processTask = anvil.server.call('launchProcessProfiles', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, s)
       self.idRef = self.idRef + 1
       #Add task id to list
@@ -133,11 +135,19 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       #print(f"Output List for {s}: {foundItems}") 
       #print(len(foundItems))
     #Create Master PDF Summary - Only if more than one supplier
-    if self.nSup > 1:    
-      self.idRef = str(self.idRefStart) + ' - ' + str(self.idRef)  
-      anvil.server.call_s('createOutputPdf', user_data.userData, self.panel.items, self.prefixRef, self.idRef, 'MASTER_PDF', None)     
+    if self.nSup > 1:   
+      print('Printing a Master List')  
+      self.idRef = self.idRef - 1
+      anvil.server.call_s('createOutputPdf', user_data.userData, self.panel.items, self.prefixRef, self.idRef, self.idRefStart, 'MASTER_PDF', None)     
     
-    #Update order id in table
+    #update order id in table
+    # Fetch a row.      
+    row = app_tables.numbers.get(owner=user_data.userData['User'])
+    # Update method 1
+    row.update(RefNumber=self.idRef)
+    # Update method 2
+    #row['name']="fred"  
+
     pass
 
 

@@ -104,7 +104,7 @@ components:
     - {id: EMERFH, title: Drill Template, data_key: '', $$hashKey: 'object:13434'}
     - {id: SBTZDI, title: Process, data_key: Process, $$hashKey: 'object:13436'}
     - {id: BQHQSP, title: Supplier, data_key: Supplier, $$hashKey: 'object:13438'}
-    - {id: DQQXAI, title: Warnings, data_key: Warnings, $$hashKey: 'object:13440'}
+    - {id: DQQXAI, title: Operations, data_key: Operations, $$hashKey: 'object:13440'}
     - {id: NPOWRL, title: Remove, data_key: Remove, $$hashKey: 'object:13442'}
     auto_header: true
     tooltip: ''
