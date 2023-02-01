@@ -67,9 +67,9 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
   def btnExecute_click(self, **event_args):
     """This method is called when the button is clicked"""
     #print(self.additionalParts)
+    qtyItems = len(self.panel.items)
     for a in self.additionalParts:
-      print(f"a part number:  {a['Part Number'], len(self.additionalParts)}")
-      qtyItems = len(self.panel.items)
+      print(f"a part number:  {a['Part Number'], len(self.additionalParts)}")      
       for i in range(0, qtyItems):
         b = self.panel.items[i]
         print(f"b part number:  {b['Part Name'], len(self.panel.items)}")
@@ -82,11 +82,15 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
           copiedElement['Material'] = a['Material']
           copiedElement['Quantity'] = a['Quantity']          
           #Append element to list
-          self.dataFromTable.append(copiedElement)
+          #self.dataFromTable.append(copiedElement)
+          self.panel.items.append(copiedElement)
     
-    for x in self.dataFromTable:
+    for x in self.panel.items:
       print(x['Part Name'])
-          
+    #Get unique suppliers    
+    uniqueSuppliers = list(set(d['Supplier'] for d in self.panel.items))
+    print(uniqueSuppliers)   
+    print(len(self.panel.items))
     pass
 
 
