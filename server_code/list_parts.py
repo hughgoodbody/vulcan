@@ -129,7 +129,10 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
     #pprint(headerList)
   
   #Remove items excluded from laser Search
-  #api_bom['rows'][:] = [x for x in api_bom['rows'] if x['headerIdToValue'].get(headerDict['Exclude From Laser Search']) == False]
+  try:
+    api_bom['rows'][:] = [x for x in api_bom['rows'] if x['headerIdToValue'].get(headerDict['Exclude From Laser Search']) == False]
+  except:
+    pass
   api_bom['rows'][:] = [x for x in api_bom['rows'] if x['headerIdToValue'].get(headerDict['Exclude from BOM']) == False]
   api_bom['rows'][:] = [x for x in api_bom['rows'] if x['itemSource'].get('isStandardContent') == False]
   #pprint(api_bom['rows'])
@@ -137,7 +140,6 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
   #Go through BOM and get all parts in each discrete document, place each discrete document id in a list for comparison
   docsList = []
   docsDict = {}
-  anvil.server.task_state['message'] = 'Analysing Part Geometry'
   for i in api_bom['rows']:
     docid = i['itemSource']['documentId']
     wvm_type = i['itemSource']['wvmType']
