@@ -66,9 +66,12 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
 
   def btnExecute_click(self, **event_args):
     """This method is called when the button is clicked"""
+    #print(self.additionalParts)
     for a in self.additionalParts:
-      for b in self.dataFromTable:
-        if (a['Part Number'] == b['Part Number'] or a['Part Number'] == b['Part Name']):
+      print(f"a part number:  {a['Part Number'], len(self.additionalParts)}")
+      for b in self.panel.items:
+        print(f"b part number:  {b['Part Name'], len(self.panel.items)}")
+        if a['Part Number'] == b['Part Number'] or a['Part Number'] == b['Part Name']:
           #b['Additional Variations'] = True #Set this in original dictionary so that it will not be tested again
           #Copy element
           copiedElement = b
@@ -78,7 +81,9 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
           copiedElement['Quantity'] = a['Quantity']          
           #Append element to list
           self.dataFromTable.append(copiedElement)
-          print(self.dataFromTable)
+    
+    for x in self.dataFromTable:
+      print(x['Part Name'])
           
     pass
 
