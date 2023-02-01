@@ -119,7 +119,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'Multiplier': profileOptions['Multiplier'],
                            'Remove': False,
                            'Quantity': 0,
-                           'Additional Variations': [],}
+                           'Additional Variations': False,}
 
 
   #Create new headers id dictionary for v5 API

@@ -13,6 +13,8 @@ class AdditionalsRowTemplate(AdditionalsRowTemplateTemplate):
     self.init_components(**properties)
 
     # Any code you write here will run before the form opens.
+    self.drop_down_1.items = self.item['Additional List']
+    self.drop_down_1.selected_value = self.item['Part Number']
     
     
     

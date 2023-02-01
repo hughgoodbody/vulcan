@@ -214,6 +214,7 @@ components:
     bold: false, underline: false, icon: 'fa:magic'}
   name: btnExecute
   layout_properties: {grid_position: 'LEFWFI,MQCZBX'}
+  event_bindings: {click: btnExecute_click}
 - type: Button
   properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
     foreground: '', visible: true, text: Update Table, font_size: null, font: '',
