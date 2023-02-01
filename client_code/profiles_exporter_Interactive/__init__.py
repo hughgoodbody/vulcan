@@ -23,6 +23,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     self.panel = self.repeating_panel_1
     self.panel.items = self.dataFromTable
     self.panel2 = self.repeating_panel_2
+    self.orderId = self.dataFromTable['Order ID']
 
     #Set thumbnail image from the 'thumbnail' field - decode from base64
     self.imgdata = base64.b64decode(self.panel.items[0]['Parent Thumbnail'])    
@@ -85,12 +86,11 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
           #self.dataFromTable.append(copiedElement)
           self.panel.items.append(copiedElement)
     
-    for x in self.panel.items:
-      print(x['Part Name'])
+
     #Get unique suppliers    
     uniqueSuppliers = list(set(d['Supplier'] for d in self.panel.items))
-    print(uniqueSuppliers)   
-    print(len(self.panel.items))
+    #print(uniqueSuppliers)   
+    #print(len(self.panel.items))
     pass
 
 
