@@ -69,7 +69,9 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     #print(self.additionalParts)
     for a in self.additionalParts:
       print(f"a part number:  {a['Part Number'], len(self.additionalParts)}")
-      for b in self.panel.items:
+      qtyItems = len(self.panel.items)
+      for i in range(0, qtyItems):
+        b = self.panel.items[i]
         print(f"b part number:  {b['Part Name'], len(self.panel.items)}")
         if a['Part Number'] == b['Part Number'] or a['Part Number'] == b['Part Name']:
           #b['Additional Variations'] = True #Set this in original dictionary so that it will not be tested again
