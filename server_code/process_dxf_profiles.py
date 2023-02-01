@@ -17,20 +17,27 @@ import anvil.server
 #   return 42
 #
 @anvil.server.callable
-def createOutputPdf(userData, inputList, orderId, type, supplier):
+def createOutputPdf(userData, inputList, prefix, orderId, type, supplier):
   import anvil.pdf
   from anvil.pdf import PDFRenderer
-  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=str(orderId) + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, orderId)
+  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=(prefix + str(orderId)) + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId)
   app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
   return pdf
   pass
 
 
 @anvil.server.callable
-def launchProcessProfiles():
+def launchProcessProfiles(userData, inputData, prefix, refId, supplier):
   pass
 
 
 @anvil.server.background_task
-def processProfiles(userDict, inputData, guiGlobals, refId, supplier):
+def processProfiles(userData, inputData, prefix, refId, supplier):
+  #update order id in table
+  # Fetch a row.
+  row = app_tables.numbers.get(owner=userData['User'])
+  # Update method 1
+  row.update(RefNumber=(refId+1))  
+  # Update method 2
+  #row['name']="fred"  
   pass

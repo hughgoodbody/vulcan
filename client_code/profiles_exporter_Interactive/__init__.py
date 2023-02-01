@@ -33,7 +33,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     #Parent Name and Link
     self.lnkAssemblyLink.url = self.panel.items[0]['Parent URL']
     self.lnkAssemblyLink.text = self.panel.items[0]['Parent Document Name'] + ' / ' + self.panel.items[0]['Parent Element Name']
-    self.lblIdRef.text = self.panel.items[0]['Order ID']
+    self.lblIdRef.text = self.panel.items[0]['Order Prefix'] + str(self.panel.items[0]['Order ID'])
     self.txtReference.text = self.panel.items[0]['Order Reference']
     
 
@@ -108,6 +108,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     self.x = 1
     self.supplierProcessList = []
     self.idRef = self.dataFromTable[0]['Order ID']
+    self.prefixRef = self.dataFromTable[0]['Order Prefix']
     self.idRefStart = self.dataFromTable[0]['Order ID']
     for s in uniqueSuppliers:  
       #print(s)
@@ -118,8 +119,8 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       #print(f"Exporting for {s}: {len(supplierSpecificParts)} files")
       #print(supplierSpecificParts) 
       #Create PDF Summary forms, get the id number here and pass to server as argument, allows individual forms to be made
-      anvil.server.call_s('createOutputPdf', user_data.userData, supplierSpecificParts, self.idRef, 'FORM_PDF',s)      
-      #self.processTask = anvil.server.call('launchProcessProfiles', supplierSpecificParts, self.idRef, s)
+      anvil.server.call_s('createOutputPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, 'FORM_PDF',s)      
+      self.processTask = anvil.server.call('launchProcessProfiles', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, s)
       self.idRef = self.idRef + 1
       #Add task id to list
       #self.supplierProcessList.append(self.processTask.get_id())
@@ -131,9 +132,10 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
         self.x = self.x+1
       #print(f"Output List for {s}: {foundItems}") 
       #print(len(foundItems))
-    #Create Master PDF Summary
-    self.idRef = str(self.idRefStart) + ' - ' + str(self.idRef)  
-    anvil.server.call_s('createOutputPdf', user_data.userData, self.inputList, self.idRef, 'MASTER_PDF', None) 
+    #Create Master PDF Summary - Only if more than one supplier
+    if self.nSup > 1:    
+      self.idRef = str(self.idRefStart) + ' - ' + str(self.idRef)  
+      anvil.server.call_s('createOutputPdf', user_data.userData, self.panel.items, self.prefixRef, self.idRef, 'MASTER_PDF', None)     
     
     #Update order id in table
     pass

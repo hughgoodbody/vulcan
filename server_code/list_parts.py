@@ -333,7 +333,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
   print(f"Qty Suitable Faces Found: {len(facesToProcess)}") 
   print(f"My program took {time.time() - start_time} to run")
   #Clear out existing files from the table
-  usersFiles = app_tables.files.search(owner=currentUser, type='facesList')
+  usersFiles = app_tables.files.search(owner=userData['User'], type='facesList')
   for row in usersFiles:
     row.delete()
   app_tables.transfertable.add_row(data=facesToProcess, type='facesList',owner=userData['User'])

@@ -13,7 +13,7 @@ from .RowTemplate_print import RowTemplate_print
 from datetime import date
 
 class profiles_exporter_Interactive_pdf_print(profiles_exporter_Interactive_pdf_printTemplate):
-  def __init__(self, inputList, orderId, **properties):
+  def __init__(self, inputList, prefix, orderId, **properties):
     self.additionalParts = []
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
@@ -30,7 +30,7 @@ class profiles_exporter_Interactive_pdf_print(profiles_exporter_Interactive_pdf_
     #Parent Name and Link
     self.lnkAssemblyLink.url = self.panel.items[0]['Parent URL']
     self.lnkAssemblyLink.text = self.panel.items[0]['Parent Document Name'] + ' / ' + self.panel.items[0]['Parent Element Name']
-    self.lblIdRef.text = orderId
+    self.lblIdRef.text = prefix + str(orderId)
     self.txtReference.text = self.panel.items[0]['Order Reference']
 
 

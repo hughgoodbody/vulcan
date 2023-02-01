@@ -222,4 +222,7 @@ components:
     bold: false, underline: false, icon: 'fa:refresh'}
   name: btnUpdate
   layout_properties: {grid_position: 'LEFWFI,TGXQQG'}
+- type: Timer
+  properties: {}
+  name: timer_1
 is_package: true
