@@ -72,7 +72,7 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
   import anvil.media
   import shutil
   from tempfile import TemporaryDirectory
-  from .Onshape_api.onshape import Onshape
+  from .onshape_api.onshape import Onshape
 
   ak = userData['Access Key']
   sk = userData['Secret Key']
@@ -80,10 +80,10 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
 
   with TemporaryDirectory(dir = '/tmp') as f:
     for part in inputData:
-      did = part['Document Id']
-      wvm_type = part['Workspace Type']
-      wid = part['Workspace Id']
-      eid = part['Element Id']
+      did = part['Document ID']
+      wvm_type = part['WVM Type']
+      wid = part['WVM ID']
+      eid = part['Element ID']
       faceId = part['Face Info']['Face']
       configId = part['Configuration']
       url = '/api/documents/d/%s/%s/%s/e/%s/export' % (did, wvm_type, wid, eid)
@@ -114,4 +114,51 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
       query = parse_qsl(query)
       path = urlparse(dxfUrl).path
 
+      if part['Process'] == 'Laser':
+        process = 'LAS'
+      elif part['Process'] == 'Waterjet': 
+        process = 'WJ'
+      elif part['Process'] == 'Plasma': 
+        process = 'PLA'
+      elif part['Process'] == 'Oxy Fuel': 
+        process = 'OXY'
+      elif part['Process'] == 'Saw': 
+        process = 'SAW'  
+      elif part['Process'] == 'Manual': 
+        process = 'MAN'    
+
+
+      #Make material name file safe  
+      keepcharacters = ('.','_', '-','%','(', ')')
+      material = "".join(c for c in part['Material'] if c.isalnum() or c in keepcharacters).rstrip()
+      
+      if part['Operations'] == '' or part['Operations'] == None:
+        #Create dxf name  
+        dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + process + '.dxf'
+      else:
+        operations = part['Operations']
+        #Create dxf name  
+        dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + operations + '_' + process + '.dxf'
+
+      
+      #Save file to temp directory
+      method = 'GET'
+      payload = {}
+      params = query     
+      resp = onshape.request(method, path, query=params, body=payload)
+      open(os.path.join(f, dxfName), 'wb').write(resp.content)
+
+      
+
+      #Save the STEP file of a sheet metal part---------------------------------------------------STEP FILE OF FOLDED------------------------------------------------------
+
+      #Get DRAWING of sheet metal folded part and save as PDF to folder---------------------------------------------------DRAWING FILE OF FOLDED------------------------------------------------------
+
+    # Annotate the DXF files     
+    #annotateDxf(userData, f, inputData, prefix, orderId, supplier)
+    makeRef = prefix + str(orderId)
+    zippedFile = shutil.make_archive(makeRef + '_PROFILES_' + supplier, 'zip', f) 
+    mediaZipped = anvil.media.from_file(zippedFile,'zip')
+    app_tables.files.add_row(file=mediaZipped, type='PROFILES', owner=userData['User'], supplier=supplier)  
+  
   pass

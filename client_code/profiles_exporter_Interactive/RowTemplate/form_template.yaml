@@ -24,6 +24,7 @@ components:
   layout_properties: {column: XVOHMG}
   data_bindings:
   - {property: text, code: 'self.item[''Additional Qty'']', writeback: true}
+  event_bindings: {change: txtQtyAdd_change}
 - type: DropDown
   properties: {}
   name: dropHoles

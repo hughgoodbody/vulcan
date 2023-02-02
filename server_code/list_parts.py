@@ -308,12 +308,15 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
 
   #print(partsAndFacesToTest) 
   #Find suitable faces for export          
-  print(f"Qty Parts to Test {len(partsAndFacesToTest)}")
+  #print(f"Qty Parts to Test {len(partsAndFacesToTest)}")
   for body in partsAndFacesToTest:
     faceInfo = geometry_test.findExportFaces(body)
     print(faceInfo)
     if faceInfo != False:
       body['Face Info'] = faceInfo
+      #If no part number, copy the part name to the part number
+      if body['Part Number'] == '' or body['Part Number'] == None:
+        body['Part Number'] = body['Part Name']
       #Copy face info thickness to main dictinary thickness value
       body['Thickness'] = body['Face Info']['Thickness'] 
       #Get thumbnail

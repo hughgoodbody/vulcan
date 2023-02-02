@@ -166,6 +166,13 @@ class RowTemplate(RowTemplateTemplate):
     """This method is called when this checkbox is checked or unchecked"""
     pass
 
+  #Add additional quantity to Quantity in item
+  def txtQtyAdd_change(self, **event_args):
+    """This method is called when the user presses Enter in this text box"""
+    self.item['Quantity'] = self.item['Quantity'] + self.txtQtyAdd.text
+    pass
+
+
 
 
 
