@@ -137,7 +137,7 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
         #Create dxf name  
         dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + process + '.dxf'
       else:
-        operations = part['Operations']
+        operations = ''.join(part['Operations'])
         #Create dxf name  
         dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + operations + '_' + process + '.dxf'
       
