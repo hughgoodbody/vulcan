@@ -58,6 +58,9 @@ db_schema:
     - name: onshape_secret_key_encrypted
       admin_ui: {width: 262}
       type: string
+    - name: materialLibraryUrl
+      admin_ui: {order: 10, width: 200}
+      type: string
   files:
     title: Files
     client: none
