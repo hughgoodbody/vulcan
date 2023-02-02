@@ -28,7 +28,7 @@ def createOutputPdf(userData, inputList, prefix, orderId, orderIdStart, heading,
     fileName = newId
   if supplier is not None:
     fileName =newId + '-' + supplier
-  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading)
+  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading, supplier)
   app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
   return pdf
   pass
@@ -45,7 +45,7 @@ def goodsReceivedPdf(userData, inputList, prefix, orderId, orderIdStart, heading
   else:
     newId = prefix + str(orderIdStart) + '-' + prefix + str(orderId)
     fileName =newId + '-' + supplier + '-' + 'RECEIVED'
-  pdf = PDFRenderer(page_size='A4', landscape=False, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.goods_received_print', inputList, prefix, orderId, heading)
+  pdf = PDFRenderer(page_size='A4', landscape=False, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.goods_received_print', inputList, prefix, orderId, heading, supplier)
   app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
   return pdf
   pass

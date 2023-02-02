@@ -13,7 +13,7 @@ from .RowTemplate_goods_received import RowTemplate_goods_received
 from datetime import date
 
 class goods_received_print(goods_received_printTemplate):
-  def __init__(self, inputList, prefix, orderId, heading, **properties):
+  def __init__(self, inputList, prefix, orderId, heading, supplier, **properties):
     self.additionalParts = []
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
@@ -32,7 +32,7 @@ class goods_received_print(goods_received_printTemplate):
     self.lnkAssemblyLink.text = self.panel.items[0]['Parent Document Name'] + ' / ' + self.panel.items[0]['Parent Element Name']
     self.lblIdRef.text = prefix + str(orderId)
     self.txtReference.text = self.panel.items[0]['Order Reference']
-    self.lblHeading.text = heading
+    self.lblHeading.text = heading + ' - ' + supplier
 
 
     #Get date

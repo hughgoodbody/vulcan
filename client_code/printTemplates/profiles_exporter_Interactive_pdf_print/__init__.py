@@ -13,7 +13,7 @@ from .RowTemplate_print import RowTemplate_print
 from datetime import date
 
 class profiles_exporter_Interactive_pdf_print(profiles_exporter_Interactive_pdf_printTemplate):
-  def __init__(self, inputList, prefix, orderId, heading, **properties):
+  def __init__(self, inputList, prefix, orderId, heading, supplier, **properties):
     self.additionalParts = []
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
