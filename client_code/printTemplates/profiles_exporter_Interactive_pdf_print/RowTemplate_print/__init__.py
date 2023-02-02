@@ -38,6 +38,8 @@ class RowTemplate_print(RowTemplate_printTemplate):
     self.chkDrillTemplate.align = 'center'
     self.chkDrillTemplate.checked = self.item['Drill Template'] 
 
+    #Set readble operations
+
 
 
 
