@@ -271,7 +271,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
           #print(resp)  
 
           #CASE 1 - Composite part Cut List
-          if len(resp['result']['message']['value']) != 0:   #Then we have a cut list
+          if len(resp['result']['message']['value']) != 0 or wvm_type != 'v':   #Then we have a cut list and not a version
             for cutListPart in resp['result']['message']['value']:
               cutListPartInformation = part.copy()
               cutListPartInformation['Composite Part ID'] = cutListPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
@@ -292,7 +292,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                     if body['properties']['material'] is not None:
                       cutListPartInformation['Material'] = body['properties']['material']['name']
                     partsAndFacesToTest.append(cutListPartInformation)
-          else: #No cut list, just a composite part          
+          else: #No cut list, just a composite part, or from a versioned part          
             for childPart in body_details['bodies']:
               childPartInformation = part.copy()
               childPartInformation['Composite Part ID'] = childPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
