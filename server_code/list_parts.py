@@ -225,6 +225,8 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
           part['Faces'] = body_details['bodies'][0]['faces']
           part['Edges'] = body_details['bodies'][0]['edges']
           part['Quantity'] = part['BOM Qty']
+          if body_details['bodies'][0]['properties']['material'] is not None:            
+            part['Material'] = body_details['bodies'][0]['properties']['material']['name']
           partsAndFacesToTest.append(part)
         else: #we have a composite part which is either a simple composite or a cut list
           #Run featurescript code to determine if this is a cutlist
@@ -284,6 +286,8 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                     cutListPartInformation['Faces'] = body['faces']
                     cutListPartInformation['Edges'] = body['edges']
                     cutListPartInformation['Part Name'] = body['properties']['name'] 
+                    if body['properties']['material'] is not None:
+                      cutListPartInformation['Material'] = body['properties']['material']['name']
                     partsAndFacesToTest.append(cutListPartInformation)
           else: #No cut list, just a composite part          
             for childPart in body_details['bodies']:
@@ -295,6 +299,8 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
               if childPartInformation['Composite Part ID'] != childPartInformation['Part ID']: #this means that the composite is not added to the list              
                 childPartInformation['Faces'] = childPart['faces']
                 childPartInformation['Edges'] = childPart['edges']
+                if childPart['properties']['material'] is not None:
+                  childPartInformation['Material'] = childPart['properties']['material']['name']
                 partsAndFacesToTest.append(childPartInformation)
         
   #print(partsAndFacesToTest) 

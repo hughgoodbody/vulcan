@@ -5,6 +5,7 @@ from anvil.tables import app_tables
 import anvil.server
 
 
+
 @anvil.server.callable
 def launchGetMaterials(userData):
   materialTask = getMaterialLibrary(userData)
@@ -24,7 +25,7 @@ def getMaterialLibrary(userData):
 
   try:
     #Get id's from url passed in
-    docUrl = userData['materialLibraryUrl']
+    docUrl = userData['User']['materialLibraryUrl']
     docUrl = urlparse(docUrl).path
     docUrl = docUrl.split('/')
       
@@ -37,12 +38,18 @@ def getMaterialLibrary(userData):
       raise Exception("Material library currently doesn't work with versions, please change URL to point to Workspace") 
   
     #Get materials    
-    url = '/api/v5/materials/libraries/d/%s/%s/%s/elements' % (did, wvm_type, wid) 
+    url = '/api/v5/materials/libraries/d/%s/%s/%s/e/%s' % (did, wvm_type, wid, eid) 
     method = 'GET'  
     payload = {}  
     params = {}
     materials = onshape.request(method, url, query=params, body=payload)
     materials = json.loads(materials.content)
+    materials = materials['materials']
+    #Create a new list of material names
+    matNames=['']
+    for m in materials:
+      matNames.append(m['displayName'])
+      
   except:
     raise Exception("Invalid Material Library URL, Please amend...") 
 
@@ -51,4 +58,5 @@ def getMaterialLibrary(userData):
   usersFiles = app_tables.transfertable.search(owner=userData['User'], type='materials')
   for row in usersFiles:
     row.delete()
-  app_tables.transfertable.add_row(data=materials, type='materials',owner=userData['User'])
+  app_tables.transfertable.add_row(data=matNames, type='materials',owner=userData['User'])
+  

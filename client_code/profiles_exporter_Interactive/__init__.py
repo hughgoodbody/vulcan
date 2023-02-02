@@ -18,12 +18,18 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     #Get face data from table
-    row = app_tables.transfertable.get(owner=user_data.userData['User'])
-    self.dataFromTable = row['data']    
+    row = app_tables.transfertable.get(owner=user_data.userData['User'], type='facesList')
+    materialRow = app_tables.transfertable.get(owner=user_data.userData['User'], type='materials')
+    self.dataFromTable = row['data']   
+    self.materialsList = materialRow['data']
+    user_data.materialLibrary = self.materialsList
     self.panel = self.repeating_panel_1
+    
     self.panel.items = self.dataFromTable
     self.panel2 = self.repeating_panel_2
     self.orderId = self.dataFromTable[0]['Order ID']
+
+    
 
     #Set thumbnail image from the 'thumbnail' field - decode from base64
     self.imgdata = base64.b64decode(self.panel.items[0]['Parent Thumbnail'])    

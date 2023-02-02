@@ -32,12 +32,16 @@ class RowTemplate(RowTemplateTemplate):
     self.image_1.source = mymedia 
 
     #Set Material and row colour
-    self.txtMaterial.text = self.item['Material']
-    if self.txtMaterial.text == '':      
+    self.dropMaterial.items = user_data.materialLibrary 
+    self.dropMaterial.selected_value = self.item['Material']
+    #self.txtMaterial.text = self.item['Material']
+    if self.dropMaterial.selected_value == '' or self.dropMaterial.selected_value == None:      
       self.background = 'theme:Material Warning'
       #self.item['Warnings'] = 'No material'
       self.lblWarnings.text = 'No material'
       self.lblWarnings.icon = 'fa:exclamation-triangle'
+
+
 
     #Create supplier drop down box 
     supplier = self.item['Supplier']      
@@ -89,12 +93,12 @@ class RowTemplate(RowTemplateTemplate):
     self.dropProcess.selected_value = self.dropProcess.items[0]  
     self.item['Process'] = self.dropProcess.selected_value    
     #Set row colours
-    if self.dropProcess.selected_value == 'Waterjet' and self.txtMaterial.text == '':
+    if self.dropProcess.selected_value == 'Waterjet' and self.dropMaterial.selected_value == '':
       self.background = 'theme:Material Warning'
       self.lblWarnings.text = 'No material'
       self.lblWarnings.icon = 'fa:exclamation-triangle'
     else:      
-      if self.txtMaterial.text == '':   
+      if self.dropMaterial.selected_value == '':   
         #print(self.txtMaterial.text)
         self.background = 'theme:Material Warning'
         #self.item['Warnings'] = 'No material'
@@ -113,12 +117,12 @@ class RowTemplate(RowTemplateTemplate):
   def dropProcess_change(self, **event_args):
     """This method is called when an item is selected"""
     #Set row colours
-    if self.dropProcess.selected_value == 'Waterjet' and self.txtMaterial.text == '':
+    if self.dropProcess.selected_value == 'Waterjet' and self.dropMaterial.selected_value == '':
       self.background = 'theme:Material Warning' 
       self.lblWarnings.text = 'No material'
       self.lblWarnings.icon = 'fa:exclamation-triangle'
     else:      
-      if self.txtMaterial.text == None:   
+      if self.dropMaterial.selected_value == None:   
         #print(self.txtMaterial.text)
         self.background = 'theme:Material Warning'
         #self.item['Warnings'] = 'No material'
@@ -136,12 +140,12 @@ class RowTemplate(RowTemplateTemplate):
     """This method is called when the TextBox loses focus"""
     #print(self.txtMaterial.select())
     #Set row colours
-    if self.dropProcess.selected_value == 'Waterjet' and self.txtMaterial.text == '':
+    if self.dropProcess.selected_value == 'Waterjet' and self.dropMaterial.selected_value == '':
       self.background = 'theme:Material Warning'
       self.lblWarnings.text = 'No material'
       self.lblWarnings.icon = 'fa:exclamation-triangle'
     else:      
-      if self.txtMaterial.text == '':   
+      if self.dropMaterial.selected_value == '':   
         #print(self.txtMaterial.text)
         self.background = 'theme:Material Warning'
         #self.item['Warnings'] = 'No material' 

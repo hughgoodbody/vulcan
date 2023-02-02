@@ -8,12 +8,12 @@ components:
   layout_properties: {column: GDKJOS}
   data_bindings:
   - {property: source, code: 'self.item[''Part Thumbnail'']'}
-- type: TextBox
+- type: DropDown
   properties: {}
-  name: txtMaterial
+  name: dropMaterial
   layout_properties: {column: ATMSYC}
   data_bindings:
-  - {property: text, code: 'self.item[''Material'']', writeback: true}
+  - {property: selected_value, code: 'self.item[''Material'']', writeback: true}
   event_bindings: {change: txtMaterial_change}
 - type: TextBox
   properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
