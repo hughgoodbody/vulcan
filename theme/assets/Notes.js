@@ -28,3 +28,5 @@ https://cad.onshape.com/api/materials/libraries/d/81e33fccf396569c09b88d8f/w/713
 
 if a version, skip the featurescript code api call, and get the parts from the constituentBodyIds, invert the list first as usually listed in the last entry
 https://www.w3schools.com/python/ref_list_reverse.asp
+
+DataGrid Borders: https://anvil.works/forum/t/data-grid-visible-internal-borders/6122

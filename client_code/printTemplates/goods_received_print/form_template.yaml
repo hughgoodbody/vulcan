@@ -9,15 +9,15 @@ components:
   layout_properties: {grid_position: 'BZWOYM,XKMSWD'}
 - type: Label
   properties: {role: null, align: left, tooltip: '', border: '', foreground: '', visible: true,
-    text: PAGE HEADING, font_size: 30, font: '', spacing_above: small, icon_align: left,
-    spacing_below: small, italic: false, background: '', bold: true, underline: false,
+    text: GOODS RECEIVED, font_size: 30, font: '', spacing_above: small, icon_align: left,
+    spacing_below: small, italic: true, background: '', bold: true, underline: true,
     icon: ''}
   name: lblHeading
-  layout_properties: {grid_position: 'OLCWRQ,DJDYOX', full_width_row: true}
+  layout_properties: {grid_position: 'YFZCTN,DMPEMC', full_width_row: true}
 - type: Spacer
   properties: {height: 32}
   name: spacer_2
-  layout_properties: {grid_position: 'OKZCCS,GCLIQY'}
+  layout_properties: {grid_position: 'JFZGSJ,LCVHOL'}
 - type: GridPanel
   properties: {}
   name: grid_panel_2
@@ -110,13 +110,10 @@ components:
     - {id: DTJGKS, title: Thickness, data_key: Thickness, $$hashKey: 'object:40977'}
     - {id: ATMSYC, title: Material, data_key: Material, $$hashKey: 'object:13426'}
     - {id: LCRXCG, title: Quantity, data_key: Quantity, $$hashKey: 'object:13428'}
-    - {id: XVOHMG, title: Adjust Qty (+/-), data_key: Additional Qty, $$hashKey: 'object:13430'}
-    - {id: AGNYFH, title: Undersize Holes, data_key: Undersize Holes, $$hashKey: 'object:13432'}
-    - {id: EMERFH, title: Drill Template, data_key: '', $$hashKey: 'object:13434'}
-    - {id: SBTZDI, title: Process, data_key: Process, $$hashKey: 'object:13436'}
-    - {id: BQHQSP, title: Supplier, data_key: Supplier, $$hashKey: 'object:13438'}
-    - {id: DQQXAI, title: Operations, data_key: Operations, $$hashKey: 'object:13440'}
-    - {id: NPOWRL, title: Remove, data_key: Remove, $$hashKey: 'object:13442'}
+    - {id: VFIFDG, title: Delivery 1, data_key: column_1, $$hashKey: 'object:9561'}
+    - {id: GPEIJT, title: Delivery 2, data_key: column_2, $$hashKey: 'object:9563'}
+    - {id: QAUUYQ, title: Delivery 3, data_key: column_3, $$hashKey: 'object:9565'}
+    - {id: ZUEEEX, title: Delivery 4, data_key: column_4, $$hashKey: 'object:9567'}
     auto_header: true
     tooltip: ''
     border: ''
@@ -133,7 +130,7 @@ components:
   components:
   - type: RepeatingPanel
     properties: {role: null, tooltip: '', border: '', foreground: '', items: null,
-      visible: true, spacing_above: none, spacing_below: none, item_template: printTemplates.profiles_exporter_Interactive_pdf_print.RowTemplate_print,
+      visible: true, spacing_above: none, spacing_below: none, item_template: printTemplates.goods_received_print.RowTemplate_goods_received,
       background: ''}
     name: repeating_panel_1
     layout_properties: {}

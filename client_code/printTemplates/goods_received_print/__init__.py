@@ -1,4 +1,4 @@
-from ._anvil_designer import profiles_exporter_Interactive_pdf_printTemplate
+from ._anvil_designer import goods_received_printTemplate
 from anvil import *
 import anvil.server
 import stripe.checkout
@@ -8,19 +8,19 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import base64
 from ... import user_data
-from .RowTemplate_print import RowTemplate_print
+from .RowTemplate_goods_received import RowTemplate_goods_received
 
 from datetime import date
 
-class profiles_exporter_Interactive_pdf_print(profiles_exporter_Interactive_pdf_printTemplate):
+class goods_received_print(goods_received_printTemplate):
   def __init__(self, inputList, prefix, orderId, heading, **properties):
     self.additionalParts = []
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     #Data from input List
     self.panel = self.repeating_panel_1
-    self.panel.items = inputList  
-    
+    self.panel.items = inputList
+
 
     #Set thumbnail image from the 'thumbnail' field - decode from base64
     self.imgdata = base64.b64decode(self.panel.items[0]['Parent Thumbnail'])
@@ -39,6 +39,3 @@ class profiles_exporter_Interactive_pdf_print(profiles_exporter_Interactive_pdf_
     today = date.today()
     # dd/mm/YY
     self.lblDate.text = today.strftime("%d/%m/%Y")
-
-
-

@@ -17,18 +17,38 @@ import anvil.server
 #   return 42
 #
 @anvil.server.callable
-def createOutputPdf(userData, inputList, prefix, orderId, orderIdStart, type, supplier):
+def createOutputPdf(userData, inputList, prefix, orderId, orderIdStart, heading, type, supplier):
   import anvil.pdf
   from anvil.pdf import PDFRenderer
   if orderIdStart == None:
     newId = prefix + str(orderId)
+    fileName = newId
   else:
     newId = prefix + str(orderIdStart) + '-' + prefix + str(orderId)
-  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=newId + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId)
+    fileName = newId
+  if supplier is not None:
+    fileName =newId + '-' + supplier
+  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading)
   app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
   return pdf
   pass
 
+  
+@anvil.server.callable
+def goodsReceivedPdf(userData, inputList, prefix, orderId, orderIdStart, heading, type, supplier):
+  import anvil.pdf
+  from anvil.pdf import PDFRenderer
+  if orderIdStart == None:
+    newId = prefix + str(orderId)
+    fileName = newId
+    fileName =newId + '-' + supplier + '-' + 'RECEIVED'
+  else:
+    newId = prefix + str(orderIdStart) + '-' + prefix + str(orderId)
+    fileName =newId + '-' + supplier + '-' + 'RECEIVED'
+  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.goods_received_print', inputList, prefix, orderId, heading)
+  app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
+  return pdf
+  pass
 
 @anvil.server.callable
 def launchProcessProfiles(userData, inputData, prefix, orderId, supplier):
