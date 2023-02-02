@@ -34,7 +34,7 @@ def getMaterialLibrary(userData):
     wid = docUrl[4]
     eid = docUrl[6]
   
-    if wvm_type == 'v' or wvm_type == 'm':
+    if wvm_type == 'v':
       raise Exception("Material library currently doesn't work with versions, please change URL to point to Workspace") 
   
     #Get materials    
