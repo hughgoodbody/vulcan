@@ -52,10 +52,66 @@ def goodsReceivedPdf(userData, inputList, prefix, orderId, orderIdStart, heading
 
 @anvil.server.callable
 def launchProcessProfiles(userData, inputData, prefix, orderId, supplier):
+  profilesTask = anvil.server.launch_background_task('processProfiles', userData, inputData, prefix, orderId, supplier)
+  return profilesTask
   pass
 
 
 @anvil.server.background_task
 def processProfiles(userData, inputData, prefix, orderId, supplier):
+  import urllib.parse
+  from urllib.parse import urlparse
+  from urllib.parse import parse_qsl
+  from urllib.parse import urlencode
+  import urllib.request
+  import json
+  import requests
+  import math
+  from pprint import pprint
+  import os.path  
+  import anvil.media
+  import shutil
+  from tempfile import TemporaryDirectory
+  from .Onshape_api.onshape import Onshape
+
+  ak = userData['Access Key']
+  sk = userData['Secret Key']
+  onshape = Onshape('https://cad.onshape.com', ak, sk, logging=False) 
+
+  with TemporaryDirectory(dir = '/tmp') as f:
+    for part in inputData:
+      did = part['Document Id']
+      wvm_type = part['Workspace Type']
+      wid = part['Workspace Id']
+      eid = part['Element Id']
+      faceId = part['Face Info']['Face']
+      configId = part['Configuration']
+      url = '/api/documents/d/%s/%s/%s/e/%s/export' % (did, wvm_type, wid, eid)
+      viewString = str(part['Face Info']['ViewMatrix'])
+      viewString = viewString.strip('[')
+      viewString = viewString.strip(']')
+      payload = {
+          'format': 'DXF',
+          'view': viewString, #Convert the list into a string
+          'destinationName': 'Export Flatpattern via API',
+          'version': '2007',
+          'flatten': True,
+          'includeBendCenterlines': False,
+          'includeSketches': False,
+          'sheetMetalFlat': True,
+          'triggerAutoDownload': True,
+          'storeInDocument': False,
+          'configuration': configId,
+          'cloudStorageAccountId': '',
+          'cloudObjectId':"",
+          'partIds': faceId      #THIS IS  A FACEID NOT A PARTID!!!!!!
+      }
+      method = 'POST'
+      params = {}
+      resp = onshape.request(method, url, query=params, body=payload)
+      dxfUrl = resp.json()['href'] #For use with no client
+      query = urlparse(dxfUrl).query
+      query = parse_qsl(query)
+      path = urlparse(dxfUrl).path
 
   pass
