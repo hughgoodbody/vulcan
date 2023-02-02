@@ -25,6 +25,7 @@ Thumbnail view matrix
 
 Materials API call:
 https://cad.onshape.com/api/materials/libraries/d/81e33fccf396569c09b88d8f/w/71306831da3af0636d92f2ed/e/2335880ba0008e0ed01e8a07
+Standard Material Library Doc: https://cad.onshape.com/documents/2718281828459eacfeeda11f/w/97628b48cc974c2681faacfc/e/6bbab304a1f64e7d640a2d7d
 
 if a version, skip the featurescript code api call, and get the parts from the constituentBodyIds, invert the list first as usually listed in the last entry
 https://www.w3schools.com/python/ref_list_reverse.asp
