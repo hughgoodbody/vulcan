@@ -230,6 +230,8 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
           partsAndFacesToTest.append(part)
         else: #we have a composite part which is either a simple composite or a cut list
           #Run featurescript code to determine if this is a cutlist
+          #This can only be done on documents which are not a version, if it is a version, we will have to get the constituent bodies and do it that way. Constituent body id's are listed
+          #in the last element of the bodies list - Perhaps this will change in the future as onshape add frame information to the bodies details?
           did = part['Document ID']
           wvm_type = part['WVM Type']
           wv = part['WVM ID']
