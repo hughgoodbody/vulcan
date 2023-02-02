@@ -164,6 +164,9 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
 
     #annotateDxf(userData, f, inputData, prefix, orderId, supplier, requireTapping, inputList)
     makeRef = prefix + str(orderId)
+
+    #Get the supplier specific summary pdf from table and save to tempfolder, so that can be saved into the zip
+    
     zippedFile = shutil.make_archive(makeRef + '_PROFILES_' + supplier, 'zip', f) 
     mediaZipped = anvil.media.from_file(zippedFile,'zip')
     app_tables.files.add_row(file=mediaZipped, type='PROFILES', owner=userData['User'], supplier=supplier)  
