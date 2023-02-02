@@ -45,7 +45,7 @@ def goodsReceivedPdf(userData, inputList, prefix, orderId, orderIdStart, heading
   else:
     newId = prefix + str(orderIdStart) + '-' + prefix + str(orderId)
     fileName =newId + '-' + supplier + '-' + 'RECEIVED'
-  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.goods_received_print', inputList, prefix, orderId, heading)
+  pdf = PDFRenderer(page_size='A4', landscape=False, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.goods_received_print', inputList, prefix, orderId, heading)
   app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
   return pdf
   pass
