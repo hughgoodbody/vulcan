@@ -20,7 +20,12 @@ startup: {type: form, module: index}
 package_name: Vulcan
 allow_embedding: false
 name: Vulcan
-runtime_options: {version: 2, client_version: '3', server_version: python3-full, server_spec: null}
+runtime_options:
+  version: 2
+  client_version: '3'
+  server_version: python3-sandbox
+  server_spec: {base: python310-standard}
+  server_spec_disabled: {requirements: ezdxf==1.0.0rc2, base: python310-standard}
 startup_form: null
 db_schema:
   users:

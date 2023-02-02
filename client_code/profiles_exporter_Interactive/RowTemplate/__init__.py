@@ -172,6 +172,11 @@ class RowTemplate(RowTemplateTemplate):
     self.item['Quantity'] = self.item['Quantity'] + self.txtQtyAdd.text
     pass
 
+  def dropHoles_change(self, **event_args):
+
+    pass
+
+
 
 
 

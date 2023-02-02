@@ -31,6 +31,7 @@ components:
   layout_properties: {column: AGNYFH}
   data_bindings:
   - {property: selected_value, code: 'self.item[''Undersize Holes'']', writeback: true}
+  event_bindings: {change: dropHoles_change}
 - type: DropDown
   properties: {}
   name: dropProcess

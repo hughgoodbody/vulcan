@@ -74,12 +74,30 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
   def btnExecute_click(self, **event_args):
     """This method is called when the button is clicked"""
     #print(self.additionalParts)
+    
+    #Multiply quantity with the multiplier value
+    multiplier = self.panel.items[0]['Multiplier']
+    for j in self.panel.items:
+      j['Quantity'] = (j['Quantity'] * multiplier) + j['Additional Qty']
+      #Set operations
+      if j['Sheet Metal'] is True:
+        j['Operations'].append('B')
+      if j['Hole Data'] is not None:
+        j['Operations'].append('T')
+      if j['Undersize Holes'] == 'Drill':  
+        j['Operations'].append('D')        
+      if j['Undersize Holes'] == 'Etch' or j['Etch Part Number'] is True or (j['Bend Line Marks'] is True and j['Sheet Metal'] is True):  
+        j['Operations'].append('E')
+        
+    
+    
+    
     qtyItems = len(self.panel.items)
     for a in self.additionalParts:
-      print(f"a part number:  {a['Part Number'], len(self.additionalParts)}")      
+      #print(f"a part number:  {a['Part Number'], len(self.additionalParts)}")      
       for i in range(0, qtyItems):
         b = self.panel.items[i]
-        print(f"b part number:  {b['Part Name'], len(self.panel.items)}")
+        #print(f"b part number:  {b['Part Name'], len(self.panel.items)}")
         if a['Part Number'] == b['Part Number'] or a['Part Number'] == b['Part Name']:
           #b['Additional Variations'] = True #Set this in original dictionary so that it will not be tested again
           #Copy element

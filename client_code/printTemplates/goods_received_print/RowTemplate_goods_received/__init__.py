@@ -18,6 +18,7 @@ class RowTemplate_goods_received(RowTemplate_goods_receivedTemplate):
     # Any code you write here will run before the form opens.
 
 
+
     #Set Part Number or Name
     self.lnkUrl.url = self.item['Part URL']
     if self.item['Part Number'] is None:

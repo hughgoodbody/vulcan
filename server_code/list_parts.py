@@ -107,7 +107,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'Delete': None,
                            'Drill template': None,
                            'Material': None,
-                           'Operations': None,
+                           'Operations': [],
                            'Thickness': None,
                            'Undersize Holes': profileOptions['Hole Options'],
                            'Etch Part Number': profileOptions['Etch Part Number'],
@@ -119,7 +119,9 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'Remove': False,
                            'Quantity': 0,
                            'Variation': False,
-                           'Additional Qty': 0,}
+                           'Additional Qty': 0,
+                           'Hole Data': None,
+                           'DXF Name': None,}
 
 
   #Create new headers id dictionary for v5 API

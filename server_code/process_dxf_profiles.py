@@ -77,6 +77,7 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
   ak = userData['Access Key']
   sk = userData['Secret Key']
   onshape = Onshape('https://cad.onshape.com', ak, sk, logging=False) 
+  requireTapping = []
 
   with TemporaryDirectory(dir = '/tmp') as f:
     for part in inputData:
@@ -139,7 +140,9 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
         operations = part['Operations']
         #Create dxf name  
         dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + operations + '_' + process + '.dxf'
-
+      
+        #Add dxf filename to part information
+      part['DXF Name'] = dxfName
       
       #Save file to temp directory
       method = 'GET'
@@ -147,6 +150,9 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
       params = query     
       resp = onshape.request(method, path, query=params, body=payload)
       open(os.path.join(f, dxfName), 'wb').write(resp.content)
+      #Create list of the files which require hole tapping    
+      if part['Hole Data'] is not None:
+        requireTapping.append({'File Name':dxfName, 'Hole Data': part['Hole Data']})
 
       
 
@@ -154,8 +160,9 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
 
       #Get DRAWING of sheet metal folded part and save as PDF to folder---------------------------------------------------DRAWING FILE OF FOLDED------------------------------------------------------
 
-    # Annotate the DXF files     
-    #annotateDxf(userData, f, inputData, prefix, orderId, supplier)
+    # Annotate the DXF files 
+
+    #annotateDxf(userData, f, inputData, prefix, orderId, supplier, requireTapping, inputList)
     makeRef = prefix + str(orderId)
     zippedFile = shutil.make_archive(makeRef + '_PROFILES_' + supplier, 'zip', f) 
     mediaZipped = anvil.media.from_file(zippedFile,'zip')
