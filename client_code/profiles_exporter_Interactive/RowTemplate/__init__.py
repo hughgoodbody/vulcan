@@ -116,6 +116,7 @@ class RowTemplate(RowTemplateTemplate):
 
   def dropProcess_change(self, **event_args):
     """This method is called when an item is selected"""
+    self.item['Process'] = self.dropProcess.selected_value
     #Set row colours
     if self.dropProcess.selected_value == 'Waterjet' and self.dropMaterial.selected_value == '':
       self.background = 'theme:Material Warning' 

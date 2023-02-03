@@ -8,3 +8,10 @@ profileOptions = {} #created by dxf_options client module
 documentInfo = {} #created by document_info server module called from ConfigurationsPanel - {'URL: url, 'Document Id': did, 'Workspace Type': wvm_type, 'Workspace Id': wid, 'Element Id': eid}
 configurationString = None
 materialLibrary = []
+namingConvention = {'Delimiter':'_',
+                    'field0':'Part Number',
+                    'field1': 'Thickness',
+                    'field2': 'Material',
+                    'field3': 'Quantity',
+                    'field4': 'Operations',
+                    'field5': 'Process'}              

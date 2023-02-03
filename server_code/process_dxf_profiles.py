@@ -73,6 +73,8 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
   import shutil
   from tempfile import TemporaryDirectory
   from .onshape_api.onshape import Onshape
+  from . import user_data
+
 
   ak = userData['Access Key']
   sk = userData['Secret Key']
@@ -132,16 +134,26 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
       #Make material name file safe  
       keepcharacters = ('.','_', '-','%','(', ')')
       material = "".join(c for c in part['Material'] if c.isalnum() or c in keepcharacters).rstrip()
+      part['Material'] = material
+      print(part[user_data.namingConvention['field0']])
+      print(str(part[user_data.namingConvention['field1']]))
+      print((part[user_data.namingConvention['field2']]))
+      print(str(part[user_data.namingConvention['field3']]))
+      print((part[user_data.namingConvention['field4']]))
+      print((part[user_data.namingConvention['field5']]))
       
       if part['Operations'] == '' or part['Operations'] == None:
         #Create dxf name  
-        dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + process + '.dxf'
-      else:
-        operations = ''.join(part['Operations'])
+        #dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + process + '.dxf'
+        dxfName = (part[user_data.namingConvention['field0']] + '_' + str(part[user_data.namingConvention['field1']]) + 'mm' + '_' + part[user_data.namingConvention['field2']] + '_' + str(part[user_data.namingConvention['field3']])
+        + '_' + part[user_data.namingConvention['field5']] + '.dxf')
+      else:  
         #Create dxf name  
-        dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + operations + '_' + process + '.dxf'
-      
-        #Add dxf filename to part information
+        #dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + operations + '_' + process + '.dxf'  
+        dxfName = (part[user_data.namingConvention['field0']] + '_' + str(part[user_data.namingConvention['field1']]) + 'mm' + '_' + part[user_data.namingConvention['field2']] + '_' + str(part[user_data.namingConvention['field3']]) 
+        + '_' + part[user_data.namingConvention['field4']] + '_' + part[user_data.namingConvention['field5']] + '.dxf')
+        
+      #Add dxf filename to part information
       part['DXF Name'] = dxfName
       
       #Save file to temp directory

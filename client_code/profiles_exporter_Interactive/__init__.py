@@ -87,7 +87,23 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       if j['Undersize Holes'] == 'Drill':  
         j['Operations'].append('D')        
       if j['Undersize Holes'] == 'Etch' or j['Etch Part Number'] is True or (j['Bend Line Marks'] is True and j['Sheet Metal'] is True):  
-        j['Operations'].append('E')
+        j['Operations'].append('E')        
+      j['Operations'] = ''.join(j['Operations'])  #Create a string from the list  
+      if j['Process'] == 'Laser':
+        j['Process'] = 'LAS'
+      elif j['Process'] == 'Waterjet':
+        j['Process'] = 'WJ'
+      elif j['Process'] == 'Plasma':
+        j['Process'] = 'PLA'
+      elif j['Process'] == 'Oxy-Fuel':
+        j['Process'] = 'OXY'
+      elif j['Process'] == 'Saw':
+        j['Process'] = 'SAW'
+      elif j['Process'] == 'Manual':
+        j['Process'] = 'MAN' 
+
+        
+        
         
     
     
