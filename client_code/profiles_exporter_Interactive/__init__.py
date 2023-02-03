@@ -40,7 +40,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     self.lnkAssemblyLink.url = self.panel.items[0]['Parent URL']
     self.lnkAssemblyLink.text = self.panel.items[0]['Parent Document Name'] + ' / ' + self.panel.items[0]['Parent Element Name']
     self.lblIdRef.text = self.panel.items[0]['Order Prefix'] + str(self.panel.items[0]['Order ID'])
-    self.txtReference.text = self.panel.items[0]['Order Reference']
+    self.txtReference.text = self.panel.items[0]['Customer Reference']
     
 
     #Get date 
@@ -189,7 +189,12 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     # Update method 1
     row.update(RefNumber=self.idRef)
     # Update method 2
-    #row['name']="fred"  
+    #row['name']="fred" 
+
+  def txtReference_change(self, **event_args):
+    """This method is called when the text is changed"""
+    user_data.profileOptions['Customer Reference'] = self.txtReference.text
+    pass
 
     pass
 

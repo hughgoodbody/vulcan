@@ -20,3 +20,4 @@ class dxf_options(dxf_optionsTemplate):
     self.txtMultiplier.text = 1
 
 
+

@@ -1,6 +1,6 @@
 import anvil.server
 userData = {} #created by user_config server module called from index client module
-'''COntains the following:
+'''Contains the following:
    "User":None,
    "Users Suppliers":[],  All supplier information
    "Access Key":None,
@@ -13,10 +13,26 @@ elements = [] #created by CofigurationsPanel client module
 configOptions = {} #created by CofigurationsPanel client module
 elementType = None #created by CofigurationsPanel client module
 configSelectedParams = {} #created by CofigurationsPanel client module
+
 profileOptions = {} #created by dxf_options client module
+'''
+Contains all from profiles_start:
+      self.profileOptions['Hole Options'] = self.dxfOptions.radRatio.get_group_value()
+      self.profileOptions['Etch Part Number'] = self.dxfOptions.chkEtchPart.checked
+      self.profileOptions['Bend Line Marks'] = self.dxfOptions.chkEtchBend.checked
+      self.profileOptions['Contact Sheet'] = self.dxfOptions.chkContactSheet.checked
+      self.profileOptions['CSV File'] = self.dxfOptions.chkCsvFile.checked
+      self.profileOptions['Supplier'] = self.dxfOptions.dropSupplier.selected_value
+      self.profileOptions['Max Thickness'] = self.dxfOptions.txtThickness.text
+      self.profileOptions['Customer Reference'] = self.dxfOptions.txtRef.text
+      self.profileOptions['Multiplier'] = self.dxfOptions.txtMultiplier.text
+      user_data.profileOptions = self.profileOptions
+
+'''
 documentInfo = {} #created by document_info server module called from ConfigurationsPanel - {'URL: url, 'Document Id': did, 'Workspace Type': wvm_type, 'Workspace Id': wid, 'Element Id': eid}
 configurationString = None
 materialLibrary = []
+
 namingConvention = {'Delimiter':'_',
                     'field0':'Part Number',
                     'field1': 'Thickness',
@@ -50,6 +66,7 @@ foundPartsInformation = {'Parent Document Name': api_bom['bomSource']['document'
                            'Bend Line Marks': profileOptions['Bend Line Marks'],
                            'Contact Sheet': profileOptions['Contact Sheet'],
                            'CSV File': profileOptions['CSV File'],
+                           'Onshape Upload': False,
                            'Max Thickness': profileOptions['Max Thickness'],
                            'Multiplier': profileOptions['Multiplier'],
                            'Remove': False,

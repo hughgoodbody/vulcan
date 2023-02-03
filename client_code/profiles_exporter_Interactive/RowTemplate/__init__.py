@@ -17,7 +17,8 @@ class RowTemplate(RowTemplateTemplate):
 
     # Any code you write here will run before the form opens.
 
-
+    self.item['Customer Reference'] = user_data.profileOptions['Customer Reference']
+    
     #Set Part Number or Name
     self.lnkUrl.url = self.item['Part URL']
     if self.item['Part Number'] is None:

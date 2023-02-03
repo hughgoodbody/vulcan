@@ -78,6 +78,7 @@ components:
     name: txtReference
     layout_properties: {row: JLBKTL, width_xs: 3, col_xs: 9, width: 156.6}
     data_bindings: []
+    event_bindings: {change: txtReference_change}
 - type: GridPanel
   properties: {}
   name: grid_panel_3

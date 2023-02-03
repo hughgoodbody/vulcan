@@ -51,7 +51,7 @@ class profiles_start(profiles_startTemplate):
       self.profileOptions['CSV File'] = self.dxfOptions.chkCsvFile.checked
       self.profileOptions['Supplier'] = self.dxfOptions.dropSupplier.selected_value
       self.profileOptions['Max Thickness'] = self.dxfOptions.txtThickness.text
-      self.profileOptions['Reference'] = self.dxfOptions.txtRef.text
+      self.profileOptions['Customer Reference'] = self.dxfOptions.txtRef.text
       self.profileOptions['Multiplier'] = self.dxfOptions.txtMultiplier.text
       user_data.profileOptions = self.profileOptions
       #print(self.profileOptions)

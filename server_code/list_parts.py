@@ -114,6 +114,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'Bend Line Marks': profileOptions['Bend Line Marks'],
                            'Contact Sheet': profileOptions['Contact Sheet'],
                            'CSV File': profileOptions['CSV File'],
+                           'Onshape Upload': False,
                            'Max Thickness': profileOptions['Max Thickness'],
                            'Multiplier': profileOptions['Multiplier'],
                            'Remove': False,

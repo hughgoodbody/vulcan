@@ -8,8 +8,8 @@ from pathlib import Path
 from ezdxf import bbox
 import shutil
 import tempfile
-from . import BinPacker
-from .BinPacker import binPack
+from . import bin_pack
+from .bin_pack import binPack
 from .functions import detailTapping
 from .functions import dimensionPrincipal
 from .functions import dimensionBoundingBox
@@ -18,6 +18,7 @@ from ezdxf.addons import Importer
 from . import functions
 import math
 from . import user_data
+import anvil.server
 
 #### CHOOSE COLOURS ####
 '''
