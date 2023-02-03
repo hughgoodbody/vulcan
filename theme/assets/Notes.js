@@ -11,8 +11,22 @@
 
 14. DXF lineweight,  change version to 2000 or newer   
 15. Operations in pdf instead of warnings
-safe filename
-https://stackoverflow.com/questions/7406102/create-sane-safe-filename-from-any-unsafe-string
+
+Create PDF - Order Summary
+Create PDF - Supplier Summary
+Create PDF - Goods Received
+Create PDF - DXF COntact Sheet
+
+Supplier Package = Supplier Summary, Profiles, Contact Sheet
+Merge all PDF's
+Download All
+
+Merge PDF's
+https://stackoverflow.com/questions/3444645/merge-pdf-files
+
+DXF to PDF:
+https://stackoverflow.com/questions/58906149/python-converting-dxf-files-to-pdf-or-png-or-jpeg
+
 
 Two titles for printed PDF's
 Supplier Summary: Lasershape Order Id: 783
@@ -27,6 +41,9 @@ Standard Material Library Doc: https://cad.onshape.com/documents/2718281828459ea
 
 if a version, skip the featurescript code api call, and get the parts from the constituentBodyIds, invert the list first as usually listed in the last entry
 https://www.w3schools.com/python/ref_list_reverse.asp
+
+safe filename
+https://stackoverflow.com/questions/7406102/create-sane-safe-filename-from-any-unsafe-string
 
 DataGrid Borders: https://anvil.works/forum/t/data-grid-visible-internal-borders/6122
 Get key for value
