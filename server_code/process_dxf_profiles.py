@@ -169,10 +169,25 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
 
     # Annotate the DXF files 
 
-    #annotateDxf(userData, f, inputData, prefix, orderId, supplier, requireTapping, inputList) #Set all arguments to None, when using to annotate just files not exported with Vulcan
+    #annotateDxf(userData, f, inputData, prefix, orderId, supplier, requireTapping, inputList, supplierData) #Set all arguments to None, when using to annotate just files not exported with Vulcan
     makeRef = prefix + str(orderId)
 
     #Get the supplier specific summary pdf from table and save to tempfolder, so that can be saved into the zip
+    #Save Form PDF to the directory so is included in the zip file
+
+    pdfRow = app_tables.files.get(owner=userData['User'], type='FORM_PDF', supplier=supplier)
+    pdfFile = pdfRow['file']
+    mediaObject = anvil.BlobMedia('.pdf', pdfFile.get_bytes(), name=pdfName)    
+    #print(file.name)
+    with open(os.path.join(folder, pdfName), 'wb+') as destFile:      
+      destFile.write(mediaObject.get_bytes())  
+
+    pdfRow = app_tables.files.get(owner=userData['User'], type='GOODSRECEIVED_PDF', supplier=supplier)
+    pdfFile = pdfRow['file']
+    mediaObject = anvil.BlobMedia('.pdf', pdfFile.get_bytes(), name=pdfName)    
+    #print(file.name)
+    with open(os.path.join(folder, pdfName), 'wb+') as destFile:      
+      destFile.write(mediaObject.get_bytes())   
     
     zippedFile = shutil.make_archive(makeRef + '_PROFILES_' + supplier, 'zip', f) 
     mediaZipped = anvil.media.from_file(zippedFile,'zip')
