@@ -135,17 +135,18 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
       keepcharacters = ('.','_', '-','%','(', ')')
       material = "".join(c for c in part['Material'] if c.isalnum() or c in keepcharacters).rstrip()
       part['Material'] = material
+      delimiter = user_data.namingConvention['Delimiter']
       
       if part['Operations'] == '' or part['Operations'] == None:
         #Create dxf name  
         #dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + process + '.dxf'
-        dxfName = (part[user_data.namingConvention['field0']] + '_' + str(part[user_data.namingConvention['field1']]) + 'mm' + '_' + part[user_data.namingConvention['field2']] + '_' + str(part[user_data.namingConvention['field3']])
-        + '_' + part[user_data.namingConvention['field5']] + '.dxf')
+        dxfName = (part[user_data.namingConvention['field0']] + delimiter + str(part[user_data.namingConvention['field1']]) + 'mm' + delimiter + part[user_data.namingConvention['field2']] + delimiter + str(part[user_data.namingConvention['field3']])
+        + delimiter + part[user_data.namingConvention['field5']] + '.dxf')
       else:  
         #Create dxf name  
         #dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + operations + '_' + process + '.dxf'  
-        dxfName = (part[user_data.namingConvention['field0']] + '_' + str(part[user_data.namingConvention['field1']]) + 'mm' + '_' + part[user_data.namingConvention['field2']] + '_' + str(part[user_data.namingConvention['field3']]) 
-        + '_' + part[user_data.namingConvention['field4']] + '_' + part[user_data.namingConvention['field5']] + '.dxf')
+        dxfName = (part[user_data.namingConvention['field0']] + delimiter + str(part[user_data.namingConvention['field1']]) + 'mm' + delimiter + part[user_data.namingConvention['field2']] + delimiter + str(part[user_data.namingConvention['field3']]) 
+        + delimiter + part[user_data.namingConvention['field4']] + delimiter + part[user_data.namingConvention['field5']] + '.dxf')
         
       #Add dxf filename to part information
       part['DXF Name'] = dxfName
