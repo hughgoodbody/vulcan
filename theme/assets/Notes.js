@@ -1,9 +1,7 @@
-1. Create a goods received form
+
 2. Shims etc, remove operations
 
 4. Supplier bed size
-5. Supplier material for filename
-
 7. Create version
 
 9. Update table
@@ -34,3 +32,7 @@ DataGrid Borders: https://anvil.works/forum/t/data-grid-visible-internal-borders
 Get key for value
 d = {'key1': 'aaa', 'key2': 'aaa', 'key3': 'bbb'}
 keys = [k for k, v in d.items() if v == 'bbb']
+
+DXF Annotator:
+Supplier thickness hole ratio
+Part naming convention
