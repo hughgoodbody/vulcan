@@ -135,12 +135,6 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
       keepcharacters = ('.','_', '-','%','(', ')')
       material = "".join(c for c in part['Material'] if c.isalnum() or c in keepcharacters).rstrip()
       part['Material'] = material
-      print(part[user_data.namingConvention['field0']])
-      print(str(part[user_data.namingConvention['field1']]))
-      print((part[user_data.namingConvention['field2']]))
-      print(str(part[user_data.namingConvention['field3']]))
-      print((part[user_data.namingConvention['field4']]))
-      print((part[user_data.namingConvention['field5']]))
       
       if part['Operations'] == '' or part['Operations'] == None:
         #Create dxf name  

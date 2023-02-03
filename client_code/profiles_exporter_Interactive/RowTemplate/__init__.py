@@ -170,7 +170,7 @@ class RowTemplate(RowTemplateTemplate):
   #Add additional quantity to Quantity in item
   def txtQtyAdd_change(self, **event_args):
     """This method is called when the user presses Enter in this text box"""
-    self.item['Quantity'] = self.item['Quantity'] + self.txtQtyAdd.text
+    self.item['Additional Qty'] = self.txtQtyAdd.text
     pass
 
   def dropHoles_change(self, **event_args):
