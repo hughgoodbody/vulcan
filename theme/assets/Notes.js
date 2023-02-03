@@ -31,3 +31,6 @@ if a version, skip the featurescript code api call, and get the parts from the c
 https://www.w3schools.com/python/ref_list_reverse.asp
 
 DataGrid Borders: https://anvil.works/forum/t/data-grid-visible-internal-borders/6122
+Get key for value
+d = {'key1': 'aaa', 'key2': 'aaa', 'key3': 'bbb'}
+keys = [k for k, v in d.items() if v == 'bbb']
