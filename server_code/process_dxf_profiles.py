@@ -174,7 +174,6 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
 
     #Get the supplier specific summary pdf from table and save to tempfolder, so that can be saved into the zip
     #Save Form PDF to the directory so is included in the zip file
-
     pdfRow = app_tables.files.get(owner=userData['User'], type='FORM_PDF', supplier=supplier)
     pdfFile = pdfRow['file']
     mediaObject = anvil.BlobMedia('.pdf', pdfFile.get_bytes(), name=pdfName)    
