@@ -11,6 +11,12 @@
 
 14. DXF lineweight,  change version to 2000 or newer   
 15. Operations in pdf instead of warnings
+Hole options radio button
+No Configurations Positioning
+Notifications
+
+
+
 
 Create PDF - Order Summary
 Create PDF - Supplier Summary

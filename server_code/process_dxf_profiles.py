@@ -80,6 +80,8 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
   sk = userData['Secret Key']
   onshape = Onshape('https://cad.onshape.com', ak, sk, logging=False) 
   requireTapping = []
+  reference = inputData[0]['Customer Reference'] 
+  numberRef = prefix + str(orderId)
 
   with TemporaryDirectory(dir = '/tmp') as f:
     for part in inputData:
@@ -170,25 +172,44 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
     # Annotate the DXF files 
 
     #annotateDxf(userData, f, inputData, prefix, orderId, supplier, requireTapping, inputList, supplierData) #Set all arguments to None, when using to annotate just files not exported with Vulcan
-    makeRef = prefix + str(orderId)
+    
 
     #Get the supplier specific summary pdf from table and save to tempfolder, so that can be saved into the zip
     #Save Form PDF to the directory so is included in the zip file
+
+    #Save Form PDF to the directory so is included in the zip file
+  
+    if reference is not '':
+      #Make reference name file safe  
+      keepcharacters = ('.','_', '-','%','(', ')')
+      reference = "".join(c for c in reference if c.isalnum() or c in keepcharacters).rstrip()
+      pdfName = numberRef + '_' + reference + '_SUMMARY' + '_' + supplier + ".pdf" 
+    else:
+      pdfName = numberRef + '_SUMMARY' + '_' + supplier + ".pdf"     
     pdfRow = app_tables.files.get(owner=userData['User'], type='FORM_PDF', supplier=supplier)
     pdfFile = pdfRow['file']
     mediaObject = anvil.BlobMedia('.pdf', pdfFile.get_bytes(), name=pdfName)    
     #print(file.name)
-    with open(os.path.join(folder, pdfName), 'wb+') as destFile:      
+    with open(os.path.join(f, pdfName), 'wb+') as destFile:      
       destFile.write(mediaObject.get_bytes())  
-
+  
+    if reference is not '':
+      #Make reference name file safe  
+      keepcharacters = ('.','_', '-','%','(', ')')
+      reference = "".join(c for c in reference if c.isalnum() or c in keepcharacters).rstrip()
+      pdfName = numberRef + '_' + reference + '_RECEIVED' + '_' + supplier + ".pdf" 
+    else:
+      pdfName = numberRef + '_RECEIVED' + '_' + supplier + ".pdf" 
+      
     pdfRow = app_tables.files.get(owner=userData['User'], type='GOODSRECEIVED_PDF', supplier=supplier)
     pdfFile = pdfRow['file']
     mediaObject = anvil.BlobMedia('.pdf', pdfFile.get_bytes(), name=pdfName)    
     #print(file.name)
-    with open(os.path.join(folder, pdfName), 'wb+') as destFile:      
-      destFile.write(mediaObject.get_bytes())   
-    
-    zippedFile = shutil.make_archive(makeRef + '_PROFILES_' + supplier, 'zip', f) 
+    with open(os.path.join(f, pdfName), 'wb+') as destFile:      
+      destFile.write(mediaObject.get_bytes()) 
+          
+    os.chdir('/tmp') #Change directory out of f so we can zip it up  
+    zippedFile = shutil.make_archive(numberRef + '_PROFILES_' + supplier, 'zip', f) 
     mediaZipped = anvil.media.from_file(zippedFile,'zip')
     app_tables.files.add_row(file=mediaZipped, type='PROFILES', owner=userData['User'], supplier=supplier)  
   
