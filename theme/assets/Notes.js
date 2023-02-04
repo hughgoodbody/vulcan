@@ -15,7 +15,18 @@ Hole options radio button
 No Configurations Positioning
 Notifications
 
+Annotate DXF's
+Update the list dictionary info with Drill Holes / Etch Holes information, as depends on circle diameter
+Now create the PDF's
 
+Create a dropdown list to select multiple drawing sheets to upload as sheet metal 2d drawings to the zip file
+Alert window - Upload sheet metal
+
+Save Drawing Border Template as a dxf block in settings. Use this block when creating the contact sheet.
+Use ezDXF drawing exporter add on to create a PDF of the contact sheet.
+
+Bin Pack:
+Make into square, but base on a ratio. Soft code the ratio so is easily changed, start at L/H >=2
 
 
 Create PDF - Order Summary
