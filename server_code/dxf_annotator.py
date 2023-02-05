@@ -31,7 +31,7 @@ tapping_colour = 6
 drill_colour = 5
 
 @anvil.server.callable
-def annotateDxf(userData, folder, inputData, orderId, tappedHoles, supplier, supplierData):
+def annotateDxf(userData, folder, inputData, orderId, tappedHoles, supplier, supplierData, namingConvention):
   xTappingDict = {}
   #List to generate CSV from
   ipLasercsvList = [["NAME", "MATERIAL", "GRADE", "THICKNESS", "GRAIN", "OVERRIDE EXISTING", "QUANTITY", "NOTES", "DWG NOT FOR MANUFACTURE"]]

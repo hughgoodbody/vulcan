@@ -171,7 +171,7 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
 
     # Annotate the DXF files 
 
-    #annotateDxf(userData, f, inputData, prefix, orderId, supplier, requireTapping, inputList, supplierData) #Set all arguments to None, when using to annotate just files not exported with Vulcan
+    #annotateDxf(userData, f, inputData, prefix, orderId, supplier, requireTapping, inputList, supplierData, namingConvention) #Set all arguments to None, when using to annotate just files not exported with Vulcan
     
 
     #Get the supplier specific summary pdf from table and save to tempfolder, so that can be saved into the zip
