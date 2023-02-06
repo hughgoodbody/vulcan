@@ -316,6 +316,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           msp.add_line((cent[0], y1), (cent[0], y2), dxfattribs={'layer': 'Etch'})
           holeEntity.dxf.layer = 'Hole_Drilling'                   #Move hole circle to drilling layer
           holeEntity.dxf.color = drill_colour
+          dictInfo['Operations'].append('D')
     #Etch the holes
     if partInfo['Undersize Holes'] == 'Etch':
       if 'ETCHING REQUIRED' not in drawingNotes:
@@ -332,6 +333,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           msp.add_line((cent[0], y1), (cent[0], y2), dxfattribs={'layer': 'Etch'})
           holeEntity.dxf.layer = 'Dont_Cut'                   #Move hole circle to No Cut layer
           holeEntity.dxf.color = no_cut_colour
+          if 'E' not in dictInfo['Operations']:
+            dictInfo['Operations'].append('E')
 
           
   
@@ -342,6 +345,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     #dimensionBoundingBox(msp, partBoundingBox, text_height)
     textWidth = applyAnnotations()
     finalBoundingBox = bbox.extents(msp)
+    
+    
     #Square up the bounding box to avoid rotations in the contact sheet
     rotScale = 2
     squareBoxMax = [0,0]
@@ -371,7 +376,12 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     #print(f"Bounding box: {finalBoundingBox}")
     binPackList.append({"File": fileName, "Bounding Box": [squareBoxMax, finalBoundingBox.extmin], "Pre Text Box": partBoundingBox})
     #print(f"Bin Pack List: {binPackList}")
+    
     #Save changes to the drawing
+    #Rename the operations field to account for the drilling and etchin of undersize holes
+    operationsField = user_data.namingConvention['field4']         
+    delimiter = user_data.namingConvention['Delimiter']
+    newFileName = fileNameNoSuffix
     dwg.save()
     
   
@@ -440,14 +450,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     
     
     #Create contact sheet
-    #Get template
-     
-    templateRow = app_tables.drawingtemplates.get(size='A3', owner=userData['User'])
-    template = templateRow['template']
-    dxfName = 'A3Template'
-    mediaObject = anvil.BlobMedia('.dxf', template.get_bytes(), name=dxfName)    
     #print(file.name)
-    with open(os.path.join(folder, dxfName), 'wb+') as destFile:      
+    with open(os.path.join(folder, templateName), 'wb+') as destFile:      
       destFile.write(mediaObject.get_bytes())    
     tdoc = ezdxf.new()
     msp = tdoc.modelspace()
@@ -492,8 +496,22 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       msp.add_blockref('blk'+blockName, (xpos,ypos))
       #xc = xc + 300
       #yc = yc + 0 
+    '''
     #Add border
-    msp.add_blockref(dxfName,(0,0))  
+    #Get template     
+    templateRow = app_tables.drawingtemplates.get(size='A3', owner=userData['User'])
+    template = templateRow['template']
+    templateName = 'A3Template'
+    mediaObject = anvil.BlobMedia('.dxf', template.get_bytes(), name=templateName)   
+    #Source document
+    sdoc = ezdxf.readfile(templateName) 
+    #Import source modelspace into block 
+    importer = Importer(sdoc, tdoc)
+    ents = sdoc.modelspace().query('*')      
+    # import source entities into target block
+    importer.import_entities(ents, targetBlock)      
+    msp.add_blockref(templateName,(0,0))
+    '''
     importer.finalize()
     #Add reference detail to the contact sheet
     textHeight = 25     
