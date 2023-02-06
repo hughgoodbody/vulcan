@@ -32,7 +32,7 @@ tapping_colour = 6
 drill_colour = 5
 
 
-def annotateDxf(folder, inputData, prefix, orderId, supplier):
+def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
 
   xTappingDict = {}
   #List to generate CSV from
@@ -397,8 +397,8 @@ def annotateDxf(folder, inputData, prefix, orderId, supplier):
     pdfName = numberRef + '_' + reference + '_SUMMARY' + '_' + supplier + ".pdf" 
   else:
     pdfName = numberRef + '_SUMMARY' + '_' + supplier + ".pdf" 
-  pdfRow = app_tables.files.get(owner=user_data.userData['User'], Type='FORM_PDF', supplier=supplier)
-  pdfFile = pdfRow['File']
+  pdfRow = app_tables.files.get(owner=userData['User'], type='FORM_PDF', supplier=supplier)
+  pdfFile = pdfRow['file']
   mediaObject = anvil.BlobMedia('.pdf', pdfFile.get_bytes(), name=pdfName)    
   #print(file.name)
   with open(os.path.join(folder, pdfName), 'wb+') as destFile:      
@@ -409,8 +409,8 @@ def annotateDxf(folder, inputData, prefix, orderId, supplier):
     pdfName = numberRef + '_' + reference + '_SUMMARY' + '_' + supplier + ".pdf" 
   else:
     pdfName = numberRef + '_SUMMARY' + '_' + supplier + ".pdf" 
-  pdfRow = app_tables.files.get(owner=user_data.userData['User'], Type='GOODSRECEIVED_PDF', supplier=supplier)
-  pdfFile = pdfRow['File']
+  pdfRow = app_tables.files.get(userData['User'], type='GOODSRECEIVED_PDF', supplier=supplier)
+  pdfFile = pdfRow['file']
   mediaObject = anvil.BlobMedia('.pdf', pdfFile.get_bytes(), name=pdfName)    
   #print(file.name)
   with open(os.path.join(folder, pdfName), 'wb+') as destFile:      
