@@ -336,18 +336,19 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           if 'E' not in dictInfo['Operations']:
             dictInfo['Operations'].append('E')
 
-          
+    '''      
     #Rename the operations field to account for the drilling and etchin of undersize holes
     operationsField = user_data.namingConvention['field4']         
     delimiter = user_data.namingConvention['Delimiter']
     parseName = fileNameNoSuffix.split(delimiter)
+    print(parseName)
     if parseName[4] == '':
       newName = parseName[0]+parseName[1]+parseName[2]+parseName[3]+parseName[5]
     else: 
-      newName = parseName[0]+parseName[1]+parseName[2]+parseName[3]+parseName[4]+parseName[5]  
+      newName = parseName[0]+parseName[1]+parseName[2]+parseName[3]+parseName[4]
     #Update the dictionary with the new filename  
     dictInfo['File Name'] = newName
-    
+    '''
     #APPLY THE ANNOTATIONS TO THE DRAWING **************************************************************************************
     #dimensionPrincipal(msp)
     #Get text height for dimension
@@ -384,9 +385,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     
     
     #Save changes to the drawing
-
     dwg.save()    
-    os.rename(fileName, dictInfo['File Name'] + '.dxf')
+    #os.rename(fileName, dictInfo['File Name'] + '.dxf')
     
     #print(f"Bounding box: {finalBoundingBox}")
     binPackList.append({"File": fileName, "Bounding Box": [squareBoxMax, finalBoundingBox.extmin], "Pre Text Box": partBoundingBox})
@@ -459,8 +459,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     
     #Create contact sheet
     #print(file.name)
-    with open(os.path.join(folder, templateName), 'wb+') as destFile:      
-      destFile.write(mediaObject.get_bytes())    
+    #with open(os.path.join(folder, templateName), 'wb+') as destFile:      
+      #destFile.write(mediaObject.get_bytes())    
     tdoc = ezdxf.new()
     msp = tdoc.modelspace()
     #Create contact sheet layers
@@ -542,7 +542,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         fileNameNoSuffix = contactSheetName.strip('.dxf')
         msp = doc.modelspace()
         #msp_properties.set_colors("#eaeaeaff")
-        matplotlib.qsave(doc.modelspace(), fileNameNoSuffix + '.pdf')
+        matplotlib.qsave(doc.modelspace(), fileNameNoSuffix + '.pdf', bg='#FFFFFF00', size_inches=(16.5,11.7))
 
     
     os.chdir('/tmp')   
