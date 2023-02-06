@@ -11,6 +11,7 @@ def userConfig():
   currentUserConfig = {
    "User":None,
    "Users Suppliers":[],
+   "processes": None,
    "Access Key":None,
    "Secret Key":None,
    "Order ID":None,
@@ -25,6 +26,7 @@ def userConfig():
     currentUserConfig['Order ID'] = app_tables.numbers.get(owner=currentUser)['RefNumber']
     currentUserConfig['Order Prefix'] = app_tables.numbers.get(owner=currentUser)['RefPrefix']
     currentUserConfig['Users Suppliers'] = app_tables.suppliers.search(owner=[currentUser])
+    currentUserConfig['Processes'] = app_tables.process.search()
     #currentUserConfig['Users Suppliers'] = [r['supplierName'] for r in app_tables.suppliers.search(owner=[currentUser])]
     
     #Clear out existing files from the table

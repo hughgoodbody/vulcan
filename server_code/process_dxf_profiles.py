@@ -74,6 +74,7 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
   from tempfile import TemporaryDirectory
   from .onshape_api.onshape import Onshape
   from . import user_data
+  from . import dxf_annotator
 
 
   ak = userData['Access Key']
@@ -160,8 +161,8 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
       resp = onshape.request(method, path, query=params, body=payload)
       open(os.path.join(f, dxfName), 'wb').write(resp.content)
       #Create list of the files which require hole tapping    
-      if part['Hole Data'] is not None:
-        requireTapping.append({'File Name':dxfName, 'Hole Data': part['Hole Data']})
+      #if part['Hole Data'] is not None:
+        #requireTapping.append({'File Name':dxfName, 'Hole Data': part['Hole Data']})
 
       
 
@@ -171,7 +172,7 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
 
     # Annotate the DXF files 
 
-    #annotateDxf(userData, f, inputData, prefix, orderId, supplier, requireTapping, inputList, supplierData, namingConvention) #Set all arguments to None, when using to annotate just files not exported with Vulcan
+    dxf_annotator.annotateDxf(f, inputData, prefix, orderId, supplier) #Set all arguments to None, when using to annotate just files not exported with Vulcan
     
 
     #Get the supplier specific summary pdf from table and save to tempfolder, so that can be saved into the zip

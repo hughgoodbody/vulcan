@@ -132,6 +132,9 @@ db_schema:
     - name: process
       admin_ui: {width: 200}
       type: string
+    - name: code
+      admin_ui: {order: 1, width: 200}
+      type: string
   numbers:
     title: Numbers
     client: full

@@ -13,7 +13,6 @@ elements = [] #created by CofigurationsPanel client module
 configOptions = {} #created by CofigurationsPanel client module
 elementType = None #created by CofigurationsPanel client module
 configSelectedParams = {} #created by CofigurationsPanel client module
-
 profileOptions = {} #created by dxf_options client module
 '''
 Contains all from profiles_start:

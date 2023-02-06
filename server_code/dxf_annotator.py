@@ -19,6 +19,7 @@ from . import functions
 import math
 from . import user_data
 import anvil.server
+from anvil.tables import app_tables
 
 #### CHOOSE COLOURS ####
 '''
@@ -30,8 +31,9 @@ no_cut_colour = 1
 tapping_colour = 6
 drill_colour = 5
 
-@anvil.server.callable
-def annotateDxf(userData, folder, inputData, orderId, tappedHoles, supplier, supplierData, namingConvention):
+
+def annotateDxf(folder, inputData, prefix, orderId, supplier):
+
   xTappingDict = {}
   #List to generate CSV from
   ipLasercsvList = [["NAME", "MATERIAL", "GRADE", "THICKNESS", "GRAIN", "OVERRIDE EXISTING", "QUANTITY", "NOTES", "DWG NOT FOR MANUFACTURE"]]
@@ -57,6 +59,7 @@ def annotateDxf(userData, folder, inputData, orderId, tappedHoles, supplier, sup
  
     #Get input data for the selected file, find out if part number is in fileName
     for partInfo in inputData:
+      renameOps = []
       if partInfo['Part Number'] not in fileName:
         continue
   
@@ -113,4 +116,379 @@ def annotateDxf(userData, folder, inputData, orderId, tappedHoles, supplier, sup
       
       dictInfo['Notes'] = drawingNotes
       PARTDATA6 = dictInfo['Operations']  
+      
+    '''------------------------------------------------------------CARRY OUT DXF FILE EXAMINATIONS AND ALTERATIONS--------------------------------------------------------------------------------------------'''
+    #### READ DXF FILE ####
+    dwg = ezdxf.readfile(dxfFile)
+    #print(dwg)
+    msp = dwg.modelspace()
+    #Delete existing text entities if they exist
+    myquery = msp.query('TEXT')
+    #print(myquery)
+    try:
+      for entity in myquery:
+        msp.delete_entity(entity)
+      assert len(msp.query('TEXT')) == 0
+    except:  
+      pass
+  
+    #### CREATE NEW LAYERS ####
+    try:
+        dwg.layers.add(name='Hole_Drilling', color = drill_colour)
+        dwg.layers.add(name='Etch', color = etch_colour)
+        dwg.layers.add(name='Annotations', color = annotations_colour)
+        dwg.layers.add(name='Dont_Cut', color = no_cut_colour)
+        dwg.layers.add(name='Hole_Tapping', color = tapping_colour)
+          
+    except:
+        pass
+    try: 
+        dwg.layers.add(name='Dimensions', color = no_cut_colour) #Seperate try here as likely someones dxf already has a Dimensions layer, dont want to throw exception with other layers
+    except:
+        pass
+    #### GET DRAWING LIMITS ####  
+    extMin = dwg.header['$EXTMIN']
+    extMax = dwg.header['$EXTMAX']
+    
+    #Position the text box 10mm below the bounding box and the scaled text height
+    #If statement required here to differentiate between SWorks and Onshape DXF's. If EXTMAX and EXTMIN are 1e+20, then use
+    #LIMMAX and LIMMIN - because Onshape currently uses fulle extents in $EXTMIN and $EXTMAX
+    #Could amend to Tuple size here, as Onshape has a 2 touple, Solidworks a 3 Tuple
+    if extMin[0] == 1e+20 and extMin[1] == 1e+20:
+        minLimit = dwg.header['$LIMMIN']
+        maxLimit = dwg.header['$LIMMAX']
+        text_point = dwg.header['$LIMMIN']
+        boundingBox = bbox.extents(msp)
+        minLimit = boundingBox.extmin
+        maxLimit = boundingBox.extmax
+        text_point = boundingBox.extmin  
+    else:
+        minLimit = dwg.header['$EXTMIN']
+        maxLimit = dwg.header['$EXTMAX']
+        text_point = dwg.header['$EXTMIN']
+        boundingBox = bbox.extents(msp)
+  
+    text_x = text_point[0]
+    text_y = text_point[1] - 10 - (((maxLimit[1]) - (minLimit[1])) * 0.025)
+        
+    #Get bounding box of part
+    partBoundingBox = bbox.extents(msp)  #Make sure to add on the space the text takes up
+    dictInfo['Bounding Box'] = partBoundingBox
+      
+    #Set text height
+    def set_text_height():
+      #Scale text height at 0.025 the height of the bounding box
+      #If less than 10mm, text height = 10mm
+      text_height = (((maxLimit[1]) - (minLimit[1])) * 0.025)
+      if text_height >= 10:
+        text_height = text_height
+      else:
+          text_height = 10
+      return(text_height)    
+    
+    #Set text properties
+    def set_text_props(xtextLayer, xText):
+      text_height = set_text_height()    
+      xText.dxf.height = text_height
+      xText.dxf.layer = xtextLayer
+      return (text_height)
+      
+    #Define function for applying annotations
+    def applyAnnotations():
+      i = 1 #Multiplier for row spacing
+      #This first section is to allow for the dimension text size
+      text_height = set_text_height()
+      initial_spacing = (text_height + 13)
+      
+      text = msp.add_text(f"PART NUMBER: {dictInfo['PartNumber']}").set_placement((text_x, text_y - initial_spacing))
+      text_height = set_text_props('Annotations', text)
+      spacing = ((text_height + 5) * i) + initial_spacing
+      i = i + 1
+      text = msp.add_text(f"MATERIAL: {dictInfo['Material']}").set_placement((text_x, text_y - spacing))
+      text_height = set_text_props('Annotations', text)
+      spacing = ((text_height + 5) * i) + initial_spacing
+      i = i + 1
+      text = msp.add_text(f"THICKNESS: {dictInfo['Thickness']}").set_placement((text_x, text_y - spacing))
+      text_height = set_text_props('Annotations', text)
+      spacing = ((text_height + 5) * i) + initial_spacing
+      i = i + 1
+      text = msp.add_text(f"QTY: {dictInfo['Qty']}").set_placement((text_x, text_y - spacing))
+      text_height = set_text_props('Annotations', text)
+      spacing = ((text_height + 5) * i) + initial_spacing
+      i = i + 1
+      text = msp.add_text(f"OPERATIONS: {dictInfo['Operations']}").set_placement((text_x, text_y - spacing))
+      text_height = set_text_props('Annotations', text)
+      spacing = ((text_height + 5) * i) + initial_spacing
+      i = i + 1
+      text = msp.add_text(f"PARTDATA6: {dictInfo['Operations']}").set_placement((text_x, text_y - spacing))
+      text_height = set_text_props('Annotations', text)
+      spacing = ((text_height + 5) * i) + initial_spacing
+      i = i + 1
+      text = msp.add_text(f"PARTDATA18: {dictInfo['PARTDATA18']}").set_placement((text_x, text_y - spacing))
+      text_height = set_text_props('Annotations', text)
+      spacing = ((text_height + 5) * i) + initial_spacing
+      i = i + 1
+      text = msp.add_text(f"NOTES: {dictInfo['Notes']}").set_placement((text_x, text_y - spacing))
+      text_height = set_text_props('Annotations', text)
+      spacing = ((text_height + 5) * i) + initial_spacing
+      i = i + 1
+      text = msp.add_text(f"PROCESS: {dictInfo['Process']}").set_placement((text_x, text_y - spacing))
+      text_height = set_text_props('Annotations', text)
+      spacing = ((text_height + 5) * i) + initial_spacing
+      i = i + 1
+      
+      #Get the length of the longest string in the dictionary, this is added to the longest note heading (PART NUMBER) this is passed into the bin packer for correct spacing    
+      tempDict = {'Operations': dictInfo['Operations'], 'Part Number': dictInfo['PartNumber']}
+      strLength = len('PART NUMBER: ') + len(max(tempDict.values(), key=len))    
+      textWidth = strLength * text_height
+      return textWidth
+      
+      
+      
+    #### GET BEND LINES ####   
+    if partInfo['Sheet Metal'] == True: 
+      try:
+        bendLines = msp.query('LINE[(layer=="SHEETMETAL_BEND_LINES_DOWN" | layer=="SHEETMETAL_BEND_LINES_UP")]')
+        blEtchLength = 12
+        for bl in bendLines:
+          #Change bend line colour to no-cut and turn layer off
+          bl.dxf.color = no_cut_colour
+          dwg.layers.get('SHEETMETAL_BEND_LINES_DOWN').off()
+          dwg.layers.get('SHEETMETAL_BEND_LINES_UP').off()
+          if bendLineMarks == True:
+            lenBendLine = math.sqrt(((bl.dxf.end[0] - bl.dxf.start[0])**2) + ((bl.dxf.end[1] - bl.dxf.start[1])**2))
+            startEnd = ((bl.dxf.start[0] + (((bl.dxf.end[0] - bl.dxf.start[0])/lenBendLine) * blEtchLength)), (bl.dxf.start[1] + (((bl.dxf.end[1] - bl.dxf.start[1])/lenBendLine) * blEtchLength)))  
+            endEnd = ((bl.dxf.end[0] - (((bl.dxf.end[0] - bl.dxf.start[0])/lenBendLine) * blEtchLength)), (bl.dxf.end[1] - (((bl.dxf.end[1] - bl.dxf.start[1])/lenBendLine) * blEtchLength)))          
+            msp.add_line((bl.dxf.start), (startEnd), dxfattribs={'layer': 'Etch'})
+            msp.add_line((bl.dxf.end), (endEnd), dxfattribs={'layer': 'Etch'})
+      except:
+          anvil.alert('No compatible sheet metal layer')
+  
+  
+      
+    #### GET THE HOLES ####
+    lstHolesOnDrawing = []  
+    for e in msp:
+      if e.dxftype() == 'CIRCLE':
+          #Create a temp diameter variable and see if exists in list
+          holeDimeter = round((e.dxf.radius * 2),1)
+          ## FIND CENTRE OF CIRCLE ##
+          holeCentre = e.dxf.center
+          #print("Centre Point: ", cent)
+          #print("CIRCLE radius: %s\n" % e.dxf.radius)
+          holeXcoordinate = holeCentre[0]         
+          holeYcoordinate = holeCentre[1]
+          lstHolesOnDrawing.append(e)  #Create a list of the hole entities
+          #detailTapping(e, msp)
+          
+    #Workout hole ratio based on material thickness
+    #Less than 20mm ratio is 60%
+    #20mm is 70%    
+    #25mm or greater is 90%    
+    if int(dictInfo['Thickness']) >= 25:
+      ratio = 0.9
+    elif int(dictInfo['Thickness']) >= 20:
+      ratio = 0.7
+    else:
+      ratio = 0.6    
+    
+      
+    #UNDERSIZE HOLES
+    #Ignore Ratio
+    if partInfo['Undersize Holes'] == 'Ignore':
+      ratio = 0.01  
+    #Drill the holes - still need etch marks though
+    if partInfo['Undersize Holes'] == 'Drill':
+      for holeEntity in lstHolesOnDrawing:
+        if round((holeEntity.dxf.radius*2),1) <= ratio * int(dictInfo['Thickness']):
+          cent = holeEntity.dxf.center
+          x1 = cent[0] - 5
+          x2 = cent[0] + 5
+          y1 = cent[1] - 5
+          y2 = cent[1] + 5
+          ## DRAW ETCH LINES ##
+          msp.add_line((x1, cent[1]), (x2, cent[1]), dxfattribs={'layer': 'Etch'})
+          msp.add_line((cent[0], y1), (cent[0], y2), dxfattribs={'layer': 'Etch'})
+          holeEntity.dxf.layer = 'Hole_Drilling'                   #Move hole circle to drilling layer
+          holeEntity.dxf.color = drill_colour
+    #Etch the holes
+    if partInfo['Undersize Holes'] == 'Etch':
+      if 'ETCHING REQUIRED' not in drawingNotes:
+        drawingNotes.append('ETCHING REQUIRED')
+      for holeEntity in lstHolesOnDrawing:
+        if round((holeEntity.dxf.radius*2),1) <= ratio * int(dictInfo['Thickness']):
+          cent = holeEntity.dxf.center
+          x1 = cent[0] - 5
+          x2 = cent[0] + 5
+          y1 = cent[1] - 5
+          y2 = cent[1] + 5
+          ## DRAW ETCH LINES ##
+          msp.add_line((x1, cent[1]), (x2, cent[1]), dxfattribs={'layer': 'Etch'})
+          msp.add_line((cent[0], y1), (cent[0], y2), dxfattribs={'layer': 'Etch'})
+          holeEntity.dxf.layer = 'Dont_Cut'                   #Move hole circle to No Cut layer
+          holeEntity.dxf.color = no_cut_colour
+
+          
+  
+    #APPLY THE ANNOTATIONS TO THE DRAWING **************************************************************************************
+    #dimensionPrincipal(msp)
+    #Get text height for dimension
+    text_height = set_text_height()
+    #dimensionBoundingBox(msp, partBoundingBox, text_height)
+    textWidth = applyAnnotations()
+    finalBoundingBox = bbox.extents(msp)
+    #print(f"Bounding box: {finalBoundingBox}")
+    binPackList.append({"File": fileName, "Bounding Box": [finalBoundingBox.extmax, finalBoundingBox.extmin], "Pre Text Box": partBoundingBox})
+    #print(f"Bin Pack List: {binPackList}")
+    #Save changes to the drawing
+    dwg.save()
+    
+  
+  
+    #Generate csv list for ipLaser
+    #Generate IP Laser materials and grades  
+    if "AL" in dictInfo['Material'] or "5251" in dictInfo['Material']:
+        ipLasercsvMaterial = "Aluminium"
+        ipLasercsvGrade = 5251
+    elif "316" in dictInfo['Material']:
+        ipLasercsvMaterial = "Stainless Steel"
+        ippLasercsvGrade = 316
+    elif "304" in dictInfo['Material']:
+        ipLasercsvMaterial = "Stainless Steel"
+        ipLasercsvGrade = 304
+    else:
+        ipLasercsvMaterial = "Mild Steel"
+        if int(dictInfo['Thickness']) <= 3:
+            ipLasercsvGrade = "CR4"
+        else:
+            ipLasercsvGrade = "HR"
+  
+  
+    ipLasercsvList.append([dictInfo['File Name'], ipLasercsvMaterial, ipLasercsvGrade, dictInfo['Thickness'], csvGrain, csvOverride, dictInfo['Qty'], dictInfo['Notes'], csvDwgnfm])  
+    othercsvList.append([dictInfo['PartNumber'], dictInfo['Material'], dictInfo['Thickness'], csvGrain, csvOverride, dictInfo['Qty'], dictInfo['Notes'], csvDwgnfm])
+  
+  #Get reference number from data table to build csv and zip file name
+  
+  #If no reference is entered by the user
+  reference = inputData[0]['Customer Reference']
+  
+  numberRef = inputData[0]['Order Prefix'] + str(inputData[0]['Order ID'])  
+  if len(reference) == 0:
+    csvFilename = numberRef + '_DATA' + ".csv"  
+    ipLasercsvFilename = numberRef + "_IPLASER" + '_' + supplier + ".csv"  
+  else:
+    csvFilename = numberRef + '_' + reference + ".csv"  
+    ipLasercsvFilename = numberRef + '_' + reference + "_IPLASER" + '_' + supplier + ".csv"   
+  
+  
+  #Write CSV file
+  if inputData[0]['CSV File'] == True:
+    with open(os.path.join(folder, csvFilename), 'w', newline='') as file:
+      writer = csv.writer(file)
+      writer.writerows(othercsvList)
+  
+    with open(os.path.join(folder, ipLasercsvFilename), 'w', newline='') as file:
+      writer = csv.writer(file)
+      writer.writerows(ipLasercsvList)
+  
+  #Save Summary Form PDF to the directory so is included in the zip file
+     
+  if reference is not '':
+    pdfName = numberRef + '_' + reference + '_SUMMARY' + '_' + supplier + ".pdf" 
+  else:
+    pdfName = numberRef + '_SUMMARY' + '_' + supplier + ".pdf" 
+  pdfRow = app_tables.files.get(owner=user_data.userData['User'], Type='FORM_PDF', supplier=supplier)
+  pdfFile = pdfRow['File']
+  mediaObject = anvil.BlobMedia('.pdf', pdfFile.get_bytes(), name=pdfName)    
+  #print(file.name)
+  with open(os.path.join(folder, pdfName), 'wb+') as destFile:      
+    destFile.write(mediaObject.get_bytes())  
+  
+  #Save Goods Received Form PDF to the directory so is included in the zip file
+  if reference is not '':
+    pdfName = numberRef + '_' + reference + '_SUMMARY' + '_' + supplier + ".pdf" 
+  else:
+    pdfName = numberRef + '_SUMMARY' + '_' + supplier + ".pdf" 
+  pdfRow = app_tables.files.get(owner=user_data.userData['User'], Type='GOODSRECEIVED_PDF', supplier=supplier)
+  pdfFile = pdfRow['File']
+  mediaObject = anvil.BlobMedia('.pdf', pdfFile.get_bytes(), name=pdfName)    
+  #print(file.name)
+  with open(os.path.join(folder, pdfName), 'wb+') as destFile:      
+    destFile.write(mediaObject.get_bytes())    
+  
+    
+  
+  #Create bin packed contact sheet
+  #print(os.listdir(folder))    
+  if inputData[0]['Contact Sheet'] == True: 
+    if reference is not '':
+      contactSheetName = numberRef + '_' + reference + '_CONTACT SHEET' + '_' + supplier + ".dxf" 
+    else:
+      contactSheetName = numberRef + '_CONTACT SHEET' + '_' + supplier + ".dxf" 
+    #print(f"Text Width = {textWidth}")
+    packed, sheetWidth = binPack(binPackList, folder, contactSheetName, False, textWidth)   #Pass in name to save to, boolean save, textWidth comes from return value when annotations are applied 
+    print(f"Packed Items: {packed}")
+    print(f"Sheet Width: {sheetWidth}")
+    
+    
+    #Create contact sheet
+    tdoc = ezdxf.new()
+    msp = tdoc.modelspace()
+    #Create contact sheet layers
+    tdoc.layers.add(name='Dimensions', color = no_cut_colour)
+    tdoc.layers.add(name='Hole_Drilling', color = drill_colour)
+    tdoc.layers.add(name='Etch', color = etch_colour)
+    tdoc.layers.add(name='Annotations', color = annotations_colour)
+    tdoc.layers.add(name='Dont_Cut', color = no_cut_colour)
+    tdoc.layers.add(name='Hole_Tapping', color = tapping_colour)
+    xc = 0
+    yc = 0
+    searchfiles = path.glob('*.dxf')
+    #print(searchfiles)
+    #for eachFile in searchfiles: 
+    os.chdir(folder)
+    for item in binPackList:
+      # Create a block 
+      #blockName = str(os.path.basename(eachFile))    #Remove path      
+      blockName = item['File']
+      
+      #Source document
+      #sdoc = ezdxf.readfile(eachFile)
+      sdoc = ezdxf.readfile(blockName)      
+      targetBlock = tdoc.blocks.new(name='blk'+blockName)
+      #Import source modelspace into block 
+      importer = Importer(sdoc, tdoc)
+      # query all source entities
+      ents = sdoc.modelspace().query('*')      
+      # import source entities into target block
+      importer.import_entities(ents, targetBlock)
+      #importer.import_modelspace(targetBlock)
+      #Get the insert coordinates from the bin packing
+      index = findInList(packed, 'File Name', blockName)
+      xc = packed[index]['Position'][0]
+      yc = packed[index]['Position'][1]
+      xpos = xc - (item['Bounding Box'][1][0])
+      ypos = yc - (item['Bounding Box'][1][1])
+      #Dimensions are added to the block rather than the original file, makes it cleaner for the supplier to deal with
+      #as the information is only relevant on the contact sheet
+      dimensionBoundingBox(targetBlock, item['Pre Text Box'], text_height)
+      msp.add_blockref('blk'+blockName, (xpos,ypos))
+      #xc = xc + 300
+      #yc = yc + 0 
+    importer.finalize()
+    #Add reference detail to the contact sheet
+    textHeight = 25     
+    supplierText = msp.add_text(f"SUPPLIER: {supplier}").set_placement((0, (-textHeight - 20)))
+    supplierText.dxf.height = textHeight
+    supplierText.dxf.layer = 'Annotations'
+    previousText = ('Supplier: ' + supplier)
+    if reference is not '':
+      refText = msp.add_text(f"CUSTOMER REFERENCE: {numberRef + '_' + reference}").set_placement((((len(previousText) * textHeight) + 50), (-textHeight - 20)))  
+    else:
+      refText = msp.add_text(f"CUSTOMER REFERENCE: {numberRef}").set_placement((((len(previousText) * textHeight) + 50), (-textHeight - 20))) 
+      
+    refText.dxf.height = textHeight
+    refText.dxf.layer = 'Annotations'    
+    tdoc.saveas(contactSheetName)
+    os.chdir('/tmp')   
   pass
