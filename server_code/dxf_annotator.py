@@ -391,30 +391,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       writer = csv.writer(file)
       writer.writerows(ipLasercsvList)
   
-  #Save Summary Form PDF to the directory so is included in the zip file
-     
-  if reference is not '':
-    pdfName = numberRef + '_' + reference + '_SUMMARY' + '_' + supplier + ".pdf" 
-  else:
-    pdfName = numberRef + '_SUMMARY' + '_' + supplier + ".pdf" 
-  pdfRow = app_tables.files.get(owner=userData['User'], type='FORM_PDF', supplier=supplier)
-  pdfFile = pdfRow['file']
-  mediaObject = anvil.BlobMedia('.pdf', pdfFile.get_bytes(), name=pdfName)    
-  #print(file.name)
-  with open(os.path.join(folder, pdfName), 'wb+') as destFile:      
-    destFile.write(mediaObject.get_bytes())  
-  
-  #Save Goods Received Form PDF to the directory so is included in the zip file
-  if reference is not '':
-    pdfName = numberRef + '_' + reference + '_SUMMARY' + '_' + supplier + ".pdf" 
-  else:
-    pdfName = numberRef + '_SUMMARY' + '_' + supplier + ".pdf" 
-  pdfRow = app_tables.files.get(userData['User'], type='GOODSRECEIVED_PDF', supplier=supplier)
-  pdfFile = pdfRow['file']
-  mediaObject = anvil.BlobMedia('.pdf', pdfFile.get_bytes(), name=pdfName)    
-  #print(file.name)
-  with open(os.path.join(folder, pdfName), 'wb+') as destFile:      
-    destFile.write(mediaObject.get_bytes())    
+
   
     
   
