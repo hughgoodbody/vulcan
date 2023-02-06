@@ -381,8 +381,14 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     #Rename the operations field to account for the drilling and etchin of undersize holes
     operationsField = user_data.namingConvention['field4']         
     delimiter = user_data.namingConvention['Delimiter']
-    newFileName = fileNameNoSuffix
+    parseName = fileNameNoSuffix.split(delimiter)
+    if parseName[4] == '':
+      newName = parseName[0]+parseName[1]+parseName[2]+parseName[3]+parseName[5]
+    else: 
+      newName = parseName[0]+parseName[1]+parseName[2]+parseName[3]+parseName[4]+parseName[5]
     dwg.save()
+    dictInfo['File Name'] = newName
+    os.rename(fileName, newName+'.dxf')
     
   
   
