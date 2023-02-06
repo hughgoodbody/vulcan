@@ -20,6 +20,11 @@ import math
 from . import user_data
 import anvil.server
 from anvil.tables import app_tables
+import matplotlib.pyplot as plt
+from ezdxf import recover
+from ezdxf.addons.drawing import RenderContext, Frontend
+from ezdxf.addons.drawing.matplotlib import MatplotlibBackend
+from ezdxf.addons.drawing import matplotlib
 
 #### CHOOSE COLOURS ####
 '''
@@ -337,8 +342,34 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     #dimensionBoundingBox(msp, partBoundingBox, text_height)
     textWidth = applyAnnotations()
     finalBoundingBox = bbox.extents(msp)
+    #Square up the bounding box to avoid rotations in the contact sheet
+    rotScale = 2
+    squareBoxMax = [0,0]
+    squareBoxMax[0] = finalBoundingBox.extmax[0] 
+    squareBoxMax[1] = finalBoundingBox.extmax[1] 
+    fbbLength = finalBoundingBox.extmax[0] - finalBoundingBox.extmin[0]
+    fbbHeight = finalBoundingBox.extmax[1] - finalBoundingBox.extmin[1]
+    
+    #X value larger
+    if abs(finalBoundingBox.extmax[0]) > abs(finalBoundingBox.extmax[1]):
+      #Check if negative
+      if finalBoundingBox.extmax[1] < 0:
+        squareBoxMax[1] = -finalBoundingBox.extmax[0]
+      else:
+         squareBoxMax[1] = finalBoundingBox.extmax[0]
+    #Y value larger
+    if abs(finalBoundingBox.extmax[1]) > abs(finalBoundingBox.extmax[0]):
+      #Check if negative
+      if finalBoundingBox.extmax[0] < 0:
+        squareBoxMax[0] = -finalBoundingBox.extmax[1]
+      else:
+         squareBoxMax[0] = finalBoundingBox.extmax[1]    
+        
+      
+    
+      
     #print(f"Bounding box: {finalBoundingBox}")
-    binPackList.append({"File": fileName, "Bounding Box": [finalBoundingBox.extmax, finalBoundingBox.extmin], "Pre Text Box": partBoundingBox})
+    binPackList.append({"File": fileName, "Bounding Box": [squareBoxMax, finalBoundingBox.extmin], "Pre Text Box": partBoundingBox})
     #print(f"Bin Pack List: {binPackList}")
     #Save changes to the drawing
     dwg.save()
@@ -467,5 +498,15 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     refText.dxf.height = textHeight
     refText.dxf.layer = 'Annotations'    
     tdoc.saveas(contactSheetName)
+
+    #Save contact sheet as PDF
+    doc, auditor = recover.readfile(contactSheetName)
+    if not auditor.has_errors:
+        fileNameNoSuffix = contactSheetName.strip('.dxf')
+        msp = doc.modelspace()
+        #msp_properties.set_colors("#eaeaeaff")
+        matplotlib.qsave(doc.modelspace(), fileNameNoSuffix + '.pdf')
+
+    
     os.chdir('/tmp')   
   pass

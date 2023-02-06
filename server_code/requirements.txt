@@ -1,1 +1,2 @@
 ezdxf==1.0.0rc2
+matplotlib==3.7.0rc1
