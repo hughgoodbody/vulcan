@@ -337,7 +337,17 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
             dictInfo['Operations'].append('E')
 
           
-  
+    #Rename the operations field to account for the drilling and etchin of undersize holes
+    operationsField = user_data.namingConvention['field4']         
+    delimiter = user_data.namingConvention['Delimiter']
+    parseName = fileNameNoSuffix.split(delimiter)
+    if parseName[4] == '':
+      newName = parseName[0]+parseName[1]+parseName[2]+parseName[3]+parseName[5]
+    else: 
+      newName = parseName[0]+parseName[1]+parseName[2]+parseName[3]+parseName[4]+parseName[5]  
+    #Update the dictionary with the new filename  
+    dictInfo['File Name'] = newName
+    
     #APPLY THE ANNOTATIONS TO THE DRAWING **************************************************************************************
     #dimensionPrincipal(msp)
     #Get text height for dimension
@@ -370,25 +380,17 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       else:
          squareBoxMax[0] = finalBoundingBox.extmax[1]    
         
-      
+         
     
-      
+    
+    #Save changes to the drawing
+
+    dwg.save()    
+    os.rename(fileName, dictInfo['File Name'] + '.dxf')
+    
     #print(f"Bounding box: {finalBoundingBox}")
     binPackList.append({"File": fileName, "Bounding Box": [squareBoxMax, finalBoundingBox.extmin], "Pre Text Box": partBoundingBox})
     #print(f"Bin Pack List: {binPackList}")
-    
-    #Save changes to the drawing
-    #Rename the operations field to account for the drilling and etchin of undersize holes
-    operationsField = user_data.namingConvention['field4']         
-    delimiter = user_data.namingConvention['Delimiter']
-    parseName = fileNameNoSuffix.split(delimiter)
-    if parseName[4] == '':
-      newName = parseName[0]+parseName[1]+parseName[2]+parseName[3]+parseName[5]
-    else: 
-      newName = parseName[0]+parseName[1]+parseName[2]+parseName[3]+parseName[4]+parseName[5]
-    dwg.save()
-    dictInfo['File Name'] = newName
-    os.rename(fileName, newName+'.dxf')
     
   
   
