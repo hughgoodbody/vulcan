@@ -440,6 +440,15 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     
     
     #Create contact sheet
+    #Get template
+     
+    templateRow = app_tables.drawingtemplates.get(size='A3', owner=userData['User'])
+    template = templateRow['template']
+    dxfName = 'A3Template'
+    mediaObject = anvil.BlobMedia('.dxf', template.get_bytes(), name=dxfName)    
+    #print(file.name)
+    with open(os.path.join(folder, dxfName), 'wb+') as destFile:      
+      destFile.write(mediaObject.get_bytes())    
     tdoc = ezdxf.new()
     msp = tdoc.modelspace()
     #Create contact sheet layers
@@ -483,6 +492,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       msp.add_blockref('blk'+blockName, (xpos,ypos))
       #xc = xc + 300
       #yc = yc + 0 
+    #Add border
+    msp.add_blockref(dxfName,(0,0))  
     importer.finalize()
     #Add reference detail to the contact sheet
     textHeight = 25     

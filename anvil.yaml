@@ -64,7 +64,7 @@ db_schema:
       admin_ui: {width: 262}
       type: string
     - name: materialLibraryUrl
-      admin_ui: {order: 10, width: 200}
+      admin_ui: {width: 200}
       type: string
   files:
     title: Files
@@ -81,14 +81,14 @@ db_schema:
       admin_ui: {width: 200}
       type: string
     - name: owner
-      admin_ui: {width: 200}
+      admin_ui: {width: 265}
       type: link_single
       target: users
     - name: type
       admin_ui: {width: 200}
       type: string
     - name: supplier
-      admin_ui: {order: 5, width: 200}
+      admin_ui: {width: 200}
       type: string
   suppliers:
     title: Suppliers
@@ -133,7 +133,7 @@ db_schema:
       admin_ui: {width: 200}
       type: string
     - name: code
-      admin_ui: {order: 1, width: 200}
+      admin_ui: {width: 200}
       type: string
   numbers:
     title: Numbers
@@ -144,10 +144,10 @@ db_schema:
       admin_ui: {width: 200}
       type: string
     - name: RefNumber
-      admin_ui: {width: 200}
+      admin_ui: {width: 232}
       type: number
     - name: owner
-      admin_ui: {width: 200}
+      admin_ui: {width: 282}
       type: link_single
       target: users
   transfertable:
@@ -155,6 +155,9 @@ db_schema:
     client: search
     server: full
     columns:
+    - name: data
+      admin_ui: {width: 314}
+      type: simpleObject
     - name: type
       admin_ui: {width: 200}
       type: string
@@ -162,26 +165,26 @@ db_schema:
       admin_ui: {width: 200}
       type: link_single
       target: users
-    - name: data
-      admin_ui: {order: 3, width: 200}
-      type: simpleObject
   namingconvention:
+    title: NamingConvention
     client: none
     server: full
     columns: []
-    title: NamingConvention
   drawingtemplates:
+    title: drawingTemplates
     client: none
     server: full
     columns:
     - name: template
-      admin_ui: {order: 0, width: 200}
+      admin_ui: {width: 200}
       type: media
     - name: owner
-      admin_ui: {order: 1, width: 200}
-      type: link_multiple
+      admin_ui: {width: 200}
+      type: link_single
       target: users
-    title: drawingTemplates
+    - name: size
+      admin_ui: {width: 200}
+      type: string
 secrets:
   vc_onshape_encryption_key:
     type: key
