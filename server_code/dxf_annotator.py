@@ -290,15 +290,16 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     for e in msp:
       if e.dxftype() == 'CIRCLE':
           #Create a temp diameter variable and see if exists in list
-          holeDimeter = round((e.dxf.radius * 2),1)
+          holeDiameter = round((e.dxf.radius * 2),1)
           ## FIND CENTRE OF CIRCLE ##
           holeCentre = e.dxf.center
           #print("Centre Point: ", cent)
           #print("CIRCLE radius: %s\n" % e.dxf.radius)
           holeXcoordinate = holeCentre[0]         
           holeYcoordinate = holeCentre[1]
-          lstHolesOnDrawing.append(e)  #Create a list of the hole entities
+          lstHolesOnDrawing.append({'Circle': e, 'X-Coordinate': holeXcoordinate, 'Y-Coordinate': holeYcoordinate, 'Diameter': holeDiameter})  #Create a list of the hole entities
           #detailTapping(e, msp)
+    print(f'Circle Coordinates: {lstHolesOnDrawing}')    
           
     #Workout hole ratio based on material thickness
     #Less than 20mm ratio is 60%
