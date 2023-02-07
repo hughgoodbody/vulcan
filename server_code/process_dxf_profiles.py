@@ -93,6 +93,7 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
       faceId = part['Face Info']['Face']
       configId = part['Configuration']
       url = '/api/documents/d/%s/%s/%s/e/%s/export' % (did, wvm_type, wid, eid)
+      print(part['Face Info']['ViewMatrix'])
       viewString = str(part['Face Info']['ViewMatrix'])
       viewString = viewString.strip('[')
       viewString = viewString.strip(']')

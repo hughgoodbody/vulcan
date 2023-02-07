@@ -230,7 +230,7 @@ def findExportFaces(body):
         viewMatrix[13] = facesList[largestFace0_index]['surface']['origin']['y'] - 0
         viewMatrix[14] = facesList[largestFace0_index]['surface']['origin']['z'] - 0
 
-        #print(f"View Matrix: {viewMatrix}")
+        print(f"View Matrix: {viewMatrix}")
         return viewMatrix
 
 
@@ -263,6 +263,7 @@ def findExportFaces(body):
         longestEdge = getLongestEdge()
         #print("Longest Edge = ", longestEdge)
         viewMatrix = createViewMatrix(longestEdge)
+        print(viewMatrix)
         #Find the longest edge and it's direction vector - Used to set the x axis for the view matrix
         #Take care with a cylinder though, x direction needs to be perpendicular to its cylindrical axis.
         #https://math.stackexchange.com/questions/1502026/creating-a-bounding-box-for-2-points-with-a-custimizable-width

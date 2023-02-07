@@ -186,18 +186,26 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     gridBoxHeight = (sheetSize.sheetSize['Height'] - (2 * sheetSize.sheetSize['Border']) - 20) / (sheetSize.sheetSize['Vertical Boxes']) # 20 here is the sheet title at the foot
     
     if imageHeight > gridBoxHeight/2:
-      scaleFactor = (gridBoxHeight/2) / imageHeight    
+      imageScaleFactor = (gridBoxHeight/2) / imageHeight    
     elif imageWidth > gridBoxWidth:
-      scaleFactor = gridBoxWidth / imageWidth    
+      imageScaleFactor = gridBoxWidth / imageWidth    
     else:
-      scaleFactor = 1
+      imageScaleFactor = 1
       
     dictInfo['Bounding Box'] = partBoundingBox
       
     #Set text height
     def set_text_height():
+      idealFontHeight = 2.6
+      idealFontSpace = 1.3
+      text_height = idealFontHeight * (1/imageScaleFactor)
+      text_spacing = idealFontSpace * (1/imageScaleFactor)
+
+
+      
       #Scale text height at 0.025 the height of the bounding box
       #If less than 10mm, text height = 10mm
+      text_spacing = 5
       text_height = (((maxLimit[1]) - (minLimit[1])) * 0.025)
       if text_height >= 10:
         text_height = text_height
@@ -217,43 +225,43 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       i = 1 #Multiplier for row spacing
       #This first section is to allow for the dimension text size
       text_height = set_text_height()
-      initial_spacing = (text_height + 13)
+      initial_spacing = (text_height + (text_spacing * 3))
       
       text = msp.add_text(f"PART NUMBER: {dictInfo['PartNumber']}").set_placement((text_x, text_y - initial_spacing))
       text_height = set_text_props('Annotations', text)
-      spacing = ((text_height + 5) * i) + initial_spacing
+      spacing = ((text_height + text_spacing) * i) + initial_spacing
       i = i + 1
       text = msp.add_text(f"MATERIAL: {dictInfo['Material']}").set_placement((text_x, text_y - spacing))
       text_height = set_text_props('Annotations', text)
-      spacing = ((text_height + 5) * i) + initial_spacing
+      spacing = ((text_height + text_spacing) * i) + initial_spacing
       i = i + 1
       text = msp.add_text(f"THICKNESS: {dictInfo['Thickness']}").set_placement((text_x, text_y - spacing))
       text_height = set_text_props('Annotations', text)
-      spacing = ((text_height + 5) * i) + initial_spacing
+      spacing = ((text_height + text_spacing) * i) + initial_spacing
       i = i + 1
       text = msp.add_text(f"QTY: {dictInfo['Qty']}").set_placement((text_x, text_y - spacing))
       text_height = set_text_props('Annotations', text)
-      spacing = ((text_height + 5) * i) + initial_spacing
+      spacing = ((text_height + text_spacing) * i) + initial_spacing
       i = i + 1
       text = msp.add_text(f"OPERATIONS: {dictInfo['Operations']}").set_placement((text_x, text_y - spacing))
       text_height = set_text_props('Annotations', text)
-      spacing = ((text_height + 5) * i) + initial_spacing
+      spacing = ((text_height + text_spacing) * i) + initial_spacing
       i = i + 1
       text = msp.add_text(f"PARTDATA6: {dictInfo['Operations']}").set_placement((text_x, text_y - spacing))
       text_height = set_text_props('Annotations', text)
-      spacing = ((text_height + 5) * i) + initial_spacing
+      spacing = ((text_height + text_spacing) * i) + initial_spacing
       i = i + 1
       text = msp.add_text(f"PARTDATA18: {dictInfo['PARTDATA18']}").set_placement((text_x, text_y - spacing))
       text_height = set_text_props('Annotations', text)
-      spacing = ((text_height + 5) * i) + initial_spacing
+      spacing = ((text_height + text_spacing) * i) + initial_spacing
       i = i + 1
       text = msp.add_text(f"NOTES: {dictInfo['Notes']}").set_placement((text_x, text_y - spacing))
       text_height = set_text_props('Annotations', text)
-      spacing = ((text_height + 5) * i) + initial_spacing
+      spacing = ((text_height + text_spacing) * i) + initial_spacing
       i = i + 1
       text = msp.add_text(f"PROCESS: {dictInfo['Process']}").set_placement((text_x, text_y - spacing))
       text_height = set_text_props('Annotations', text)
-      spacing = ((text_height + 5) * i) + initial_spacing
+      spacing = ((text_height + text_spacing) * i) + initial_spacing
       i = i + 1
       
       #Get the length of the longest string in the dictionary, this is added to the longest note heading (PART NUMBER) this is passed into the bin packer for correct spacing    
@@ -404,7 +412,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     #os.rename(fileName, dictInfo['File Name'] + '.dxf')
     
     #print(f"Bounding box: {finalBoundingBox}")
-    binPackList.append({"File": fileName, "Bounding Box": [squareBoxMax, finalBoundingBox.extmin], "Pre Text Box": partBoundingBox})
+    binPackList.append({"File": fileName, "Bounding Box": [squareBoxMax, finalBoundingBox.extmin], "Pre Text Box": partBoundingBox, 'Scale Factor': imageScaleFactor})
     #print(f"Bin Pack List: {binPackList}")
     
   
