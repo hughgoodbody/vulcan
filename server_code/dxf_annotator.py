@@ -514,8 +514,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       #as the information is only relevant on the contact sheet
       dimensionBoundingBox(targetBlock, item['Pre Text Box'], text_height)
       msp.add_blockref('blk'+blockName, (xpos,ypos), dxfattribs={
-        'xscale': item['Scale factor'],
-        'yscale': item['Scale factor'],
+        'xscale': item['Scale Factor'],
+        'yscale': item['Scale Factor'],
     })
       #xc = xc + 300
       #yc = yc + 0 
