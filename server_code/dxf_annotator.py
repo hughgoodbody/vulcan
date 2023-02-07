@@ -200,22 +200,11 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       idealFontSpace = 1.3
       text_height = idealFontHeight * (1/imageScaleFactor)
       text_spacing = idealFontSpace * (1/imageScaleFactor)
-
-
-      
-      #Scale text height at 0.025 the height of the bounding box
-      #If less than 10mm, text height = 10mm
-      text_spacing = 5
-      text_height = (((maxLimit[1]) - (minLimit[1])) * 0.025)
-      if text_height >= 10:
-        text_height = text_height
-      else:
-          text_height = 10
-      return(text_height)    
+      return(text_height, text_spacing)    
     
     #Set text properties
     def set_text_props(xtextLayer, xText):
-      text_height = set_text_height()    
+      text_height, text_spacing = set_text_height()    
       xText.dxf.height = text_height
       xText.dxf.layer = xtextLayer
       return (text_height)
@@ -224,7 +213,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     def applyAnnotations():
       i = 1 #Multiplier for row spacing
       #This first section is to allow for the dimension text size
-      text_height = set_text_height()
+      text_height, text_spacing = set_text_height()
       initial_spacing = (text_height + (text_spacing * 3))
       
       text = msp.add_text(f"PART NUMBER: {dictInfo['PartNumber']}").set_placement((text_x, text_y - initial_spacing))
@@ -375,7 +364,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     #APPLY THE ANNOTATIONS TO THE DRAWING **************************************************************************************
     #dimensionPrincipal(msp)
     #Get text height for dimension
-    text_height = set_text_height()
+    text_height, text_spacing = set_text_height()
     #dimensionBoundingBox(msp, partBoundingBox, text_height)
     textWidth = applyAnnotations()
     finalBoundingBox = bbox.extents(msp)
@@ -524,7 +513,10 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       #Dimensions are added to the block rather than the original file, makes it cleaner for the supplier to deal with
       #as the information is only relevant on the contact sheet
       dimensionBoundingBox(targetBlock, item['Pre Text Box'], text_height)
-      msp.add_blockref('blk'+blockName, (xpos,ypos))
+      msp.add_blockref('blk'+blockName, (xpos,ypos), dxfattribs={
+        'xscale': item['Scale factor'],
+        'yscale': item['Scale factor'],
+    })
       #xc = xc + 300
       #yc = yc + 0 
     '''
