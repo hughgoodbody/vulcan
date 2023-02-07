@@ -1,32 +1,3 @@
-import os
-import pyparsing
-import ezdxf
-import datetime
-import csv
-import sys
-from pathlib import Path
-from ezdxf import bbox
-import shutil
-import tempfile
-from . import bin_pack
-from .bin_pack import binPack
-from .functions import detailTapping
-from .functions import dimensionPrincipal
-from .functions import dimensionBoundingBox
-from .functions import findInList
-from ezdxf.addons import Importer
-from . import functions
-import math
-from . import user_data
-import anvil.server
-from anvil.tables import app_tables
-import matplotlib.pyplot as plt
-from ezdxf import recover
-from ezdxf.addons.drawing import RenderContext, Frontend
-from ezdxf.addons.drawing.matplotlib import MatplotlibBackend
-from ezdxf.addons.drawing import matplotlib
-from . import sheetSize
-
 #### CHOOSE COLOURS ####
 '''
 The colors are assigned as follows: 1 Red, 2 Yellow, 3 Green, 4 Cyan, 5 Blue, 6 Magenta, 7 White/Black.
@@ -39,6 +10,34 @@ drill_colour = 5
 
 
 def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
+  import os
+  import pyparsing
+  import ezdxf
+  import datetime
+  import csv
+  import sys
+  from pathlib import Path
+  from ezdxf import bbox
+  import shutil
+  import tempfile
+  from . import bin_pack
+  from .bin_pack import binPack
+  from .functions import detailTapping
+  from .functions import dimensionPrincipal
+  from .functions import dimensionBoundingBox
+  from .functions import findInList
+  from ezdxf.addons import Importer
+  from . import functions
+  import math
+  from . import user_data
+  import anvil.server
+  from anvil.tables import app_tables
+  import matplotlib.pyplot as plt
+  from ezdxf import recover
+  from ezdxf.addons.drawing import RenderContext, Frontend
+  from ezdxf.addons.drawing.matplotlib import MatplotlibBackend
+  from ezdxf.addons.drawing import matplotlib
+  from . import sheetSize
 
   xTappingDict = {}
   #List to generate CSV from
@@ -401,7 +400,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     #os.rename(fileName, dictInfo['File Name'] + '.dxf')
     
     #print(f"Bounding box: {finalBoundingBox}")
-    binPackList.append({"File": fileName, "Bounding Box": [squareBoxMax, finalBoundingBox.extmin], "Pre Text Box": partBoundingBox, 'Scale Factor': imageScaleFactor})
+    binPackList.append({"File": fileName, "Bounding Box": [squareBoxMax, finalBoundingBox.extmin], "Pre Text Box": partBoundingBox, 'Scale Factor': imageScaleFactor, 'Text Height': text_height})
     #print(f"Bin Pack List: {binPackList}")
     
   
@@ -512,7 +511,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       ypos = yc - (item['Bounding Box'][1][1])
       #Dimensions are added to the block rather than the original file, makes it cleaner for the supplier to deal with
       #as the information is only relevant on the contact sheet
-      dimensionBoundingBox(targetBlock, item['Pre Text Box'], text_height)
+      dimensionBoundingBox(targetBlock, item['Pre Text Box'], item['Text Height'])
       msp.add_blockref('blk'+blockName, (xpos,ypos), dxfattribs={
         'xscale': item['Scale Factor'],
         'yscale': item['Scale Factor'],
@@ -537,17 +536,17 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     '''
     importer.finalize()
     #Add reference detail to the contact sheet
-    textHeight = 25     
-    supplierText = msp.add_text(f"SUPPLIER: {supplier}").set_placement((0, (-textHeight - 20)))
-    supplierText.dxf.height = textHeight
+    titleTextHeight = 25     
+    supplierText = msp.add_text(f"SUPPLIER: {supplier}").set_placement((0, (-titleTextHeight - 20)))
+    supplierText.dxf.height = titleTextHeight
     supplierText.dxf.layer = 'Annotations'
     previousText = ('Supplier: ' + supplier)
     if reference is not '':
-      refText = msp.add_text(f"CUSTOMER REFERENCE: {numberRef + '_' + reference}").set_placement((((len(previousText) * textHeight) + 50), (-textHeight - 20)))  
+      refText = msp.add_text(f"CUSTOMER REFERENCE: {numberRef + '_' + reference}").set_placement((((len(previousText) * titleTextHeight) + 50), (-titleTextHeight - 20)))  
     else:
-      refText = msp.add_text(f"CUSTOMER REFERENCE: {numberRef}").set_placement((((len(previousText) * textHeight) + 50), (-textHeight - 20))) 
+      refText = msp.add_text(f"CUSTOMER REFERENCE: {numberRef}").set_placement((((len(previousText) * titleTextHeight) + 50), (-titleTextHeight - 20))) 
       
-    refText.dxf.height = textHeight
+    refText.dxf.height = titleTextHeight
     refText.dxf.layer = 'Annotations'    
     tdoc.saveas(contactSheetName)
 
