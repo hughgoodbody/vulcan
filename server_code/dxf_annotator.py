@@ -25,6 +25,7 @@ from ezdxf import recover
 from ezdxf.addons.drawing import RenderContext, Frontend
 from ezdxf.addons.drawing.matplotlib import MatplotlibBackend
 from ezdxf.addons.drawing import matplotlib
+from . import sheetSize
 
 #### CHOOSE COLOURS ####
 '''
@@ -178,6 +179,18 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         
     #Get bounding box of part
     partBoundingBox = bbox.extents(msp)  #Make sure to add on the space the text takes up
+    #Get scale factor to fit the image into half of the grid box
+    imageWidth = partBoundingBox.extmax[0] - partBoundingBox.extmin[0]
+    imageHeight = partBoundingBox.extmax[1] - partBoundingBox.extmin[1]
+    gridBoxWidth = (sheetSize.sheetSize['Width'] - (2 * sheetSize.sheetSize['Border'])) / (sheetSize.sheetSize['Horizontal Boxes'])
+    gridBoxHeight = (sheetSize.sheetSize['Height'] - (2 * sheetSize.sheetSize['Border']) - 20) / (sheetSize.sheetSize['Vertical Boxes']) # 20 here is the sheet title at the foot
+    if imageWidth > gridBoxWidth:
+      scaleFactor = gridBoxWidth / imageWidth
+    elif imageHeight > gridBoxHeight:
+      scaleFactor = gridBoxHeight / imageHeight
+    else:
+      scaleFactor = 1
+      
     dictInfo['Bounding Box'] = partBoundingBox
       
     #Set text height
