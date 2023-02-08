@@ -3,5 +3,9 @@ sheetSize = {'Page': 'A3',
              'Height': 277,
              'Border': 5,
              'Horizontal Boxes': 4,
-             'Vertical Boxes': 4 
+             'Vertical Boxes': 4,
+             'Title Text': 12,
+             'Spacing': 3,
+             'Box Width': 120,
+             'Box Height': 80,
 }

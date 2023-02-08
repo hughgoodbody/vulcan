@@ -487,6 +487,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     #print(searchfiles)
     #for eachFile in searchfiles: 
     os.chdir(folder)
+    positionGrid = (sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing'], sheetSize.sheetSize['Border']+sheetSize.sheetSize['Title Text']+sheetSize.sheetSize['Spacing'])
+    
     for item in binPackList:
       # Create a block 
       #blockName = str(os.path.basename(eachFile))    #Remove path      
@@ -507,8 +509,10 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       index = findInList(packed, 'File Name', blockName)
       xc = packed[index]['Position'][0]
       yc = packed[index]['Position'][1]
-      xpos = xc - (item['Bounding Box'][1][0])
-      ypos = yc - (item['Bounding Box'][1][1])
+      #xpos = xc - (item['Bounding Box'][1][0])
+      #ypos = yc - (item['Bounding Box'][1][1])
+      xpos = positionGrid[0] - ((item['Bounding Box'][1][0])) * item['Scale Factor']
+      ypos = positionGrid[1] - ((item['Bounding Box'][1][1])) * item['Scale Factor']
       #Dimensions are added to the block rather than the original file, makes it cleaner for the supplier to deal with
       #as the information is only relevant on the contact sheet
       dimensionBoundingBox(targetBlock, item['Pre Text Box'], item['Text Height'])
@@ -516,6 +520,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         'xscale': item['Scale Factor'],
         'yscale': item['Scale Factor'],
     })
+      positionGrid = (positionGrid[0], positionGrid[1] + sheetSize.sheetSize['Box Height'])
       #xc = xc + 300
       #yc = yc + 0 
     '''
@@ -536,7 +541,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     '''
     importer.finalize()
     #Add reference detail to the contact sheet
-    titleTextHeight = 25     
+    titleTextHeight = sheetSize.sheetSize['Title Text']     
     supplierText = msp.add_text(f"SUPPLIER: {supplier}").set_placement((0, (-titleTextHeight - 20)))
     supplierText.dxf.height = titleTextHeight
     supplierText.dxf.layer = 'Annotations'
