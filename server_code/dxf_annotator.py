@@ -494,7 +494,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     #print(searchfiles)
     #for eachFile in searchfiles: 
     os.chdir(folder)
-    positionGrid = (sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing'], sheetSize.sheetSize['Border']+sheetSize.sheetSize['Title Text']+sheetSize.sheetSize['Spacing'])
+    positionGrid = (sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing'], sheetSize.sheetSize['Border']+sheetSize.sheetSize['Bottom Pad']+(2*sheetSize.sheetSize['Title Text'])+(2*sheetSize.sheetSize['Spacing']))
     
     for item in binPackList:
       # Create a block 
@@ -518,8 +518,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       yc = packed[index]['Position'][1]
       #xpos = xc - (item['Bounding Box'][1][0])
       #ypos = yc - (item['Bounding Box'][1][1])
-      xpos = positionGrid[0] + 12 - ((item['Bounding Box'][1][0])) * item['Scale Factor']
-      ypos = positionGrid[1] + 12 - ((item['Bounding Box'][1][1])) * item['Scale Factor']
+      xpos = positionGrid[0] + sheetSize.sheetSize['Left Pad'] - ((item['Bounding Box'][1][0])) * item['Scale Factor']
+      ypos = positionGrid[1] + sheetSize.sheetSize['Left Pad'] - ((item['Bounding Box'][1][1])) * item['Scale Factor']
       #Dimensions are added to the block rather than the original file, makes it cleaner for the supplier to deal with
       #as the information is only relevant on the contact sheet
       dimensionBoundingBox(targetBlock, item['Pre Text Box'], item['Text Height'])
@@ -554,14 +554,14 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     importer.finalize()
     #Add reference detail to the contact sheet
     titleTextHeight = sheetSize.sheetSize['Title Text']     
-    supplierText = msp.add_text(f"SUPPLIER: {supplier}").set_placement((sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing'] + 12, sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing']+(2*titleTextHeight)))
+    supplierText = msp.add_text(f"SUPPLIER: {supplier}").set_placement((sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing'] + sheetSize.sheetSize['Left Pad'], sheetSize.sheetSize['Border']+sheetSize.sheetSize['Bottom Pad']+(sheetSize.sheetSize['Spacing'])+(titleTextHeight)))
     supplierText.dxf.height = titleTextHeight
     supplierText.dxf.layer = 'Annotations'
     previousText = ('Supplier: ' + supplier)
     if reference is not '':
-      refText = msp.add_text(f"ORDER ID: {numberRef + '_' + reference}").set_placement((((sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing'] + 12), (-titleTextHeight - 20))))  
+      refText = msp.add_text(f"ORDER ID: {numberRef + '_' + reference}").set_placement((((sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing'] + sheetSize.sheetSize['Left Pad']), sheetSize.sheetSize['Border']+sheetSize.sheetSize['Bottom Pad'])))  
     else:
-      refText = msp.add_text(f"ORDER ID: {numberRef}").set_placement((((sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing'] + 12), sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing']))) 
+      refText = msp.add_text(f"ORDER ID: {numberRef}").set_placement((((sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing'] + sheetSize.sheetSize['Left Pad']), sheetSize.sheetSize['Border']+sheetSize.sheetSize['Bottom Pad']))) 
       
     refText.dxf.height = titleTextHeight
     refText.dxf.layer = 'Annotations'    
