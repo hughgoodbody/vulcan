@@ -480,6 +480,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     tdoc.layers.add(name='Annotations', color = annotations_colour)
     tdoc.layers.add(name='Dont_Cut', color = no_cut_colour)
     tdoc.layers.add(name='Hole_Tapping', color = tapping_colour)
+    tdoc.layers.add(name='Border')
     xc = 0
     yc = 0
     searchfiles = path.glob('*.dxf')
@@ -539,7 +540,9 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     ents = sdoc.modelspace().query('*')      
     # import source entities into target block
     importer.import_entities(ents, targetBlock)      
-    msp.add_blockref('blk'+templateName,(0,0))
+    msp.add_blockref('blk'+templateName,(0,0), dxfattribs={
+        'layer': 'Border',
+    })
     #'''
     importer.finalize()
     #Add reference detail to the contact sheet
