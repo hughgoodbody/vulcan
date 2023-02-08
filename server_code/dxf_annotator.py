@@ -2,8 +2,9 @@
 '''
 The colors are assigned as follows: 1 Red, 2 Yellow, 3 Green, 4 Cyan, 5 Blue, 6 Magenta, 7 White/Black.
 '''
+#https://gohtx.com/acadcolors.php
 etch_colour = 3
-annotations_colour = 4
+annotations_colour = 150
 no_cut_colour = 1
 tapping_colour = 6
 drill_colour = 5
@@ -144,13 +145,17 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         dwg.layers.add(name='Annotations', color = annotations_colour)
         dwg.layers.add(name='Dont_Cut', color = no_cut_colour)
         dwg.layers.add(name='Hole_Tapping', color = tapping_colour)
-          
+        dwg.layers.add(name='Profile', color = 0)          
     except:
         pass
     try: 
         dwg.layers.add(name='Dimensions', color = no_cut_colour) #Seperate try here as likely someones dxf already has a Dimensions layer, dont want to throw exception with other layers
     except:
         pass
+
+    #Put all entities onto Profile layer
+    for entity in msp:
+      entity.dxf.layer = "Profile"
     #### GET DRAWING LIMITS ####  
     extMin = dwg.header['$EXTMIN']
     extMax = dwg.header['$EXTMAX']
@@ -481,6 +486,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     tdoc.layers.add(name='Dont_Cut', color = no_cut_colour)
     tdoc.layers.add(name='Hole_Tapping', color = tapping_colour)
     tdoc.layers.add(name='Border')
+    tdoc.layers.add(name='Profile')
+    
     xc = 0
     yc = 0
     searchfiles = path.glob('*.dxf')
@@ -511,15 +518,15 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       yc = packed[index]['Position'][1]
       #xpos = xc - (item['Bounding Box'][1][0])
       #ypos = yc - (item['Bounding Box'][1][1])
-      xpos = positionGrid[0] - ((item['Bounding Box'][1][0])) * item['Scale Factor']
-      ypos = positionGrid[1] - ((item['Bounding Box'][1][1])) * item['Scale Factor']
+      xpos = positionGrid[0] + 12 - ((item['Bounding Box'][1][0])) * item['Scale Factor']
+      ypos = positionGrid[1] + 12 - ((item['Bounding Box'][1][1])) * item['Scale Factor']
       #Dimensions are added to the block rather than the original file, makes it cleaner for the supplier to deal with
       #as the information is only relevant on the contact sheet
       dimensionBoundingBox(targetBlock, item['Pre Text Box'], item['Text Height'])
       msp.add_blockref('blk'+blockName, (xpos,ypos), dxfattribs={
         'xscale': item['Scale Factor'],
         'yscale': item['Scale Factor'],
-    })
+         })
       positionGrid = (positionGrid[0], positionGrid[1] + sheetSize.sheetSize['Box Height'])
       #xc = xc + 300
       #yc = yc + 0 
@@ -541,7 +548,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     # import source entities into target block
     importer.import_entities(ents, targetBlock)      
     msp.add_blockref('blk'+templateName,(0,0), dxfattribs={
-        'layer': 'Border',
+        'color': 0,
     })
     #'''
     importer.finalize()
