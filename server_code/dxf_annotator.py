@@ -533,12 +533,13 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       destFile.write(mediaObject.get_bytes()) 
     #Source document
     sdoc = ezdxf.readfile(templateName) 
+    targetBlock = tdoc.blocks.new(name='blk'+templateName)
     #Import source modelspace into block 
     importer = Importer(sdoc, tdoc)
     ents = sdoc.modelspace().query('*')      
     # import source entities into target block
     importer.import_entities(ents, targetBlock)      
-    msp.add_blockref(templateName,(0,0))
+    msp.add_blockref('blk'+templateName,(0,0))
     #'''
     importer.finalize()
     #Add reference detail to the contact sheet
