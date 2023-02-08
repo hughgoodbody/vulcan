@@ -470,8 +470,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     
     #Create contact sheet
     #print(file.name)
-    #with open(os.path.join(folder, templateName), 'wb+') as destFile:      
-      #destFile.write(mediaObject.get_bytes())    
+       
     tdoc = ezdxf.new()
     msp = tdoc.modelspace()
     #Create contact sheet layers
@@ -523,13 +522,15 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       positionGrid = (positionGrid[0], positionGrid[1] + sheetSize.sheetSize['Box Height'])
       #xc = xc + 300
       #yc = yc + 0 
-    '''
+    #'''
     #Add border
     #Get template     
     templateRow = app_tables.drawingtemplates.get(size='A3', owner=userData['User'])
     template = templateRow['template']
     templateName = 'A3Template'
-    mediaObject = anvil.BlobMedia('.dxf', template.get_bytes(), name=templateName)   
+    mediaObject = anvil.BlobMedia('.dxf', template.get_bytes(), name=templateName)  
+    with open(os.path.join(folder, templateName), 'wb+') as destFile:      
+      destFile.write(mediaObject.get_bytes()) 
     #Source document
     sdoc = ezdxf.readfile(templateName) 
     #Import source modelspace into block 
@@ -538,7 +539,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     # import source entities into target block
     importer.import_entities(ents, targetBlock)      
     msp.add_blockref(templateName,(0,0))
-    '''
+    #'''
     importer.finalize()
     #Add reference detail to the contact sheet
     titleTextHeight = sheetSize.sheetSize['Title Text']     
