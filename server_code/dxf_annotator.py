@@ -554,14 +554,14 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     importer.finalize()
     #Add reference detail to the contact sheet
     titleTextHeight = sheetSize.sheetSize['Title Text']     
-    supplierText = msp.add_text(f"SUPPLIER: {supplier}").set_placement((0, (-titleTextHeight - 20)))
+    supplierText = msp.add_text(f"SUPPLIER: {supplier}").set_placement((sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing'] + 12, sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing']+(2*titleTextHeight)))
     supplierText.dxf.height = titleTextHeight
     supplierText.dxf.layer = 'Annotations'
     previousText = ('Supplier: ' + supplier)
     if reference is not '':
-      refText = msp.add_text(f"CUSTOMER REFERENCE: {numberRef + '_' + reference}").set_placement((((len(previousText) * titleTextHeight) + 50), (-titleTextHeight - 20)))  
+      refText = msp.add_text(f"ORDER ID: {numberRef + '_' + reference}").set_placement((((sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing'] + 12), (-titleTextHeight - 20))))  
     else:
-      refText = msp.add_text(f"CUSTOMER REFERENCE: {numberRef}").set_placement((((len(previousText) * titleTextHeight) + 50), (-titleTextHeight - 20))) 
+      refText = msp.add_text(f"ORDER ID: {numberRef}").set_placement((((sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing'] + 12), sheetSize.sheetSize['Border']+sheetSize.sheetSize['Spacing']))) 
       
     refText.dxf.height = titleTextHeight
     refText.dxf.layer = 'Annotations'    
