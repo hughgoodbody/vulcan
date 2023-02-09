@@ -25,9 +25,9 @@ runtime_options:
   client_version: '3'
   server_version: python3-full
   server_spec: {base: python310-standard}
-  server_spec_disabled: {base: python310-standard, requirements: 'ezdxf==1.0.0rc2
+  server_spec_disabled: {requirements: 'ezdxf==1.0.0rc2
 
-      matplotlib==3.7.0rc1'}
+      matplotlib==3.7.0rc1', base: python310-standard}
 startup_form: null
 db_schema:
   users:
