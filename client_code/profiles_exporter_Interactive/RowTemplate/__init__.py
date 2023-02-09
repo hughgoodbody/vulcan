@@ -99,7 +99,7 @@ class RowTemplate(RowTemplateTemplate):
       self.lblWarnings.text = 'No material'
       self.lblWarnings.icon = 'fa:exclamation-triangle'
     else:      
-      if self.dropMaterial.selected_value == '':   
+      if self.dropMaterial.selected_value == '' or self.dropMaterial.selected_value == None or self.dropMaterial.selected_value == '<Invalid value>':   
         #print(self.txtMaterial.text)
         self.background = 'theme:Material Warning'
         #self.item['Warnings'] = 'No material'
@@ -124,7 +124,7 @@ class RowTemplate(RowTemplateTemplate):
       self.lblWarnings.text = 'No material'
       self.lblWarnings.icon = 'fa:exclamation-triangle'
     else:      
-      if self.dropMaterial.selected_value == None:   
+      if self.dropMaterial.selected_value == '' or self.dropMaterial.selected_value == None or self.dropMaterial.selected_value == '<Invalid value>':   
         #print(self.txtMaterial.text)
         self.background = 'theme:Material Warning'
         #self.item['Warnings'] = 'No material'
@@ -147,7 +147,7 @@ class RowTemplate(RowTemplateTemplate):
       self.lblWarnings.text = 'No material'
       self.lblWarnings.icon = 'fa:exclamation-triangle'
     else:      
-      if self.dropMaterial.selected_value == '':   
+      if self.dropMaterial.selected_value == '' or self.dropMaterial.selected_value == None or self.dropMaterial.selected_value == '<Invalid value>':    
         #print(self.txtMaterial.text)
         self.background = 'theme:Material Warning'
         #self.item['Warnings'] = 'No material' 

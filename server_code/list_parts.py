@@ -208,7 +208,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                                   'BOM Qty': i['headerIdToValue'][headerDict['Quantity']]})  
     if foundPartsInformation['Flat Pattern ID'] != None:
       foundPartsInformation['Sheet Metal'] = True
-    allParts.append(foundPartsInformation)
+    allParts.append(foundPartsInformation.copy()) #https://stackoverflow.com/questions/35906411/list-on-python-appending-always-the-same-value
     
   #Get Bodies
   #print(f'All Parts: {allParts}')
@@ -336,7 +336,8 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       #construct 12 element view matrix from the 16 element one we have, remove the bottom row
       m = body['Face Info']['ViewMatrix']
       #thumbnailMatrix = [str(m[0]), str(m[1]), str(m[2]), str(m[4]), str(m[5]), str(m[6]), str(m[8]), str(m[9]), str(m[10]), str(m[12]), str(m[13]), str(m[14])] # This is column major
-      thumbnailMatrix = [str(m[0]), str(m[4]), str(m[8]), str(m[12]), str(m[1]), str(m[5]), str(m[9]), str(m[13]), str(m[2]), str(m[6]), str(m[10]), str(m[14])] # Use row major rather than column major
+      #thumbnailMatrix = [str(m[0]), str(m[4]), str(m[8]), str(m[12]), str(m[1]), str(m[5]), str(m[9]), str(m[13]), str(m[2]), str(m[6]), str(m[10]), str(m[14])] # Use row major rather than column major
+      thumbnailMatrix = [str(m[0]), str(m[1]), str(m[2]), str(0), str(m[4]), str(m[5]), str(m[6]), str(0), str(m[8]), str(m[9]), str(m[10]), str(0)] # Use row major rather than column major
       thumbnailMatrix = ','.join(thumbnailMatrix) #Convert list to comma seperated string
       #thumbnailMatrix = 'front'
       params = {'viewMatrix':thumbnailMatrix, 'outputHeight':500, 'outputWidth':500, 'pixelSize':0, 'edges':'show', 'useAntiAliasing':False, 'configuration':body['Configuration']}
