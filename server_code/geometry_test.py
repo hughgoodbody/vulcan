@@ -29,7 +29,7 @@ def findExportFaces(body):
     faceInfo = {}   #Create dictionary of export data
     faceInfo['Operations'] = None
     tolerance = 0.0001
-    tolerance2 = 0.0000000001
+    tolerance2 = 0.00000001
     perimeter = 0
     qtyFaces = len(body['Faces'])
     facesList = body['Faces'].copy()
@@ -116,6 +116,7 @@ def findExportFaces(body):
             test_edge = get_face_edges(i)
             bool = (any(elem in largestFace0_Edges  for elem in test_edge)) and (any(elem in largestFace1_Edges  for elem in test_edge))
             if bool == False:
+                print('Face is not adjacent')
                 return False
 
             return True
@@ -136,7 +137,7 @@ def findExportFaces(body):
                     continue
 
                 if facesList[i]['surface']['type'] == 'PLANE':
-                    global test_normal
+                    
                     test_normal = facesList[i]['surface']['normal']
                     i_1 = abs((normal1['x'] * test_normal['x']) + (normal1['y'] * test_normal['y']) + (normal1['z'] * test_normal['z']))
                     i_2 = abs((normal2['x'] * test_normal['x']) + (normal2['y'] * test_normal['y']) + (normal2['z'] * test_normal['z']))
@@ -145,24 +146,44 @@ def findExportFaces(body):
                     #if i_1 != ((1-i_1) <= tolerance) and ((1-i_2) <= tolerance) != 0:
                     if abs(i_1 - 1) <= tolerance2 and abs(i_1 - 1) <= tolerance2:
                         #Faces are NOT perpendicular
-                        #print('Planes are not Perpendicular')
+                        print('Planes are not Perpendicular')
                         return False
+
+                elif facesList[i]['surface']['type'] == 'CYLINDER':
+                    
+                    test_normal = {'x': facesList[i]['surface']['axis']['x'], 'y': facesList[i]['surface']['axis']['y'], 'z': facesList[i]['surface']['axis']['z']}
+                    i_1 = abs((normal1['x'] * test_normal['x']) + (normal1['y'] * test_normal['y']) + (normal1['z'] * test_normal['z']))
+                    i_2 = abs((normal2['x'] * test_normal['x']) + (normal2['y'] * test_normal['y']) + (normal2['z'] * test_normal['z']))
+                    #print(f"Perpendicularity Planar Logging: i_1 = {i_1},  i_2 = {i_2}")
+                    #Dot product should be = 0
+                    #if i_1 != ((1-i_1) <= tolerance) and ((1-i_2) <= tolerance) != 0:
+                    print(abs(i_1 - 1))
+                    if abs(i_1 - 1) >= tolerance2 and abs(i_1 - 1) >= tolerance2:
+                        #Faces are NOT perpendicular
+                        print('Cylinders are not Perpendicular')
+                        return False      
 
                 else:
-                    try:
-                        test_normal = facesList[i]['surface']['axis']
-                        #Axis needs to be parallel to main surfaces, ie dot product = 1
-
-                        i_1 = abs((normal1['x'] * test_normal ['x']) + (normal1['y'] * test_normal['y']) + (normal1['z'] * test_normal['z']))
-                        i_2 = abs((normal2['x'] * test_normal['x']) + (normal2['y'] * test_normal['y']) + (normal2['z'] * test_normal['z']))
-                        #print(f"Perpendicularity Axis Logging: i_1 = {i_1},  i_2 = {i_2}")
-                        #if i_1 != 1 and i_2 != 1:
-                        if abs(i_1 - 1) >= tolerance2 and abs(i_1 - 1) >= tolerance2:
-                            #Axis not parallel to surface normals
-                            #print('Axis is not perpendicular')
-                            return False
-                    except:
+                  #test_normal = {'x': facesList[i]['surface']['direction']['x'], 'y': facesList[i]['surface']['direction']['y'], 'z': facesList[i]['surface']['direction']['z']}
+                  #print(test_normal)
+                  try:
+                    #test_normal = facesList[i]['surface']['axis']
+                    test_normal = {'x': facesList[i]['surface']['direction']['x'], 'y': facesList[i]['surface']['direction']['y'], 'z': facesList[i]['surface']['direction']['z']}
+                    print(test_normal)
+                  
+                    #Axis needs to be parallel to main surfaces, ie dot product = 1
+  
+                    i_1 = abs((normal1['x'] * test_normal ['x']) + (normal1['y'] * test_normal['y']) + (normal1['z'] * test_normal['z']))
+                    i_2 = abs((normal2['x'] * test_normal['x']) + (normal2['y'] * test_normal['y']) + (normal2['z'] * test_normal['z']))
+                    #print(f"Perpendicularity Axis Logging: i_1 = {i_1},  i_2 = {i_2}")
+                    #if i_1 != 1 and i_2 != 1:
+                    if abs(i_1 - 1) >= tolerance2 and abs(i_1 - 1) >= tolerance2:
+                        #Axis not parallel to surface normals
+                        print('Sweep Axis is not perpendicular')
                         return False
+                  except:
+                    print('Axis Not Identified')
+                    return False
 
             return True
 
@@ -253,8 +274,8 @@ def findExportFaces(body):
     else:
         adj = check_adjacent_faces()
         perp = check_perpendicular_faces()
-    #print("Faces adjacent result = ", adj)
-    #print("Perpendicularity result = ", perp)
+    print("Faces adjacent result = ", adj)
+    print("Perpendicularity result = ", perp)
 
     if adj and perp == True:
         #Get perimeter of edge_list

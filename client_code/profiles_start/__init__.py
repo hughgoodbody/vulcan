@@ -59,7 +59,7 @@ class profiles_start(profiles_startTemplate):
       #Encode configurations and then lauch task to get parts
       self.configStr = ConfigurationsPanel.configurating(self.configs) 
       self.materialTask = anvil.server.call('launchGetMaterials', user_data.userData)
-      configurationString, self.searchPartsTask = anvil.server.call('launch_list_parts', user_data.userData, user_data.configSelectedParams, user_data.profileOptions, user_data.documentInfo, user_data.elementType)
+      configurationString, self.searchPartsTask = anvil.server.call('launch_list_parts',user_data.userData, user_data.configSelectedParams, user_data.profileOptions, user_data.documentInfo, user_data.elementType)
       user_data.configurationString = configurationString
       #print(user_data.configurationString)
       self.timer_1.interval = 0.5
