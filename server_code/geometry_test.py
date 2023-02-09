@@ -116,7 +116,7 @@ def findExportFaces(body):
             test_edge = get_face_edges(i)
             bool = (any(elem in largestFace0_Edges  for elem in test_edge)) and (any(elem in largestFace1_Edges  for elem in test_edge))
             if bool == False:
-                print('Face is not adjacent')
+                #print('Face is not adjacent')
                 return False
 
             return True
@@ -146,7 +146,7 @@ def findExportFaces(body):
                     #if i_1 != ((1-i_1) <= tolerance) and ((1-i_2) <= tolerance) != 0:
                     if abs(i_1 - 1) <= tolerance2 and abs(i_1 - 1) <= tolerance2:
                         #Faces are NOT perpendicular
-                        print('Planes are not Perpendicular')
+                        #print('Planes are not Perpendicular')
                         return False
 
                 elif facesList[i]['surface']['type'] == 'CYLINDER':
@@ -157,10 +157,10 @@ def findExportFaces(body):
                     #print(f"Perpendicularity Planar Logging: i_1 = {i_1},  i_2 = {i_2}")
                     #Dot product should be = 0
                     #if i_1 != ((1-i_1) <= tolerance) and ((1-i_2) <= tolerance) != 0:
-                    print(abs(i_1 - 1))
+                    #print(abs(i_1 - 1))
                     if abs(i_1 - 1) >= tolerance2 and abs(i_1 - 1) >= tolerance2:
                         #Faces are NOT perpendicular
-                        print('Cylinders are not Perpendicular')
+                        #print('Cylinders are not Perpendicular')
                         return False      
 
                 else:
@@ -169,7 +169,7 @@ def findExportFaces(body):
                   try:
                     #test_normal = facesList[i]['surface']['axis']
                     test_normal = {'x': facesList[i]['surface']['direction']['x'], 'y': facesList[i]['surface']['direction']['y'], 'z': facesList[i]['surface']['direction']['z']}
-                    print(test_normal)
+                    #print(test_normal)
                   
                     #Axis needs to be parallel to main surfaces, ie dot product = 1
   
@@ -179,10 +179,10 @@ def findExportFaces(body):
                     #if i_1 != 1 and i_2 != 1:
                     if abs(i_1 - 1) >= tolerance2 and abs(i_1 - 1) >= tolerance2:
                         #Axis not parallel to surface normals
-                        print('Sweep Axis is not perpendicular')
+                        #print('Sweep Axis is not perpendicular')
                         return False
                   except:
-                    print('Axis Not Identified')
+                    #print('Axis Not Identified')
                     return False
 
             return True
@@ -251,7 +251,7 @@ def findExportFaces(body):
         viewMatrix[13] = facesList[largestFace0_index]['surface']['origin']['y'] - 0
         viewMatrix[14] = facesList[largestFace0_index]['surface']['origin']['z'] - 0
 
-        print(f"View Matrix: {viewMatrix}")
+        #print(f"View Matrix: {viewMatrix}")
         return viewMatrix
 
 
@@ -284,7 +284,7 @@ def findExportFaces(body):
         longestEdge = getLongestEdge()
         #print("Longest Edge = ", longestEdge)
         viewMatrix = createViewMatrix(longestEdge)
-        print(viewMatrix)
+        #print(viewMatrix)
         #Find the longest edge and it's direction vector - Used to set the x axis for the view matrix
         #Take care with a cylinder though, x direction needs to be perpendicular to its cylindrical axis.
         #https://math.stackexchange.com/questions/1502026/creating-a-bounding-box-for-2-points-with-a-custimizable-width

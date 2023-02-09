@@ -151,6 +151,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
     wv = i['itemSource']['wvmId']
     configId = i['itemSource']['fullConfiguration']
     partId = i['itemSource']['partId']
+    print(partId)
     elementId = i['itemSource']['elementId']
     #Add element for a flat pattern id
     i['itemSource'].update({'flatId':None})
@@ -167,13 +168,13 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
     api_parts = json.loads(api_parts.content)
 
     #If the part has a flat pattern, add a flatId field to the BOM with the flat pattern body ID
-    for j in range(0,len(api_parts)):
-      if api_parts[j]['isFlattenedBody'] == True:
-        flatId = api_parts[j]['partId']
-        foldedId = api_parts[j]['unflattenedPartId']
+    for j in api_parts:
+      if j['isFlattenedBody'] == True:
+        flatId = j['partId']
+        foldedId = j['unflattenedPartId']
         #print(f'Folded Id:{foldedId}')
         #print(api_bom['bomTable']['items'])
-        index = next((i for i, d in enumerate(api_bom['rows']) if d['itemSource']['partId'] == foldedId), None)
+        index = next((ind for ind, d in enumerate(api_bom['rows']) if d['itemSource']['partId'] == foldedId), None)
         #print(index)
         if index != None:
             #print(api_bom['rows'][index])
@@ -209,109 +210,110 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       foundPartsInformation['Sheet Metal'] = True
     allParts.append(foundPartsInformation)
     
-    #Get Bodies
-    #print(f'All Parts: {allParts}')
-    for part in allParts:      
+  #Get Bodies
+  #print(f'All Parts: {allParts}')
+  for part in allParts:      
+      did = part['Document ID']
+      wvm_type = part['WVM Type']
+      wv = part['WVM ID']
+      eid = part['Element ID']
+      #If sheet metal, get body details of the flat part ID
+      if part['Sheet Metal'] == True:
+        pid = part['Flat Pattern ID'] 
+      else:
+        pid = part['Part ID'] 
+      #print(f'Part ID: {pid}')  
+      url = '/api/v5/parts/d/%s/%s/%s/e/%s/partid/%s/bodydetails' % (docid, wvm_type, wv, eid, pid)
+      method = 'GET'  
+      payload = {}
+      params = {'configuration': part['Configuration']}
+      body_details = onshape.request(method, url, query=params, body=payload)        
+      body_details = json.loads(body_details.content)
+      if len(body_details['bodies']) == 1: #Then we have only one body, therefore add the face and edge details to the dictionary
+        part['Faces'] = body_details['bodies'][0]['faces']
+        part['Edges'] = body_details['bodies'][0]['edges']
+        part['Quantity'] = part['BOM Qty']
+        if body_details['bodies'][0]['properties']['material'] is not None:            
+          part['Material'] = body_details['bodies'][0]['properties']['material']['name']
+        partsAndFacesToTest.append(part)
+        #print(f'Part and Face to Test {partsAndFacesToTest}')
+      else: #we have a composite part which is either a simple composite or a cut list
+        #Run featurescript code to determine if this is a cutlist
+        #This can only be done on documents which are not a version, if it is a version, we will have to get the constituent bodies and do it that way. Constituent body id's are listed
+        #in the last element of the bodies list - Perhaps this will change in the future as onshape add frame information to the bodies details?
         did = part['Document ID']
         wvm_type = part['WVM Type']
         wv = part['WVM ID']
         eid = part['Element ID']
-        #If sheet metal, get body details of the flat part ID
-        if part['Sheet Metal'] == True:
-          pid = part['Flat Pattern ID'] 
-        else:
-          pid = part['Part ID'] 
-        url = '/api/v5/parts/d/%s/%s/%s/e/%s/partid/%s/bodydetails' % (docid, wvm_type, wv, eid, pid)
-        method = 'GET'  
-        payload = {}
-        params = {'configuration': part['Configuration']}
-        body_details = onshape.request(method, url, query=params, body=payload)        
-        body_details = json.loads(body_details.content)
-        if len(body_details['bodies']) == 1: #Then we have only one body, therefore add the face and edge details to the dictionary
-          part['Faces'] = body_details['bodies'][0]['faces']
-          part['Edges'] = body_details['bodies'][0]['edges']
-          part['Quantity'] = part['BOM Qty']
-          if body_details['bodies'][0]['properties']['material'] is not None:            
-            part['Material'] = body_details['bodies'][0]['properties']['material']['name']
-          partsAndFacesToTest.append(part)
-          print(f'Part and Face to Test {partsAndFacesToTest}')
-        else: #we have a composite part which is either a simple composite or a cut list
-          #Run featurescript code to determine if this is a cutlist
-          #This can only be done on documents which are not a version, if it is a version, we will have to get the constituent bodies and do it that way. Constituent body id's are listed
-          #in the last element of the bodies list - Perhaps this will change in the future as onshape add frame information to the bodies details?
-          did = part['Document ID']
-          wvm_type = part['WVM Type']
-          wv = part['WVM ID']
-          eid = part['Element ID']
-          pid = part['Part ID']
-  
-          url = '/api/partstudios/d/%s/%s/%s/e/%s/featurescript' % (did, wvm_type, wv, eid)
-          method = 'POST'
-          payload = {
-            'script': """function(context is Context, queries is map){
-                    // Define the function's action
-          //Create output list
-          var framesOutput = [];
-          var frameInfo = {};
-          var frameAtt = getFrameProfileAttributes(context, queries.id);
-          var cutListAtt = getCutlistAttributes(context, queries.id);
-          var bodyId = evaluateQuery(context, queries.id);
-          //If a cutlist loop to get body id etc
-          if (size(cutListAtt)!=0)
-          {
-          var currentTable = cutListAtt[0].table;
-          for (var row in currentTable.rows)
-          {
-            frameInfo = {"Item": row.columnIdToCell.Item, "BodyId": row.entities.subqueries[0].transientId, "Qty": row.columnIdToCell.Qty, "CutListBodyId" : (bodyId[0].transientId)};
-            //println(frameInfo);
-            framesOutput = append(framesOutput, frameInfo);
-          }
-          }
-          return framesOutput;
-          }
-          """,
-            'queries': [{ "key" : "id", "value" : [ pid ] }]
-                    }
-          params = {}
-          resp = onshape.request(method, url, query=params, body=payload)
-          resp = json.loads(resp.content)
-          #print(resp)  
-  
-          #CASE 1 - Composite part Cut List
-          if len(resp['result']['message']['value']) != 0 or wvm_type != 'v':   #Then we have a cut list and not a version
-            for cutListPart in resp['result']['message']['value']:
-              cutListPartInformation = part.copy()
-              cutListPartInformation['Composite Part ID'] = cutListPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
-              cutListPartInformation['Part ID'] = cutListPart['message']['value'][0]['message']['value']['message']['value']
-              cutListPartInformation['Cut List Qty'] = int(cutListPart['message']['value'][3]['message']['value']['message']['value'])
-              cutListPartInformation['Quantity'] = cutListPartInformation['Cut List Qty'] * cutListPartInformation['BOM Qty']
-              cutListPartInformation['Part of Cut List'] = True
-              if cutListPartInformation['Composite Part ID'] != cutListPartInformation['Part ID']: #this means that the composite is not added to the list                
-                #Now get the faces and edges from body details by looking for the cutlistpart body id
-                tempId = None #temp id so we don't get multiples of same body
-                for body in body_details['bodies']:
-                  #print(body)
-                  if cutListPartInformation['Part ID'] == body['id'] and tempId != body['id']:
-                    tempId = cutListPartInformation['Part ID']
-                    cutListPartInformation['Faces'] = body['faces']
-                    cutListPartInformation['Edges'] = body['edges']
-                    cutListPartInformation['Part Name'] = body['properties']['name'] 
-                    if body['properties']['material'] is not None:
-                      cutListPartInformation['Material'] = body['properties']['material']['name']
-                    partsAndFacesToTest.append(cutListPartInformation)
-          else: #No cut list, just a composite part, or from a versioned part          
-            for childPart in body_details['bodies']:
-              childPartInformation = part.copy()
-              childPartInformation['Composite Part ID'] = childPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
-              childPartInformation['Part ID'] = childPart['id'] 
-              childPartInformation['Part Name'] = childPart['properties']['name'] 
-              childPartInformation['Quantity'] = childPartInformation['BOM Qty']
-              if childPartInformation['Composite Part ID'] != childPartInformation['Part ID']: #this means that the composite is not added to the list              
-                childPartInformation['Faces'] = childPart['faces']
-                childPartInformation['Edges'] = childPart['edges']
-                if childPart['properties']['material'] is not None:
-                  childPartInformation['Material'] = childPart['properties']['material']['name']
-                partsAndFacesToTest.append(childPartInformation)
+        pid = part['Part ID']
+
+        url = '/api/partstudios/d/%s/%s/%s/e/%s/featurescript' % (did, wvm_type, wv, eid)
+        method = 'POST'
+        payload = {
+          'script': """function(context is Context, queries is map){
+                  // Define the function's action
+        //Create output list
+        var framesOutput = [];
+        var frameInfo = {};
+        var frameAtt = getFrameProfileAttributes(context, queries.id);
+        var cutListAtt = getCutlistAttributes(context, queries.id);
+        var bodyId = evaluateQuery(context, queries.id);
+        //If a cutlist loop to get body id etc
+        if (size(cutListAtt)!=0)
+        {
+        var currentTable = cutListAtt[0].table;
+        for (var row in currentTable.rows)
+        {
+          frameInfo = {"Item": row.columnIdToCell.Item, "BodyId": row.entities.subqueries[0].transientId, "Qty": row.columnIdToCell.Qty, "CutListBodyId" : (bodyId[0].transientId)};
+          //println(frameInfo);
+          framesOutput = append(framesOutput, frameInfo);
+        }
+        }
+        return framesOutput;
+        }
+        """,
+          'queries': [{ "key" : "id", "value" : [ pid ] }]
+                  }
+        params = {}
+        resp = onshape.request(method, url, query=params, body=payload)
+        resp = json.loads(resp.content)
+        #print(resp)  
+
+        #CASE 1 - Composite part Cut List
+        if len(resp['result']['message']['value']) != 0 or wvm_type != 'v':   #Then we have a cut list and not a version
+          for cutListPart in resp['result']['message']['value']:
+            cutListPartInformation = part.copy()
+            cutListPartInformation['Composite Part ID'] = cutListPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
+            cutListPartInformation['Part ID'] = cutListPart['message']['value'][0]['message']['value']['message']['value']
+            cutListPartInformation['Cut List Qty'] = int(cutListPart['message']['value'][3]['message']['value']['message']['value'])
+            cutListPartInformation['Quantity'] = cutListPartInformation['Cut List Qty'] * cutListPartInformation['BOM Qty']
+            cutListPartInformation['Part of Cut List'] = True
+            if cutListPartInformation['Composite Part ID'] != cutListPartInformation['Part ID']: #this means that the composite is not added to the list                
+              #Now get the faces and edges from body details by looking for the cutlistpart body id
+              tempId = None #temp id so we don't get multiples of same body
+              for body in body_details['bodies']:
+                #print(body)
+                if cutListPartInformation['Part ID'] == body['id'] and tempId != body['id']:
+                  tempId = cutListPartInformation['Part ID']
+                  cutListPartInformation['Faces'] = body['faces']
+                  cutListPartInformation['Edges'] = body['edges']
+                  cutListPartInformation['Part Name'] = body['properties']['name'] 
+                  if body['properties']['material'] is not None:
+                    cutListPartInformation['Material'] = body['properties']['material']['name']
+                  partsAndFacesToTest.append(cutListPartInformation)
+        else: #No cut list, just a composite part, or from a versioned part          
+          for childPart in body_details['bodies']:
+            childPartInformation = part.copy()
+            childPartInformation['Composite Part ID'] = childPartInformation['Part ID'] #The part ID found earlier is actually the composite ID, so assign this now
+            childPartInformation['Part ID'] = childPart['id'] 
+            childPartInformation['Part Name'] = childPart['properties']['name'] 
+            childPartInformation['Quantity'] = childPartInformation['BOM Qty']
+            if childPartInformation['Composite Part ID'] != childPartInformation['Part ID']: #this means that the composite is not added to the list              
+              childPartInformation['Faces'] = childPart['faces']
+              childPartInformation['Edges'] = childPart['edges']
+              if childPart['properties']['material'] is not None:
+                childPartInformation['Material'] = childPart['properties']['material']['name']
+              partsAndFacesToTest.append(childPartInformation)
 
   #print(partsAndFacesToTest) 
   #Find suitable faces for export          
