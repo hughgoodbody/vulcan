@@ -480,7 +480,10 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     maxSheetImages = sheetSize['Horizontal Boxes'] * sheetSize['Vertical Boxes']
     chunkId = 1
     #Break binpack list into chunks that fit on a page
-    pageChunks = np.array_split(binPackList, maxSheetImages)
+    # How many elements each list should have
+    n = maxSheetImages      
+    # using list comprehension
+    pageChunks = [binPackList[i:i + n] for i in range(0, len(binPackList), n)]
     print(pageChunks)
     #Create the points for the grid
     x = np.linspace(sheetSize['imageStartPoint'][0], sheetSize['Width'], sheetSize['Horizontal Boxes'] + 1)
@@ -510,10 +513,11 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       os.chdir(folder)
       positionGrid = sheetSize['imageStartPoint']
       
-      for item in pageChunks[c]:
+      for p in range(0,len(pageChunks[c])):
         # Create a block 
         #blockName = str(os.path.basename(eachFile))    #Remove path      
-        blockName = item['File']
+        blockName = pageChunks[c][p]['File']
+        
         
         #Source document
         #sdoc = ezdxf.readfile(eachFile)
@@ -532,11 +536,11 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         yc = packed[index]['Position'][1]
         #xpos = xc - (item['Bounding Box'][1][0])
         #ypos = yc - (item['Bounding Box'][1][1])
-        xpos = x_1[0][c] - ((item['Bounding Box'][1][0])) * item['Scale Factor']
-        ypos = y_1[0][c] - ((item['Bounding Box'][1][1])) * item['Scale Factor']
+        xpos = x_1[c][p] - ((pageChunks[c][p]['Bounding Box'][1][0])) * pageChunks[c][p]['Scale Factor']
+        ypos = y_1[c][p] - ((pageChunks[c][p]['Bounding Box'][1][1])) * pageChunks[c][p]['Scale Factor']
         #Dimensions are added to the block rather than the original file, makes it cleaner for the supplier to deal with
         #as the information is only relevant on the contact sheet
-        dimensionBoundingBox(targetBlock, item['Pre Text Box'], item['Text Height'])
+        dimensionBoundingBox(targetBlock, pageChunks[c][p]['Pre Text Box'], pageChunks[c][p]['Text Height'])
         msp.add_blockref('blk'+blockName, (xpos,ypos), dxfattribs={
           'xscale': item['Scale Factor'],
           'yscale': item['Scale Factor'],
