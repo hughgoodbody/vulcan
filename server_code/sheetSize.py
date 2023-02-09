@@ -13,7 +13,7 @@ sheetSize = {'Page': 'A3',
 }
 
 def sheetParameters():
-  sheetSize = {'Page': 'A3',
+  sheetInfo = {'Page': 'A3',
              'Width': 358,
              'Height': 244,
              'Border': 5,
@@ -25,13 +25,17 @@ def sheetParameters():
              'Box Height': None,
              'Left Pad': 11,
              'Bottom Pad': 5,
-}
+             'imageStartPoint': None,
+              'supplierStartPoint': None,
+              'idStartPoint': None,
+              'refStartPoint': None,
+              }
   
-sheetSize['Box Width'] = sheetSize['Width'] / sheetSize['Horizontal Boxes']
-sheetSize['Box Height'] = sheetSize['Height'] / sheetSize['Vertical Boxes']
-
-ImageStartPoint = (sheetSize['Border']+sheetSize['Spacing'], sheetSize['Border']+sheetSize['Bottom Pad']+(2*sheetSize['Title Text'])+(2*sheetSize['Spacing']))
-supplierStartPoint = (sheetSize['Border']+sheetSize['Spacing'] + sheetSize['Left Pad'], sheetSize['Border']+sheetSize['Bottom Pad']+(sheetSize['Spacing'])+(sheetSize['Title Text']))
-idStartPoint = (sheetSize['Border']+sheetSize['Spacing'] + sheetSize['Left Pad'], sheetSize['Border']+sheetSize['Bottom Pad'])
-refStartPoint = (sheetSize['Border']+sheetSize['Spacing'] + sheetSize['Left Pad'] + (sheetSize['Width']/2), sheetSize['Border']+sheetSize['Bottom Pad'])
+  sheetInfo['Box Width'] = sheetInfo['Width'] / sheetInfo['Horizontal Boxes']
+  sheetInfo['Box Height'] = sheetInfo['Height'] / sheetInfo['Vertical Boxes']  
+  sheetInfo['imageStartPoint'] = (sheetInfo['Border']+sheetInfo['Spacing'], sheetInfo['Border']+sheetInfo['Bottom Pad']+(2*sheetInfo['Title Text'])+(2*sheetInfo['Spacing']))
+  sheetInfo['supplierStartPoint'] = (sheetInfo['Border']+sheetInfo['Spacing'] + sheetInfo['Left Pad'], sheetInfo['Border']+sheetInfo['Bottom Pad']+(sheetInfo['Spacing'])+(sheetInfo['Title Text']))
+  sheetInfo['idStartPoint'] = (sheetInfo['Border']+sheetInfo['Spacing'] + sheetInfo['Left Pad'], sheetInfo['Border']+sheetInfo['Bottom Pad'])
+  sheetInfo['refStartPoint'] = (sheetInfo['Border']+sheetInfo['Spacing'] + sheetInfo['Left Pad'] + (sheetInfo['Width']/2), sheetInfo['Border']+sheetInfo['Bottom Pad'])
+  return sheetInfo
 
