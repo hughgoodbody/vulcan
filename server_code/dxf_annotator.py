@@ -39,6 +39,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
   from ezdxf.addons.drawing.matplotlib import MatplotlibBackend
   from ezdxf.addons.drawing import matplotlib
   from . import sheetSize
+  import numpy as np
 
   xTappingDict = {}
   #List to generate CSV from
