@@ -301,7 +301,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           holeYcoordinate = holeCentre[1]
           lstHolesOnDrawing.append({'Circle': e, 'X-Coordinate': holeXcoordinate, 'Y-Coordinate': holeYcoordinate, 'Diameter': holeDiameter})  #Create a list of the hole entities
           #detailTapping(e, msp)
-    print(f'Circle Coordinates: {lstHolesOnDrawing}')    
+    #print(f'Circle Coordinates: {lstHolesOnDrawing}')    
           
     #Workout hole ratio based on material thickness
     #Less than 20mm ratio is 60%
@@ -470,8 +470,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       contactSheetName = numberRef + '_CONTACT SHEET' + '_' + supplier + ".dxf" 
     #print(f"Text Width = {textWidth}")
     packed, sheetWidth = binPack(binPackList, folder, contactSheetName, False, textWidth)   #Pass in name to save to, boolean save, textWidth comes from return value when annotations are applied 
-    print(f"Packed Items: {packed}")
-    print(f"Sheet Width: {sheetWidth}")
+    #print(f"Packed Items: {packed}")
+    #print(f"Sheet Width: {sheetWidth}")
     
     
     #----------------------Create contact sheet-----------------------------
@@ -484,7 +484,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     n = maxSheetImages      
     # using list comprehension
     pageChunks = [binPackList[i:i + n] for i in range(0, len(binPackList), n)]
-    print(pageChunks)
+    #print(pageChunks)
     #Create the points for the grid
     x = np.linspace(sheetSize['imageStartPoint'][0], sheetSize['Width'], sheetSize['Horizontal Boxes'] + 1)
     y = np.linspace(sheetSize['imageStartPoint'][1], sheetSize['Height'], sheetSize['Horizontal Boxes'] + 1)
@@ -492,7 +492,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     # two 2-dimensional arrays
     x_1, y_1 = np.meshgrid(x, y)
 
-    for c in range(0,len(pageChunks)):   
+    for c in range(0,len(pageChunks)-1): 
+      print(f'Len Page Chunks {len(pageChunks)}')
       tdoc = ezdxf.new()
       msp = tdoc.modelspace()
       #Create contact sheet layers
@@ -513,7 +514,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       os.chdir(folder)
       positionGrid = sheetSize['imageStartPoint']
       
-      for p in range(0,len(pageChunks[c])):
+      for p in range(0,len(pageChunks[c])-1):
+        print(f'Len Page Chunks C {len(pageChunks[c])}')
         # Create a block 
         #blockName = str(os.path.basename(eachFile))    #Remove path      
         blockName = pageChunks[c][p]['File']
@@ -536,8 +538,11 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         yc = packed[index]['Position'][1]
         #xpos = xc - (item['Bounding Box'][1][0])
         #ypos = yc - (item['Bounding Box'][1][1])
-        xpos = x_1[c][p] - ((pageChunks[c][p]['Bounding Box'][1][0])) * pageChunks[c][p]['Scale Factor']
-        ypos = y_1[c][p] - ((pageChunks[c][p]['Bounding Box'][1][1])) * pageChunks[c][p]['Scale Factor']
+        print(pageChunks[c][p]['Bounding Box'][1][0] * pageChunks[c][p]['Scale Factor'])
+        #print(pageChunks[c][p]['Scale Factor'])
+        print(f'x-Pos {x_1[0]}')
+        xpos = x_1[0][p] - (((pageChunks[c][p]['Bounding Box'][1][0])) * pageChunks[c][p]['Scale Factor'])
+        ypos = y_1[0][p] - (((pageChunks[c][p]['Bounding Box'][1][1])) * pageChunks[c][p]['Scale Factor'])
         #Dimensions are added to the block rather than the original file, makes it cleaner for the supplier to deal with
         #as the information is only relevant on the contact sheet
         dimensionBoundingBox(targetBlock, pageChunks[c][p]['Pre Text Box'], pageChunks[c][p]['Text Height'])
