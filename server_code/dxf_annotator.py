@@ -478,114 +478,117 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     #print(file.name)
     sheetSize = sheetSize.sheetParameters()      
     maxSheetImages = sheetSize['Horizontal Boxes'] * sheetSize['Vertical Boxes']
+    chunkId = 1
     #Break binpack list into chunks that fit on a page
-    pageChunk = np.array_split(binPackList, maxSheetImages)
+    pageChunks = np.array_split(binPackList, maxSheetImages)
+    print(pageChunks)
     #Create the points for the grid
     x = np.linspace(sheetSize['imageStartPoint'][0], sheetSize['Width'], sheetSize['Horizontal Boxes'] + 1)
     y = np.linspace(sheetSize['imageStartPoint'][1], sheetSize['Height'], sheetSize['Horizontal Boxes'] + 1)
     # The meshgrid function returns
     # two 2-dimensional arrays
     x_1, y_1 = np.meshgrid(x, y)
-    
-    
-    tdoc = ezdxf.new()
-    msp = tdoc.modelspace()
-    #Create contact sheet layers
-    tdoc.layers.add(name='Dimensions', color = no_cut_colour)
-    tdoc.layers.add(name='Hole_Drilling', color = drill_colour)
-    tdoc.layers.add(name='Etch', color = etch_colour)
-    tdoc.layers.add(name='Annotations', color = annotations_colour)
-    tdoc.layers.add(name='Dont_Cut', color = no_cut_colour)
-    tdoc.layers.add(name='Hole_Tapping', color = tapping_colour)
-    tdoc.layers.add(name='Border')
-    tdoc.layers.add(name='Profile')
-    
-    xc = 0
-    yc = 0
-    searchfiles = path.glob('*.dxf')
-    #print(searchfiles)
-    #for eachFile in searchfiles: 
-    os.chdir(folder)
-    positionGrid = sheetSize['imageStartPoint']
-    
-    for item in binPackList:
-      # Create a block 
-      #blockName = str(os.path.basename(eachFile))    #Remove path      
-      blockName = item['File']
+
+    for c in range(0,len(pageChunks)):   
+      tdoc = ezdxf.new()
+      msp = tdoc.modelspace()
+      #Create contact sheet layers
+      tdoc.layers.add(name='Dimensions', color = no_cut_colour)
+      tdoc.layers.add(name='Hole_Drilling', color = drill_colour)
+      tdoc.layers.add(name='Etch', color = etch_colour)
+      tdoc.layers.add(name='Annotations', color = annotations_colour)
+      tdoc.layers.add(name='Dont_Cut', color = no_cut_colour)
+      tdoc.layers.add(name='Hole_Tapping', color = tapping_colour)
+      tdoc.layers.add(name='Border')
+      tdoc.layers.add(name='Profile')
       
+      xc = 0
+      yc = 0
+      searchfiles = path.glob('*.dxf')
+      #print(searchfiles)
+      #for eachFile in searchfiles: 
+      os.chdir(folder)
+      positionGrid = sheetSize['imageStartPoint']
+      
+      for item in pageChunks[c]:
+        # Create a block 
+        #blockName = str(os.path.basename(eachFile))    #Remove path      
+        blockName = item['File']
+        
+        #Source document
+        #sdoc = ezdxf.readfile(eachFile)
+        sdoc = ezdxf.readfile(blockName)      
+        targetBlock = tdoc.blocks.new(name='blk'+blockName)
+        #Import source modelspace into block 
+        importer = Importer(sdoc, tdoc)
+        # query all source entities
+        ents = sdoc.modelspace().query('*')      
+        # import source entities into target block
+        importer.import_entities(ents, targetBlock)
+        #importer.import_modelspace(targetBlock)
+        #Get the insert coordinates from the bin packing
+        index = findInList(packed, 'File Name', blockName)
+        xc = packed[index]['Position'][0]
+        yc = packed[index]['Position'][1]
+        #xpos = xc - (item['Bounding Box'][1][0])
+        #ypos = yc - (item['Bounding Box'][1][1])
+        xpos = x_1[0][c] - ((item['Bounding Box'][1][0])) * item['Scale Factor']
+        ypos = y_1[0][c] - ((item['Bounding Box'][1][1])) * item['Scale Factor']
+        #Dimensions are added to the block rather than the original file, makes it cleaner for the supplier to deal with
+        #as the information is only relevant on the contact sheet
+        dimensionBoundingBox(targetBlock, item['Pre Text Box'], item['Text Height'])
+        msp.add_blockref('blk'+blockName, (xpos,ypos), dxfattribs={
+          'xscale': item['Scale Factor'],
+          'yscale': item['Scale Factor'],
+          })
+        positionGrid = (positionGrid[0], positionGrid[1] + sheetSize['Box Height'])
+        #xc = xc + 300
+        #yc = yc + 0 
+      #'''
+      #Add border
+      #Get template     
+      templateRow = app_tables.drawingtemplates.get(size='A3', owner=userData['User'])
+      template = templateRow['template']
+      templateName = 'A3Template'
+      mediaObject = anvil.BlobMedia('.dxf', template.get_bytes(), name=templateName)  
+      with open(os.path.join(folder, templateName), 'wb+') as destFile:      
+        destFile.write(mediaObject.get_bytes()) 
       #Source document
-      #sdoc = ezdxf.readfile(eachFile)
-      sdoc = ezdxf.readfile(blockName)      
-      targetBlock = tdoc.blocks.new(name='blk'+blockName)
+      sdoc = ezdxf.readfile(templateName) 
+      targetBlock = tdoc.blocks.new(name='blk'+templateName)
       #Import source modelspace into block 
       importer = Importer(sdoc, tdoc)
-      # query all source entities
       ents = sdoc.modelspace().query('*')      
       # import source entities into target block
-      importer.import_entities(ents, targetBlock)
-      #importer.import_modelspace(targetBlock)
-      #Get the insert coordinates from the bin packing
-      index = findInList(packed, 'File Name', blockName)
-      xc = packed[index]['Position'][0]
-      yc = packed[index]['Position'][1]
-      #xpos = xc - (item['Bounding Box'][1][0])
-      #ypos = yc - (item['Bounding Box'][1][1])
-      xpos = positionGrid[0] - ((item['Bounding Box'][1][0])) * item['Scale Factor']
-      ypos = positionGrid[1] - ((item['Bounding Box'][1][1])) * item['Scale Factor']
-      #Dimensions are added to the block rather than the original file, makes it cleaner for the supplier to deal with
-      #as the information is only relevant on the contact sheet
-      dimensionBoundingBox(targetBlock, item['Pre Text Box'], item['Text Height'])
-      msp.add_blockref('blk'+blockName, (xpos,ypos), dxfattribs={
-        'xscale': item['Scale Factor'],
-        'yscale': item['Scale Factor'],
-         })
-      positionGrid = (positionGrid[0], positionGrid[1] + sheetSize['Box Height'])
-      #xc = xc + 300
-      #yc = yc + 0 
-    #'''
-    #Add border
-    #Get template     
-    templateRow = app_tables.drawingtemplates.get(size='A3', owner=userData['User'])
-    template = templateRow['template']
-    templateName = 'A3Template'
-    mediaObject = anvil.BlobMedia('.dxf', template.get_bytes(), name=templateName)  
-    with open(os.path.join(folder, templateName), 'wb+') as destFile:      
-      destFile.write(mediaObject.get_bytes()) 
-    #Source document
-    sdoc = ezdxf.readfile(templateName) 
-    targetBlock = tdoc.blocks.new(name='blk'+templateName)
-    #Import source modelspace into block 
-    importer = Importer(sdoc, tdoc)
-    ents = sdoc.modelspace().query('*')      
-    # import source entities into target block
-    importer.import_entities(ents, targetBlock)      
-    msp.add_blockref('blk'+templateName,(0,0), dxfattribs={
-        'color': 0,
-    })
-    #'''
-    importer.finalize()
-    #Add reference detail to the contact sheet
-    titleTextHeight = sheetSize['Title Text']     
-    supplierText = msp.add_text(f"SUPPLIER: {supplier}").set_placement(sheetSize['supplierStartPoint'])
-    supplierText.dxf.height = titleTextHeight
-    supplierText.dxf.layer = 'Annotations'
-    previousText = ('Supplier: ' + supplier)
-    if reference is not '':
-      refText = msp.add_text(f"ORDER ID: {numberRef + '_' + reference}").set_placement(sheetSize['idStartPoint'])  
-    else:
-      refText = msp.add_text(f"ORDER ID: {numberRef}").set_placement(sheetSize['idStartPoint']) 
-      
-    refText.dxf.height = titleTextHeight
-    refText.dxf.layer = 'Annotations'    
-    tdoc.saveas(contactSheetName)
-
-    #Save contact sheet as PDF
-    doc, auditor = recover.readfile(contactSheetName)
-    if not auditor.has_errors:
-        fileNameNoSuffix = contactSheetName.strip('.dxf')
-        msp = doc.modelspace()
-        #msp_properties.set_colors("#eaeaeaff")
-        matplotlib.qsave(doc.modelspace(), fileNameNoSuffix + '.pdf', bg='#FFFFFF00', size_inches=(16.5,11.7))
+      importer.import_entities(ents, targetBlock)      
+      msp.add_blockref('blk'+templateName,(0,0), dxfattribs={
+          'color': 0,
+      })
+      #'''
+      importer.finalize()
+      #Add reference detail to the contact sheet
+      titleTextHeight = sheetSize['Title Text']     
+      supplierText = msp.add_text(f"SUPPLIER: {supplier}").set_placement(sheetSize['supplierStartPoint'])
+      supplierText.dxf.height = titleTextHeight
+      supplierText.dxf.layer = 'Annotations'
+      previousText = ('Supplier: ' + supplier)
+      if reference is not '':
+        refText = msp.add_text(f"ORDER ID: {numberRef + '_' + reference}").set_placement(sheetSize['idStartPoint'])  
+      else:
+        refText = msp.add_text(f"ORDER ID: {numberRef}").set_placement(sheetSize['idStartPoint']) 
+        
+      refText.dxf.height = titleTextHeight
+      refText.dxf.layer = 'Annotations'    
+      tdoc.saveas(contactSheetName+str(chunkId))
+  
+      #Save contact sheet as PDF
+      doc, auditor = recover.readfile(contactSheetName+str(chunkId))
+      if not auditor.has_errors:
+          fileNameNoSuffix = contactSheetName+str(chunkId).strip('.dxf')
+          msp = doc.modelspace()
+          #msp_properties.set_colors("#eaeaeaff")
+          matplotlib.qsave(doc.modelspace(), fileNameNoSuffix+str(chunkId) + '.pdf', bg='#FFFFFF00', size_inches=(16.5,11.7))
+      chunkId = chunkId + 1  
 
     
     os.chdir('/tmp')   

@@ -86,6 +86,8 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
 
   with TemporaryDirectory(dir = '/tmp') as f:
     for part in inputData:
+      if part['Remove'] == True:
+        continue
       did = part['Document ID']
       wvm_type = part['WVM Type']
       wid = part['WVM ID']
