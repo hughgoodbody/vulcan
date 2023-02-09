@@ -26,7 +26,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     self.panel = self.repeating_panel_1
     
     self.panel.items = self.dataFromTable
-    print(self.panel.items)
+    #print(self.panel.items)
     self.panel2 = self.repeating_panel_2
     self.orderId = self.dataFromTable[0]['Order ID']
 

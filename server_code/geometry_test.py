@@ -249,7 +249,7 @@ def findExportFaces(body):
     if body['Sheet Metal'] == True:
         adj = True
         perp = True
-        faceInfo['Operations'] = faceInfo['Operations'] + 'B'
+        faceInfo['Operations'] = 'B'
     else:
         adj = check_adjacent_faces()
         perp = check_perpendicular_faces()
