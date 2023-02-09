@@ -542,8 +542,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         #as the information is only relevant on the contact sheet
         dimensionBoundingBox(targetBlock, pageChunks[c][p]['Pre Text Box'], pageChunks[c][p]['Text Height'])
         msp.add_blockref('blk'+blockName, (xpos,ypos), dxfattribs={
-          'xscale': item['Scale Factor'],
-          'yscale': item['Scale Factor'],
+          'xscale': pageChunks[c][p]['Scale Factor'],
+          'yscale': pageChunks[c][p]['Scale Factor'],
           })
         positionGrid = (positionGrid[0], positionGrid[1] + sheetSize['Box Height'])
         #xc = xc + 300
