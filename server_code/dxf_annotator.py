@@ -474,9 +474,19 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     print(f"Sheet Width: {sheetWidth}")
     
     
-    #Create contact sheet
+    #----------------------Create contact sheet-----------------------------
     #print(file.name)
     sheetSize = sheetSize.sheetParameters()    
+    maxSheetImages = sheetSize['Horizontal Boxes'] * sheetSize['Vertical Boxes']
+    #Create the points for the grid
+    x = np.linspace(sheetSize['imageStartPoint'][0], sheetSize['Width'], sheetSize['Horizontal Boxes'] + 1)
+    y = np.linspace(sheetSize['imageStartPoint'][1], sheetSize['Height'], sheetSize['Horizontal Boxes'] + 1)
+    # The meshgrid function returns
+    # two 2-dimensional arrays
+    x_1, y_1 = np.meshgrid(x, y)
+    #Break binpack list into chunks that fit on a page
+    pageChunk = np.array_split(binPackList, maxSheetImages)
+    
     tdoc = ezdxf.new()
     msp = tdoc.modelspace()
     #Create contact sheet layers
