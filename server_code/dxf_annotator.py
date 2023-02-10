@@ -486,8 +486,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     pageChunks = [binPackList[i:i + n] for i in range(0, len(binPackList), n)]
     #print(pageChunks)
     #Create the points for the grid
-    x = np.linspace(sheetSize['imageStartPoint'][0], sheetSize['Width'], sheetSize['Horizontal Boxes'] + 1)
-    y = np.linspace(sheetSize['imageStartPoint'][1], sheetSize['Height'], sheetSize['Vertical Boxes'] + 1)
+    x = np.linspace(sheetSize['imageStartPoint'][0], sheetSize['Width']+(2*sheetSize['imageStartPoint'][0]), sheetSize['Horizontal Boxes'] + 1)
+    y = np.linspace(sheetSize['imageStartPoint'][1], sheetSize['Height']+(sheetSize['imageStartPoint'][1]), sheetSize['Vertical Boxes'] + 1)
     # The meshgrid function returns
     # two 2-dimensional arrays
     x_1, y_1 = np.meshgrid(x, y)
