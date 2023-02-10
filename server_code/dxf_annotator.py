@@ -491,6 +491,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     # The meshgrid function returns
     # two 2-dimensional arrays
     x_1, y_1 = np.meshgrid(x, y)
+    print(f'x_1 = {x_1}')
+    print(f'y_1 = {y_1}')
 
     for c in range(0,len(pageChunks)-1): 
       print(f'Len Page Chunks {len(pageChunks)}')
