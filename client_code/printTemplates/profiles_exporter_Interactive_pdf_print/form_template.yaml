@@ -76,11 +76,11 @@ components:
     layout_properties: {row: JLBKTL, width_xs: 3, col_xs: 3, width: 188.6}
   - type: Label
     properties: {role: null, align: right, tooltip: '', border: '', foreground: '',
-      visible: true, text: 'Reference:', font_size: 20, font: '', spacing_above: small,
+      visible: true, text: 'Project Reference:', font_size: 20, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: true,
       underline: false, icon: ''}
     name: label_5
-    layout_properties: {row: JLBKTL, width_xs: 3, col_xs: 6, width: 188.6}
+    layout_properties: {row: JLBKTL, width_xs: 3, col_xs: 6, width: 116.417}
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: '', visible: true, text: '', font_size: 20,
