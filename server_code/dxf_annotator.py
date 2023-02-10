@@ -487,14 +487,21 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     #print(pageChunks)
     #Create the points for the grid
     x = np.linspace(sheetSize['imageStartPoint'][0], sheetSize['Width'], sheetSize['Horizontal Boxes'] + 1)
-    y = np.linspace(sheetSize['imageStartPoint'][1], sheetSize['Height'], sheetSize['Horizontal Boxes'] + 1)
+    y = np.linspace(sheetSize['imageStartPoint'][1], sheetSize['Height'], sheetSize['Vertical Boxes'] + 1)
     # The meshgrid function returns
     # two 2-dimensional arrays
     x_1, y_1 = np.meshgrid(x, y)
+    x_1 = (np.delete(x_1,sheetSize['Horizontal Boxes'],axis=1))#Delete last column
+    y_1 = (np.delete(y_1,sheetSize['Vertical Boxes'],axis=0)) #Delete last row
+    #Create a list of oordinates
+    imageCoords = []
+    for a, b in  zip(x_1, y_1):
+        for a1, b1 in zip(a, b):
+          imageCoords.append((a1, b1,))
     print(f'x_1 = {x_1}')
     print(f'y_1 = {y_1}')
 
-    for c in range(0,len(pageChunks)-1): 
+    for c in range(0,len(pageChunks)): 
       print(f'Len Page Chunks {len(pageChunks)}')
       tdoc = ezdxf.new()
       msp = tdoc.modelspace()
@@ -516,7 +523,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       os.chdir(folder)
       positionGrid = sheetSize['imageStartPoint']
       
-      for p in range(0,len(pageChunks[c])-1):
+      for p in range(0,len(pageChunks[c])):
         print(f'Len Page Chunks C {len(pageChunks[c])}')
         # Create a block 
         #blockName = str(os.path.basename(eachFile))    #Remove path      
@@ -543,8 +550,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         print(pageChunks[c][p]['Bounding Box'][1][0] * pageChunks[c][p]['Scale Factor'])
         #print(pageChunks[c][p]['Scale Factor'])
         print(f'x-Pos {x_1[0]}')
-        xpos = x_1[0][p] - (((pageChunks[c][p]['Bounding Box'][1][0])) * pageChunks[c][p]['Scale Factor'])
-        ypos = y_1[0][p] - (((pageChunks[c][p]['Bounding Box'][1][1])) * pageChunks[c][p]['Scale Factor'])
+        xpos = imageCoords[p][0] - (((pageChunks[c][p]['Bounding Box'][1][0])) * pageChunks[c][p]['Scale Factor'])
+        ypos = imageCoords[p][1] - (((pageChunks[c][p]['Bounding Box'][1][1])) * pageChunks[c][p]['Scale Factor'])
         #Dimensions are added to the block rather than the original file, makes it cleaner for the supplier to deal with
         #as the information is only relevant on the contact sheet
         dimensionBoundingBox(targetBlock, pageChunks[c][p]['Pre Text Box'], pageChunks[c][p]['Text Height'])
