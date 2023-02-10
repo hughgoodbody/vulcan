@@ -469,7 +469,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     else:
       contactSheetName = numberRef + '_CONTACT SHEET' + '_' + supplier + ".dxf" 
     #print(f"Text Width = {textWidth}")
-    packed, sheetWidth = binPack(binPackList, folder, contactSheetName, False, textWidth)   #Pass in name to save to, boolean save, textWidth comes from return value when annotations are applied 
+    #packed, sheetWidth = binPack(binPackList, folder, contactSheetName, False, textWidth)   #Pass in name to save to, boolean save, textWidth comes from return value when annotations are applied 
     #print(f"Packed Items: {packed}")
     #print(f"Sheet Width: {sheetWidth}")
     
@@ -542,9 +542,9 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         importer.import_entities(ents, targetBlock)
         #importer.import_modelspace(targetBlock)
         #Get the insert coordinates from the bin packing
-        index = findInList(packed, 'File Name', blockName)
-        xc = packed[index]['Position'][0]
-        yc = packed[index]['Position'][1]
+        #index = findInList(packed, 'File Name', blockName)
+        #xc = packed[index]['Position'][0]
+        #yc = packed[index]['Position'][1]
         #xpos = xc - (item['Bounding Box'][1][0])
         #ypos = yc - (item['Bounding Box'][1][1])
         print(pageChunks[c][p]['Bounding Box'][1][0] * pageChunks[c][p]['Scale Factor'])
