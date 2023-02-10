@@ -9,7 +9,7 @@
 11. Clear data table at start of background task also
 12 Create new list of just hole tapping data and filename when doing the export
 
-14. DXF lineweight,  change version to 2000 or newer   
+ 
 15. Operations in pdf instead of warnings
 Hole options radio button
 No Configurations Positioning
@@ -22,11 +22,7 @@ Now create the PDF's
 Create a dropdown list to select multiple drawing sheets to upload as sheet metal 2d drawings to the zip file
 Alert window - Upload sheet metal
 
-Save Drawing Border Template as a dxf block in settings. Use this block when creating the contact sheet.
-Use ezDXF drawing exporter add on to create a PDF of the contact sheet.
 
-Bin Pack:
-Make into square, but base on a ratio. Soft code the ratio so is easily changed, start at L/H >=2
 
 
 Create PDF - Order Summary
@@ -49,8 +45,7 @@ Two titles for printed PDF's
 Supplier Summary: Lasershape Order Id: 783
 Order Summary: 783-786
   
-BUGS:
-Thumbnail view matrix
+
 
 Materials API call:
 https://cad.onshape.com/api/materials/libraries/d/81e33fccf396569c09b88d8f/w/71306831da3af0636d92f2ed/e/2335880ba0008e0ed01e8a07

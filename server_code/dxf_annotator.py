@@ -570,9 +570,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       templateName = 'A3Template'
       mediaObject = anvil.BlobMedia('.dxf', template.get_bytes(), name=templateName)  
       with open(os.path.join(folder, templateName), 'wb+') as destFile:      
-        destFile.write(mediaObject.get_bytes()) 
-      #Source document
-      sdoc = ezdxf.readfile(templateName) 
+        destFile.write(mediaObject.get_bytes())
+      sdoc = ezdxf.readfile(templateName)       
       targetBlock = tdoc.blocks.new(name='blk'+templateName)
       #Import source modelspace into block 
       importer = Importer(sdoc, tdoc)
