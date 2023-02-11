@@ -83,27 +83,38 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       dictInfo['PartNumber'] = fileNameNoSuffix
       dictInfo['Thickness'] = partInfo['Thickness']      
       dictInfo['Material'] = partInfo['Material']
-      dictInfo['Operations'] = partInfo['Operations']
+      dictInfo['Operations'] = []
       dictInfo['Process'] = partInfo['Process']
       dictInfo['Supplier'] = partInfo['Supplier']
       dictInfo['Qty'] = partInfo['Quantity']
+      dictInfo['PD6'] = [partInfo['Operations']]
+
+      if 'B' in partInfo['Operations']:
+        dictInfo['PD6'].append('B')
+        dictInfo['Operations'].append('BENDING')
+      if 'T' in partInfo['Operations']:
+        dictInfo['PD6'].append('T')
+        dictInfo['Operations'].append('TAPPING')     
         
+      
       if partInfo['Etch Part Number'] == True:
         dictInfo['PARTDATA18'] = fileNameNoSuffix
-        if 'ETCHING REQUIRED' not in drawingNotes:
-          drawingNotes.append('ETCHING REQUIRED')
+        dictInfo['Operations'].append('ETCHING')
+        dictInfo['PD6'].append('E')
       else: 
-        dictInfo['PARTDATA18'] = ''
+        dictInfo['PARTDATA18'] = None
 
       #Create readable notes of operations for drawings
       if 'B' in dictInfo['Operations']:
-        drawingNotes.append('BENDING REQUIRED')
+        drawingNotes.append('BENDING')
       if 'T' in dictInfo['Operations']:
-        drawingNotes.append('TAPPING REQUIRED')
+        drawingNotes.append('TAPPING')
       if 'D' in dictInfo['Operations']:
-        drawingNotes.append('DRILLING REQUIRED')
+        drawingNotes.append('DRILLING')
+      if 'E' in dictInfo['Operations']:
+        drawingNotes.append('ETCHING')  
       if 'CSK' in dictInfo['Operations']:
-        drawingNotes.append('COUNTERSINKING REQUIRED')  
+        drawingNotes.append('COUNTERSINKING')  
     
       if 'LAS' in dictInfo['Process']:  
         dictInfo['ProcessOnDrawing'] = "LASER"
@@ -122,7 +133,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         
       
       dictInfo['Notes'] = drawingNotes
-      PARTDATA6 = dictInfo['Operations']  
+      #PARTDATA6 = dictInfo['Operations']  
       
     '''------------------------------------------------------------CARRY OUT DXF FILE EXAMINATIONS AND ALTERATIONS--------------------------------------------------------------------------------------------'''
     #### READ DXF FILE ####
@@ -241,7 +252,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       text_height = set_text_props('Annotations', text)
       spacing = ((text_height + text_spacing) * i) + initial_spacing
       i = i + 1
-      text = msp.add_text(f"PARTDATA6: {dictInfo['Operations']}").set_placement((text_x, text_y - spacing))
+      text = msp.add_text(f"PARTDATA6: {dictInfo['PD6']}").set_placement((text_x, text_y - spacing))
       text_height = set_text_props('Annotations', text)
       spacing = ((text_height + text_spacing) * i) + initial_spacing
       i = i + 1
@@ -299,8 +310,9 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           #print("CIRCLE radius: %s\n" % e.dxf.radius)
           holeXcoordinate = holeCentre[0]         
           holeYcoordinate = holeCentre[1]
-          lstHolesOnDrawing.append({'Circle': e, 'X-Coordinate': holeXcoordinate, 'Y-Coordinate': holeYcoordinate, 'Diameter': holeDiameter})  #Create a list of the hole entities
-          #detailTapping(e, msp)
+          #lstHolesOnDrawing.append({'Circle': e, 'X-Coordinate': holeXcoordinate, 'Y-Coordinate': holeYcoordinate, 'Diameter': holeDiameter})  #Create a list of the hole entities
+          lstHolesOnDrawing.append(e)
+        #detailTapping(e, msp)
     #print(f'Circle Coordinates: {lstHolesOnDrawing}')    
           
     #Workout hole ratio based on material thickness

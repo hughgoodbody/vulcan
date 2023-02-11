@@ -18,6 +18,7 @@ class dxf_options(dxf_optionsTemplate):
     self.dropSupplier.items = [(r['supplierName']) for r in user_data.userData['Users Suppliers']]
     self.txtThickness.text = 25
     self.txtMultiplier.text = 1
+    self.radRatio.selected = True
 
 
 

@@ -220,6 +220,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       #If sheet metal, get body details of the flat part ID
       if part['Sheet Metal'] == True:
         pid = part['Flat Pattern ID'] 
+        foundPartsInformation['Operations'].append('B')
       else:
         pid = part['Part ID'] 
       #print(f'Part ID: {pid}')  
@@ -349,6 +350,11 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       body['Part Thumbnail'] = imageStr
 
       #Get tapped holes
+      tappedHolesResult = True
+      if tappedHolesResult is not False:
+        foundPartsInformation['Hole Data'] =tappedHolesResult
+        foundPartsInformation['Operations'].append('T')
+        
       
       
       facesToProcess.append(body)

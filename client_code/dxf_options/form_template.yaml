@@ -30,7 +30,7 @@ components:
     name: label_3
     layout_properties: {row: ZOLXJE, width_xs: 4, col_xs: 8, width: 303.333}
   - type: RadioButton
-    properties: {role: dxf-options, selected: false, align: left, tooltip: '', border: '',
+    properties: {role: dxf-options, selected: true, align: left, tooltip: '', border: '',
       enabled: true, foreground: '', value: Ignore, visible: true, text: Ignore thickness / diameter ratio,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
       background: '', bold: false, group_name: radGroupHoleOptions, underline: false}
