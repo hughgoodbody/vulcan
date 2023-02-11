@@ -154,7 +154,7 @@ db_schema:
       target: users
   transfertable:
     title: TransferTable
-    client: search
+    client: full
     server: full
     columns:
     - name: data

@@ -52,7 +52,7 @@ def goodsReceivedPdf(userData, inputList, prefix, orderId, orderIdStart, heading
 
 @anvil.server.callable
 def launchProcessProfiles(userData, inputData, prefix, orderId, supplier):
-  profilesTask = anvil.server.launch_background_task('processProfiles', userData, inputData, prefix, orderId, supplier)
+  profilesTask = anvil.server.launch_background_task('processProfiles', userData, prefix, orderId, supplier)
   return profilesTask
   pass
 
@@ -75,8 +75,9 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
   from .onshape_api.onshape import Onshape
   from . import user_data
   from . import dxf_annotator
-
-
+  
+  inputDataRow = app_tables.transfertable.get(owner=user_data.userData['User'], type='supplierParts')
+  inputData = inputDataRow['data']
   ak = userData['Access Key']
   sk = userData['Secret Key']
   onshape = Onshape('https://cad.onshape.com', ak, sk, logging=False) 
