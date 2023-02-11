@@ -163,17 +163,13 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       #print(supplierSpecificParts) 
       #Create PDF Summary forms, get the id number here and pass to server as argument, allows individual forms to be made
       
-      #anvil.server.call_s('createOutputPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, s, 'FORM_PDF',s)      
+      anvil.server.call_s('createOutputPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, s, 'FORM_PDF',s)      
       start_time = time.time()
-        #Clear out existing files from the table
-      usersFiles = app_tables.transfertable.search(owner=user_data.userData['User'], type='supplierParts')
-      for row in usersFiles:
-        row.delete()
       app_tables.transfertable.add_row(data=supplierSpecificParts, type='supplierParts',owner=user_data.userData['User'])
       self.processTask = anvil.server.call('launchProcessProfiles', user_data.userData, self.prefixRef, self.idRef, s)
       print(f"Launch process profiles call duration{(time.time() - start_time)}")
       #Create goods received form
-      #anvil.server.call_s('goodsReceivedPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, 'Goods Received', 'GOODSRECEIVED_PDF', s)
+      anvil.server.call_s('goodsReceivedPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, 'Goods Received', 'GOODSRECEIVED_PDF', s)
       self.idRef = self.idRef + 1
       #Add task id to list
       #self.supplierProcessList.append(self.processTask.get_id())
@@ -189,7 +185,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     if self.nSup > 1:   
       #print('Printing a Master List')  
       self.idRef = self.idRef - 1
-      #anvil.server.call_s('createOutputPdf', user_data.userData, self.panel.items, self.prefixRef, self.idRef, self.idRefStart, 'Order Summary', 'MASTER_PDF', None)  
+      anvil.server.call_s('createOutputPdf', user_data.userData, self.panel.items, self.prefixRef, self.idRef, self.idRefStart, 'Order Summary', 'MASTER_PDF', None)  
        
     
     #update order id in table

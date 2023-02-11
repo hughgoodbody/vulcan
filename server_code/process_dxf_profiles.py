@@ -51,14 +51,14 @@ def goodsReceivedPdf(userData, inputList, prefix, orderId, orderIdStart, heading
   pass
 
 @anvil.server.callable
-def launchProcessProfiles(userData, inputData, prefix, orderId, supplier):
+def launchProcessProfiles(userData, prefix, orderId, supplier):
   profilesTask = anvil.server.launch_background_task('processProfiles', userData, prefix, orderId, supplier)
   return profilesTask
   pass
 
 
 @anvil.server.background_task
-def processProfiles(userData, inputData, prefix, orderId, supplier):
+def processProfiles(userData, prefix, orderId, supplier):
   import urllib.parse
   from urllib.parse import urlparse
   from urllib.parse import parse_qsl
@@ -76,7 +76,7 @@ def processProfiles(userData, inputData, prefix, orderId, supplier):
   from . import user_data
   from . import dxf_annotator
   
-  inputDataRow = app_tables.transfertable.get(owner=user_data.userData['User'], type='supplierParts')
+  inputDataRow = app_tables.transfertable.get(owner=userData['User'], type='supplierParts')
   inputData = inputDataRow['data']
   ak = userData['Access Key']
   sk = userData['Secret Key']
