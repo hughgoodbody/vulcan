@@ -162,10 +162,10 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       #print(supplierSpecificParts) 
       #Create PDF Summary forms, get the id number here and pass to server as argument, allows individual forms to be made
       
-      anvil.server.call_s('createOutputPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, s, 'FORM_PDF',s)      
+      #anvil.server.call_s('createOutputPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, s, 'FORM_PDF',s)      
       self.processTask = anvil.server.call('launchProcessProfiles', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, s)
       #Create goods received form
-      anvil.server.call_s('goodsReceivedPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, 'Goods Received', 'GOODSRECEIVED_PDF', s)
+      #anvil.server.call_s('goodsReceivedPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, 'Goods Received', 'GOODSRECEIVED_PDF', s)
       self.idRef = self.idRef + 1
       #Add task id to list
       #self.supplierProcessList.append(self.processTask.get_id())
