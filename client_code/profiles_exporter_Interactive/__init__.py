@@ -206,7 +206,8 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
   def dropAddSelector_change(self, **event_args):
     """This method is called when an item is selected"""
     if self.dropAddSelector.selected_value is not None:
-      listIndex = self.panel.items.index(self.dropAddSelector.selected_value)
+      #use the list index of the panel2 (additional items list) this will be the same index as in the main list, but can be found from either part name or part number
+      listIndex = self.additionalList.index(self.dropAddSelector.selected_value)
       print(listIndex)
       self.txtAddMat.text = self.panel.items[listIndex]['Material']
     
