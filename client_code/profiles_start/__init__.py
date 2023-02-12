@@ -44,6 +44,8 @@ class profiles_start(profiles_startTemplate):
       if c == False or c == None:
         return
     else: 
+      self.executeNotification = Notification("Getting parts...")
+      self.executeNotification.show()
       self.profileOptions['Hole Options'] = self.dxfOptions.radRatio.get_group_value()
       self.profileOptions['Etch Part Number'] = self.dxfOptions.chkEtchPart.checked
       self.profileOptions['Bend Line Marks'] = self.dxfOptions.chkEtchBend.checked
@@ -70,6 +72,8 @@ class profiles_start(profiles_startTemplate):
     if self.searchPartsTask.is_completed() == True:
       self.timer_1.interval = 0
       open_form('profiles_exporter_Interactive')
+      self.executeNotification.hide()
+      
     pass
 
 

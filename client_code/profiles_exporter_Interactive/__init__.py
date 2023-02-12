@@ -44,6 +44,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     self.lblIdRef.text = self.panel.items[0]['Order Prefix'] + str(self.panel.items[0]['Order ID'])
     self.txtReference.text = self.panel.items[0]['Customer Reference']
     
+    
 
     #Get date 
     today = date.today()    
@@ -58,8 +59,8 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       else:
         self.additionalList.append(i['Part Number'])
     
-    self.dropAddSelector.items = self.additionalList 
-    self.dropAddSelector.placeholder = 'Select Part..'
+    self.dropAddSelector.items = [('Select Part...', None)] + self.additionalList 
+    
     
     
 
@@ -75,6 +76,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
 
   def btnExecute_click(self, **event_args):
     """This method is called when the button is clicked"""
+    
     #print(self.additionalParts)
     
     #Multiply quantity with the multiplier value

@@ -6,6 +6,7 @@ components:
   layout_properties: {column: UKHRXT}
   data_bindings:
   - {property: selected_value, code: 'self.item[''Part Number'']', writeback: true}
+  event_bindings: {change: drop_down_1_change}
 - type: TextBox
   properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
     border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null,

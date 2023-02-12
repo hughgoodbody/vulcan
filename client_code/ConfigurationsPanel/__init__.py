@@ -21,6 +21,8 @@ class ConfigurationsPanel(ConfigurationsPanelTemplate):
     # Any code you write here will run before the form opens.
   def btnGetConfigs_click(self, **event_args):
     """This method is called when the button is clicked"""
+    configNotification = Notification("Searching for configurations...")
+    configNotification.show()
     self.url = self.parent.parent.txtUrl.text #Get url which is in a parent form
     self.btnGetConfigs.visible = False    
     self.elements, self.elementType, self.configOptions, self.documentInfo = anvil.server.call('get_elements_configurations', user_data.userData, self.url) #From document_info module
@@ -81,6 +83,7 @@ class ConfigurationsPanel(ConfigurationsPanelTemplate):
       self.ncLabel.lblNoConfigs.text = 'No configurations'        
 
     self.parent.parent.btnExecute.visible = True #Show execute button on parent form
+    configNotification.hide()
     pass
 
   def configurating(self, **event_args):
