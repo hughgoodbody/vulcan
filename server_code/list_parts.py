@@ -69,7 +69,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
   method = 'GET'  
   payload = {}
   viewMatrix='0.612,0.612,0,0,-0.354,0.354,0.707,0,0.707,-0.707,0.707,0' #approximate isometric view, from: https://cad.onshape.com/glassworks/explorer/#/PartStudio
-  params = {'viewMatrix':viewMatrix, 'outputHeight':900, 'outputWidth':900, 'pixelSize':0, 'edges':'show', 'useAntiAliasing':False, 'configuration':configurationString}
+  params = {'viewMatrix':viewMatrix, 'outputHeight':300, 'outputWidth':300, 'pixelSize':0, 'edges':'show', 'useAntiAliasing':False, 'configuration':configurationString}
   #imageStr = client.api_client.request(method, url=base + url, query_params=params, headers=headers, body=payload, _preload_content=False)
   #imageStr = json.loads(imageStr.data)
   imageStr = onshape.request(method, url, query=params, body=payload)  
@@ -341,7 +341,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       thumbnailMatrix = [str(m[0]), str(m[1]), str(m[2]), str(0), str(m[4]), str(m[5]), str(m[6]), str(0), str(m[8]), str(m[9]), str(m[10]), str(0)] # Use row major rather than column major
       thumbnailMatrix = ','.join(thumbnailMatrix) #Convert list to comma seperated string
       #thumbnailMatrix = 'front'
-      params = {'viewMatrix':thumbnailMatrix, 'outputHeight':500, 'outputWidth':500, 'pixelSize':0, 'edges':'show', 'useAntiAliasing':False, 'configuration':body['Configuration']}
+      params = {'viewMatrix':thumbnailMatrix, 'outputHeight':300, 'outputWidth':300, 'pixelSize':0, 'edges':'show', 'useAntiAliasing':False, 'configuration':body['Configuration']}
       #imageStr = client.api_client.request(method, url=base + url, query_params=params, headers=headers, body=payload, _preload_content=False)
       #imageStr = json.loads(imageStr.data)
       imageStr = onshape.request(method, url, query=params, body=payload)
