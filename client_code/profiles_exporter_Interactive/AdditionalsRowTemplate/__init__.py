@@ -16,12 +16,7 @@ class AdditionalsRowTemplate(AdditionalsRowTemplateTemplate):
     self.drop_down_1.items = self.item['Additional List']
     self.drop_down_1.selected_value = self.item['Part Number']
 
-  def drop_down_1_change(self, **event_args):
-    """This method is called when an item is selected"""
-    listIndex = self.drop_down_1.items.index(self.drop_down_1.selected_value)
-    print(listIndex)
-    #self.text_box_1.text = get_open_form().self.panel.items[listIndex]['Material']
-    pass
+
 
     
     

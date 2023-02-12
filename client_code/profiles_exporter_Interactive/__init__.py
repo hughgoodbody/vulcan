@@ -201,7 +201,18 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     user_data.profileOptions['Customer Reference'] = self.txtReference.text
     pass
 
+
+
+  def dropAddSelector_change(self, **event_args):
+    """This method is called when an item is selected"""
+    if self.dropAddSelector.selected_value is not None:
+      listIndex = self.panel.items.index(self.dropAddSelector.selected_value)
+      print(listIndex)
+      self.txtAddMat.text = self.panel.items[listIndex]['Material']
+    
+   
     pass
+
 
 
 

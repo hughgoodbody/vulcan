@@ -175,7 +175,7 @@ components:
         properties: {}
         name: dropAddSelector
         layout_properties: {column: UKHRXT}
-        event_bindings: {}
+        event_bindings: {change: dropAddSelector_change}
       - type: TextBox
         properties: {}
         name: txtAddMat
