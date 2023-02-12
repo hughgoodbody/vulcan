@@ -53,6 +53,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
   from pprint import pprint  
   from . import geometry_test
   from .onshape_api.onshape import Onshape
+  
   ak = userData['Access Key']
   sk = userData['Secret Key']
   onshape = Onshape('https://cad.onshape.com', ak, sk, logging=False)  
@@ -347,6 +348,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       imageStr = onshape.request(method, url, query=params, body=payload)
       imageStr = json.loads(imageStr.content)
       imageStr = imageStr['images'][0]
+      
       body['Part Thumbnail'] = imageStr
 
       #Get tapped holes

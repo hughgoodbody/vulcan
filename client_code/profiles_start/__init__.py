@@ -44,7 +44,7 @@ class profiles_start(profiles_startTemplate):
       if c == False or c == None:
         return
     else: 
-      self.executeNotification = Notification("Getting parts...")
+      self.executeNotification = Notification("Getting parts...",timeout=None)
       self.executeNotification.show()
       self.profileOptions['Hole Options'] = self.dxfOptions.radRatio.get_group_value()
       self.profileOptions['Etch Part Number'] = self.dxfOptions.chkEtchPart.checked

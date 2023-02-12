@@ -28,7 +28,8 @@ class RowTemplate(RowTemplateTemplate):
 
     #Set thumbnail image from the 'thumbnail' field - decode from base64
     #print(self.item['Thumbnail'])
-    self.imgdata = base64.b64decode(self.item['Part Thumbnail'])    
+    self.imgdata = base64.b64decode(self.item['Part Thumbnail']) 
+    
     mymedia = anvil.BlobMedia('image/png', self.imgdata)
     self.image_1.source = mymedia 
 
