@@ -85,10 +85,8 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       if j['Sheet Metal'] is True:
         j['Operations'].append('B')
       if j['Hole Data'] is not None:
-        j['Operations'].append('T')
-      if j['Undersize Holes'] == 'Drill':  
-        j['Operations'].append('D')        
-      if j['Undersize Holes'] == 'Etch' or j['Etch Part Number'] is True or (j['Bend Line Marks'] is True and j['Sheet Metal'] is True):  
+        j['Operations'].append('T')     
+      if j['Etch Part Number'] is True or (j['Bend Line Marks'] is True and j['Sheet Metal'] is True):  
         j['Operations'].append('E')        
       j['Operations'] = ''.join(j['Operations'])  #Create a string from the list  
       if j['Process'] == 'Laser':
