@@ -210,6 +210,8 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       listIndex = self.additionalList.index(self.dropAddSelector.selected_value)
       print(listIndex)
       self.txtAddMat.text = self.panel.items[listIndex]['Material']
+      self.txtAddQty.text = self.panel.items[listIndex]['Material']
+      self.txtaddThk.text = self.panel.items[listIndex]['Material']
     
    
     pass
