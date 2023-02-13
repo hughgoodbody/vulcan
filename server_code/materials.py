@@ -36,7 +36,7 @@ def getMaterialLibrary(userData):
   
     if wvm_type == 'v':
       raise Exception("Material library currently doesn't work with versions, please change URL to point to Workspace") 
-  
+    #Combine all material libraries into one list - get elements, if element = "onshape-app/materials"
     #Get materials    
     url = '/api/v5/materials/libraries/d/%s/%s/%s/e/%s' % (did, wvm_type, wid, eid) 
     method = 'GET'  
@@ -53,7 +53,7 @@ def getMaterialLibrary(userData):
   except:
     raise Exception("Invalid Material Library URL, Please amend...") 
 
-
+  
   #Clear out existing files from the table
   usersFiles = app_tables.transfertable.search(owner=userData['User'], type='materials')
   for row in usersFiles:

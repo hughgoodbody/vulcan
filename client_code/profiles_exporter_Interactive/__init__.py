@@ -162,7 +162,10 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       #print(f"Exporting for {s}: {len(supplierSpecificParts)} files")
       #print(supplierSpecificParts) 
       #Create PDF Summary forms, get the id number here and pass to server as argument, allows individual forms to be made
-      
+      #Write supplier specific parts to table
+      #Update master parts table
+      #run background tasks on the above
+      #create pdf's in the background tasks
       anvil.server.call_s('createOutputPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, s, 'FORM_PDF',s)      
       start_time = time.time()
       app_tables.transfertable.add_row(data=supplierSpecificParts, type='supplierParts',owner=user_data.userData['User'])
@@ -207,11 +210,10 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     """This method is called when an item is selected"""
     if self.dropAddSelector.selected_value is not None:
       #use the list index of the panel2 (additional items list) this will be the same index as in the main list, but can be found from either part name or part number
-      listIndex = self.additionalList.index(self.dropAddSelector.selected_value)
-      print(listIndex)
+      listIndex = self.additionalList.index(self.dropAddSelector.selected_value)      
       self.txtAddMat.text = self.panel.items[listIndex]['Material']
-      self.txtAddQty.text = self.panel.items[listIndex]['Material']
-      self.txtaddThk.text = self.panel.items[listIndex]['Material']
+      self.txtAddQty.text = self.panel.items[listIndex]['Quantity']
+      self.txtaddThk.text = self.panel.items[listIndex]['Thickness']
     
    
     pass
