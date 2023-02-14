@@ -167,6 +167,9 @@ db_schema:
       admin_ui: {width: 200}
       type: link_single
       target: users
+    - name: suppliername
+      admin_ui: {order: 3, width: 200}
+      type: string
   namingconvention:
     title: NamingConvention
     client: none
