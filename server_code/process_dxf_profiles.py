@@ -17,7 +17,7 @@ import anvil.server
 #   return 42
 #
 
-def createOutputPdf(userData, inputList, prefix, orderId, orderIdStart, heading, type, supplier, reference):
+def createOutputPdf(userData, inputList, prefix, orderId, orderIdStart, heading, type, supplier, reference, f):
   import anvil.pdf
   from anvil.pdf import PDFRenderer
   if reference is not None or reference != '':
@@ -27,8 +27,10 @@ def createOutputPdf(userData, inputList, prefix, orderId, orderIdStart, heading,
     fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_SUMMARY'
   else:
     fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_SUMMARY'
-  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading, supplier)
-  app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
+  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading, supplier, f)
+  with open(os.path.join(f, fileName), 'wb+') as destFile:      
+      destFile.write(pdf.get_bytes()) 
+  #app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
   return pdf
   
 
@@ -42,8 +44,10 @@ def createMasterPdf(userData, inputList, prefix, orderId, orderIdStart, heading,
     fileName =str(prefix) + str(orderId) + '_MASTER'
   else:
     fileName =str(prefix) + str(orderId) + '_MASTER'    
-  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading, supplier)
-  app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier='MASTER')
+  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading, supplier, f)
+  with open(os.path.join(f, fileName), 'wb+') as destFile:      
+    destFile.write(pdf.get_bytes()) 
+  #app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier='MASTER')
   return pdf
    
 
@@ -57,7 +61,9 @@ def goodsReceivedPdf(userData, inputList, prefix, orderId, orderIdStart, heading
   else:
     fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_RECEIVED'
   pdf = PDFRenderer(page_size='A4', landscape=False, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.goods_received_print', inputList, prefix, orderId, heading, supplier)
-  app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
+  with open(os.path.join(f, fileName), 'wb+') as destFile:      
+    destFile.write(pdf.get_bytes()) 
+  #app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
   return pdf
   
 
@@ -191,8 +197,8 @@ def processProfiles(userData, prefix, orderId, supplier):
     dxf_annotator.annotateDxf(userData, f, inputData, prefix, orderId, supplier) #Set all arguments to None, when using to annotate just files not exported with Vulcan
 
     #Create PDF summary files for supplier
-    createOutputPdf(user_data.userData, inputData, prefix, orderId, None, supplier, 'FORM_PDF', supplier, reference)
-    goodsReceivedPdf(user_data.userData, inputData, prefix, orderId, None, 'Goods Received', 'GOODSRECEIVED_PDF', supplier, reference)
+    createOutputPdf(user_data.userData, inputData, prefix, orderId, None, supplier, 'FORM_PDF', supplier, reference, f)
+    goodsReceivedPdf(user_data.userData, inputData, prefix, orderId, None, 'Goods Received', 'GOODSRECEIVED_PDF', supplier, reference, f)
     
 
     #Get the supplier specific summary pdf from table and save to tempfolder, so that can be saved into the zip
