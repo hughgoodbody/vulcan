@@ -21,6 +21,9 @@ def createOutputPdf(userData, inputList, prefix, orderId, orderIdStart, heading,
   import anvil.pdf
   from anvil.pdf import PDFRenderer
   if reference is not None or reference != '':
+    #Make reference name file safe  
+    keepcharacters = ('.','_', '-','%','(', ')')
+    reference = "".join(c for c in reference if c.isalnum() or c in keepcharacters).rstrip()
     fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_SUMMARY'
   else:
     fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_SUMMARY'
@@ -33,6 +36,9 @@ def createMasterPdf(userData, inputList, prefix, orderId, orderIdStart, heading,
   import anvil.pdf
   from anvil.pdf import PDFRenderer
   if reference is not None or reference != '':
+    #Make reference name file safe  
+    keepcharacters = ('.','_', '-','%','(', ')')
+    reference = "".join(c for c in reference if c.isalnum() or c in keepcharacters).rstrip()
     fileName =str(prefix) + str(orderId) + '_MASTER'
   else:
     fileName =str(prefix) + str(orderId) + '_MASTER'    
