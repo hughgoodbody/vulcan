@@ -171,7 +171,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       #create pdf's in the background tasks
       #anvil.server.call_s('createOutputPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, s, 'FORM_PDF',s)      
       start_time = time.time()
-      #app_tables.transfertable.add_row(data=supplierSpecificParts, type='supplierParts',owner=user_data.userData['User'], suppliername=s)
+      app_tables.transfertable.add_row(data=supplierSpecificParts, type='supplierParts',owner=user_data.userData['User'], suppliername=s)
       self.processTask = anvil.server.call('launchProcessProfiles', user_data.userData, self.prefixRef, self.idRef, self.idRefStart, s)
       print(f"Launch process profiles call duration{(time.time() - start_time)}")
       #Create goods received form

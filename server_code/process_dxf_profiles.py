@@ -3,6 +3,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
+import os
 
 # This is a server module. It runs on the Anvil server,
 # rather than in the user's browser.
@@ -27,7 +28,7 @@ def createOutputPdf(userData, inputList, prefix, orderId, orderIdStart, heading,
     fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_SUMMARY'
   else:
     fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_SUMMARY'
-  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading, supplier, f)
+  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading, supplier)
   with open(os.path.join(f, fileName), 'wb+') as destFile:      
       destFile.write(pdf.get_bytes()) 
   #app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
@@ -44,7 +45,7 @@ def createMasterPdf(userData, inputList, prefix, orderId, orderIdStart, heading,
     fileName =str(prefix) + str(orderId) + '_MASTER'
   else:
     fileName =str(prefix) + str(orderId) + '_MASTER'    
-  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading, supplier, f)
+  pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading, supplier)
   app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier='MASTER')
   return pdf
    
@@ -195,8 +196,8 @@ def processProfiles(userData, prefix, orderId, orderIdStart, supplier):
     dxf_annotator.annotateDxf(userData, f, inputData, prefix, orderId, supplier) #Set all arguments to None, when using to annotate just files not exported with Vulcan
 
     #Create PDF summary files for supplier
-    createOutputPdf(user_data.userData, inputData, prefix, orderId, None, supplier, 'FORM_PDF', supplier, reference, f)
-    goodsReceivedPdf(user_data.userData, inputData, prefix, orderId, None, 'Goods Received', 'GOODSRECEIVED_PDF', supplier, reference, f)
+    createOutputPdf(userData, inputData, prefix, orderId, None, supplier, 'FORM_PDF', supplier, reference, f)
+    goodsReceivedPdf(userData, inputData, prefix, orderId, None, 'Goods Received', 'GOODSRECEIVED_PDF', supplier, reference, f)
     
     
 
@@ -213,6 +214,6 @@ def processProfiles(userData, prefix, orderId, orderIdStart, supplier):
     #Get master list data and create pdf
     masterDataRow = app_tables.transfertable.get(owner=userData['User'], type='facesList', suppliername='MASTER')
     masterData = masterDataRow['data']
-    createMasterPdf(user_data.userData, masterData, prefix, orderId, orderIdStart, 'Order Summary', 'MASTER', supplier, reference)
+    createMasterPdf(userData, masterData, prefix, orderId, orderIdStart, 'Order Summary', 'MASTER', supplier, reference)
   
   pass
