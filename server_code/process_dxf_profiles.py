@@ -66,16 +66,16 @@ def goodsReceivedPdf(userData, inputList, prefix, orderId, orderIdStart, heading
   
 
 @anvil.server.callable
-def launchProcessProfiles(userData, prefix, orderId, supplier):
+def launchProcessProfiles(userData, prefix, orderId, orderIdStart, supplier):
   #Process profiles for each supplier
-  profilesTask = anvil.server.launch_background_task('processProfiles', userData, prefix, orderId, supplier)
+  profilesTask = anvil.server.launch_background_task('processProfiles', userData, prefix, orderId, orderIdStart, supplier)
   #Create master PDF
   return profilesTask
   pass
 
 
 @anvil.server.background_task
-def processProfiles(userData, prefix, orderId, supplier):
+def processProfiles(userData, prefix, orderId, orderIdStart, supplier):
   import urllib.parse
   from urllib.parse import urlparse
   from urllib.parse import parse_qsl
@@ -204,35 +204,7 @@ def processProfiles(userData, prefix, orderId, supplier):
     #Save Form PDF to the directory so is included in the zip file
 
     #Save Form PDF to the directory so is included in the zip file
-  
-    if reference is not '':
-      #Make reference name file safe  
-      keepcharacters = ('.','_', '-','%','(', ')')
-      reference = "".join(c for c in reference if c.isalnum() or c in keepcharacters).rstrip()
-      pdfName = numberRef + '_' + reference + '_SUMMARY' + '_' + supplier + ".pdf" 
-    else:
-      pdfName = numberRef + '_SUMMARY' + '_' + supplier + ".pdf"     
-    pdfRow = app_tables.files.get(owner=userData['User'], type='FORM_PDF', supplier=supplier)
-    pdfFile = pdfRow['file']
-    mediaObject = anvil.BlobMedia('.pdf', pdfFile.get_bytes(), name=pdfName)    
-    #print(file.name)
-    with open(os.path.join(f, pdfName), 'wb+') as destFile:      
-      destFile.write(mediaObject.get_bytes())  
-  
-    if reference is not '':
-      #Make reference name file safe  
-      keepcharacters = ('.','_', '-','%','(', ')')
-      reference = "".join(c for c in reference if c.isalnum() or c in keepcharacters).rstrip()
-      pdfName = numberRef + '_' + reference + '_RECEIVED' + '_' + supplier + ".pdf" 
-    else:
-      pdfName = numberRef + '_RECEIVED' + '_' + supplier + ".pdf" 
-      
-    pdfRow = app_tables.files.get(owner=userData['User'], type='GOODSRECEIVED_PDF', supplier=supplier)
-    pdfFile = pdfRow['file']
-    mediaObject = anvil.BlobMedia('.pdf', pdfFile.get_bytes(), name=pdfName)    
-    #print(file.name)
-    with open(os.path.join(f, pdfName), 'wb+') as destFile:      
-      destFile.write(mediaObject.get_bytes()) 
+
           
     os.chdir('/tmp') #Change directory out of f so we can zip it up  
     zippedFile = shutil.make_archive(numberRef + '_PROFILES_' + supplier, 'zip', f) 
@@ -241,6 +213,6 @@ def processProfiles(userData, prefix, orderId, supplier):
     #Get master list data and create pdf
     masterDataRow = app_tables.transfertable.get(owner=userData['User'], type='facesList', suppliername='MASTER')
     masterData = masterDataRow['data']
-    createMasterPdf(user_data.userData, masterData, prefix, orderId, None, 'Goods Received', 'GOODSRECEIVED_PDF', supplier, reference)
+    createMasterPdf(user_data.userData, masterData, prefix, orderId, orderIdStart, 'Order Summary', 'MASTER', supplier, reference)
   
   pass

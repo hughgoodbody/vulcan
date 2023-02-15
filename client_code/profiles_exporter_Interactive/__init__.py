@@ -169,13 +169,13 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       #Update master parts table
       #run background tasks on the above
       #create pdf's in the background tasks
-      anvil.server.call_s('createOutputPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, s, 'FORM_PDF',s)      
+      #anvil.server.call_s('createOutputPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, s, 'FORM_PDF',s)      
       start_time = time.time()
-      app_tables.transfertable.add_row(data=supplierSpecificParts, type='supplierParts',owner=user_data.userData['User'], suppliername=s)
-      self.processTask = anvil.server.call('launchProcessProfiles', user_data.userData, self.prefixRef, self.idRef, s)
+      #app_tables.transfertable.add_row(data=supplierSpecificParts, type='supplierParts',owner=user_data.userData['User'], suppliername=s)
+      self.processTask = anvil.server.call('launchProcessProfiles', user_data.userData, self.prefixRef, self.idRef, self.idRefStart, s)
       print(f"Launch process profiles call duration{(time.time() - start_time)}")
       #Create goods received form
-      anvil.server.call_s('goodsReceivedPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, 'Goods Received', 'GOODSRECEIVED_PDF', s)
+      #anvil.server.call_s('goodsReceivedPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, 'Goods Received', 'GOODSRECEIVED_PDF', s)
       self.idRef = self.idRef + 1
       #Add task id to list
       #self.supplierProcessList.append(self.processTask.get_id())
@@ -191,7 +191,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     if self.nSup > 1:   
       #print('Printing a Master List')  
       self.idRef = self.idRef - 1
-      anvil.server.call_s('createOutputPdf', user_data.userData, self.panel.items, self.prefixRef, self.idRef, self.idRefStart, 'Order Summary', 'MASTER_PDF', None)  
+      #anvil.server.call_s('createOutputPdf', user_data.userData, self.panel.items, self.prefixRef, self.idRef, self.idRefStart, 'Order Summary', 'MASTER_PDF', None)  
        
     
     #update order id in table
