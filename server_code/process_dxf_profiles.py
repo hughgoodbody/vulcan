@@ -27,23 +27,19 @@ def createOutputPdf(userData, inputList, prefix, orderId, orderIdStart, heading,
   pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading, supplier)
   app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
   return pdf
-  pass
+  
 
 def createMasterPdf(userData, inputList, prefix, orderId, orderIdStart, heading, type, supplier, reference):
   import anvil.pdf
   from anvil.pdf import PDFRenderer
-  if orderIdStart == None:
-    newId = prefix + str(orderId)
-    fileName = newId
+  if reference is not None or reference != '':
+    fileName =str(prefix) + str(orderId) + '_MASTER'
   else:
-    newId = prefix + str(orderIdStart) + '-' + prefix + str(orderId)
-    fileName = newId
-  if supplier is not None:
-    fileName =newId + '-' + supplier
+    fileName =str(prefix) + str(orderId) + '_MASTER'    
   pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading, supplier)
-  app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
+  app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier='MASTER')
   return pdf
-  pass  
+   
 
   
 
@@ -51,13 +47,13 @@ def goodsReceivedPdf(userData, inputList, prefix, orderId, orderIdStart, heading
   import anvil.pdf
   from anvil.pdf import PDFRenderer
   if reference is not None or reference != '':
-    fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_SUMMARY'
+    fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_RECEIVED'
   else:
-    fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_SUMMARY'
+    fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_RECEIVED'
   pdf = PDFRenderer(page_size='A4', landscape=False, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.goods_received_print', inputList, prefix, orderId, heading, supplier)
   app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
   return pdf
-  pass
+  
 
 @anvil.server.callable
 def launchProcessProfiles(userData, prefix, orderId, supplier):
