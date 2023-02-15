@@ -19,10 +19,10 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     #Get face data from table
-    row = app_tables.transfertable.get(owner=user_data.userData['User'], type='facesList')
-    materialRow = app_tables.transfertable.get(owner=user_data.userData['User'], type='materials')
-    self.dataFromTable = row['data']   
-    self.materialsList = materialRow['data']
+    self.row = app_tables.transfertable.get(owner=user_data.userData['User'], type='facesList', suppliername='MASTER')
+    self.materialRow = app_tables.transfertable.get(owner=user_data.userData['User'], type='materials')
+    self.dataFromTable = self.row['data']   
+    self.materialsList = self.materialRow['data']
     user_data.materialLibrary = self.materialsList
     self.panel = self.repeating_panel_1
     
@@ -153,6 +153,9 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     self.idRef = self.dataFromTable[0]['Order ID']
     self.prefixRef = self.dataFromTable[0]['Order Prefix']
     self.idRefStart = self.dataFromTable[0]['Order ID']
+    #Update the table with user input data - MASTER LIST
+    self.row.update(data=self.panel.items)
+    
     for s in uniqueSuppliers:  
       #print(s)
       #Get unique ID from table
@@ -193,9 +196,9 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     
     #update order id in table
     # Fetch a row.      
-    row = app_tables.numbers.get(owner=user_data.userData['User'])
+    numberRow = app_tables.numbers.get(owner=user_data.userData['User'])
     # Update method 1
-    row.update(RefNumber=self.idRef)
+    numberRow.update(RefNumber=self.idRef)
     # Update method 2
     #row['name']="fred" 
 

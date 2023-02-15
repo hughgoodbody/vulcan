@@ -366,7 +366,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
   usersFiles = app_tables.files.search(owner=userData['User'], type='facesList')
   for row in usersFiles:
     row.delete()
-  app_tables.transfertable.add_row(data=facesToProcess, type='facesList',owner=userData['User'])
+  app_tables.transfertable.add_row(data=facesToProcess, type='facesList',owner=userData['User'],suppliername='MASTER')
 
   return
 
