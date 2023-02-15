@@ -45,15 +45,13 @@ def createMasterPdf(userData, inputList, prefix, orderId, orderIdStart, heading,
   else:
     fileName =str(prefix) + str(orderId) + '_MASTER'    
   pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading, supplier, f)
-  with open(os.path.join(f, fileName), 'wb+') as destFile:      
-    destFile.write(pdf.get_bytes()) 
-  #app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier='MASTER')
+  app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier='MASTER')
   return pdf
    
 
   
 
-def goodsReceivedPdf(userData, inputList, prefix, orderId, orderIdStart, heading, type, supplier, reference):
+def goodsReceivedPdf(userData, inputList, prefix, orderId, orderIdStart, heading, type, supplier, reference, f):
   import anvil.pdf
   from anvil.pdf import PDFRenderer
   if reference is not None or reference != '':
@@ -200,6 +198,7 @@ def processProfiles(userData, prefix, orderId, supplier):
     createOutputPdf(user_data.userData, inputData, prefix, orderId, None, supplier, 'FORM_PDF', supplier, reference, f)
     goodsReceivedPdf(user_data.userData, inputData, prefix, orderId, None, 'Goods Received', 'GOODSRECEIVED_PDF', supplier, reference, f)
     
+    
 
     #Get the supplier specific summary pdf from table and save to tempfolder, so that can be saved into the zip
     #Save Form PDF to the directory so is included in the zip file
@@ -239,5 +238,9 @@ def processProfiles(userData, prefix, orderId, supplier):
     zippedFile = shutil.make_archive(numberRef + '_PROFILES_' + supplier, 'zip', f) 
     mediaZipped = anvil.media.from_file(zippedFile,'zip')
     app_tables.files.add_row(file=mediaZipped, type='PROFILES', owner=userData['User'], supplier=supplier)  
+    #Get master list data and create pdf
+    masterDataRow = app_tables.transfertable.get(owner=userData['User'], type='facesList', suppliername='MASTER')
+    masterData = masterDataRow['data']
+    createMasterPdf(user_data.userData, masterData, prefix, orderId, None, 'Goods Received', 'GOODSRECEIVED_PDF', supplier, reference)
   
   pass
