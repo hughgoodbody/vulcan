@@ -33,6 +33,29 @@ class RowTemplate(RowTemplateTemplate):
     mymedia = anvil.BlobMedia('image/png', self.imgdata)
     self.image_1.source = mymedia 
 
+    #Set Multiplier and some hole options
+    self.item['Quantity'] = (self.item['Quantity'] * self.item['Multiplier']) + self.item['Additional Qty']
+    #Set operations
+    if self.item['Sheet Metal'] is True:
+      self.item['Operations'].append('B')
+    if self.item['Hole Data'] is not None:
+      self.item['Operations'].append('T')     
+    if self.item['Etch Part Number'] is True or (self.item['Bend Line Marks'] is True and self.item['Sheet Metal'] is True):  
+      self.item['Operations'].append('E')        
+    self.item['Operations'] = ''.join(self.item['Operations'])  #Create a string from the list  
+    if self.item['Process'] == 'Laser':
+      self.item['Process'] = 'LAS'
+    elif self.item['Process'] == 'Waterjet':
+      self.item['Process'] = 'WJ'
+    elif self.item['Process'] == 'Plasma':
+      self.item['Process'] = 'PLA'
+    elif self.item['Process'] == 'Oxy-Fuel':
+      self.item['Process'] = 'OXY'
+    elif self.item['Process'] == 'Saw':
+      self.item['Process'] = 'SAW'
+    elif self.item['Process'] == 'Manual':
+      self.item['Process'] = 'MAN' 
+
     #Set Material and row colour
     self.dropMaterial.items = user_data.materialLibrary 
     self.dropMaterial.selected_value = self.item['Material']
