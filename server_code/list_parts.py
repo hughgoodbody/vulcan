@@ -110,6 +110,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'Delete': None,
                            'Drill template': None,
                            'Material': None,
+                           'Operations2': None,
                            'Operations': None,
                            'Bend Operation': None,
                            'Tap Operation': None,
@@ -151,6 +152,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
   docsList = []
   docsDict = {}
   for i in api_bom['rows']:
+    foundPartsInformation = foundPartsInformation.copy()
     docid = i['itemSource']['documentId']
     wvm_type = i['itemSource']['wvmType']
     wv = i['itemSource']['wvmId']
@@ -189,8 +191,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
     if i['headerIdToValue'][headerDict['Material']] != None:
       assignedMaterial = i['headerIdToValue'][headerDict['Material']]['displayName']     
     else:
-      assignedMaterial = None
-
+      assignedMaterial = None    
     foundPartsInformation.update({'Document ID': i['itemSource']['documentId'],
                                   'Element ID': i['itemSource']['elementId'],
                                   'Created Version Id': None,
@@ -225,7 +226,8 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       #If sheet metal, get body details of the flat part ID
       if part['Sheet Metal'] == True:
         pid = part['Flat Pattern ID'] 
-        foundPartsInformation['Bend Operation'] = 'B'
+        part['Bend Operation'] = 'B'
+        part['Operations'] = 'B'
       else:
         pid = part['Part ID'] 
       #print(f'Part ID: {pid}')  
@@ -358,8 +360,13 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       #Get tapped holes
       tappedHolesResult = True
       if tappedHolesResult is not False:
-        foundPartsInformation['Hole Data'] =tappedHolesResult
-        foundPartsInformation['Tap Operation'] = 'T'
+        body['Hole Data'] =tappedHolesResult
+        body['Tap Operation'] = 'T'
+        #foundPartsInformation['Operations'] = foundPartsInformation['Operations'] + 'T'
+        if body['Operations'] is not None:
+          body['Operations'] = 'BT'
+        else:  
+          body['Operations'] = 'T'
         
       
       

@@ -84,7 +84,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       dictInfo['PartNumber'] = fileNameNoSuffix
       dictInfo['Thickness'] = partInfo['Thickness']      
       dictInfo['Material'] = partInfo['Material']
-      dictInfo['Operations'] = partInfo['Operations']
+      dictInfo['Operations'] = []
+      dictInfo['Operations2'] = partInfo['Operations2']
       dictInfo['Bend Operation'] = partInfo['Bend Operation']
       dictInfo['Tap Operation'] = partInfo['Tap Operation']
       dictInfo['Drill Operation'] = partInfo['Drill Operation']
@@ -92,7 +93,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       dictInfo['Process'] = partInfo['Process']
       dictInfo['Supplier'] = partInfo['Supplier']
       dictInfo['Qty'] = partInfo['Quantity']
-      dictInfo['PD6'] = None
+      dictInfo['PD6'] = []
 
       if dictInfo['Bend Operation'] == 'B':
         dictInfo['PD6'].append('B')
@@ -110,17 +111,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       else: 
         dictInfo['PARTDATA18'] = None
 
-      #Create readable notes of operations for drawings
-      if 'B' in dictInfo['Operations']:
-        drawingNotes.append('BENDING')
-      if 'T' in dictInfo['Operations']:
-        drawingNotes.append('TAPPING')
-      if 'D' in dictInfo['Operations']:
-        drawingNotes.append('DRILLING')
-      if 'E' in dictInfo['Operations']:
-        drawingNotes.append('ETCHING')  
-      if 'CSK' in dictInfo['Operations']:
-        drawingNotes.append('COUNTERSINKING')  
+
     
       if 'LAS' in dictInfo['Process']:  
         dictInfo['ProcessOnDrawing'] = "LASER"
@@ -266,20 +257,12 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       text_height = set_text_props('Annotations', text)
       spacing = ((text_height + text_spacing) * i) + initial_spacing
       i = i + 1
-      text = msp.add_text(f"NOTES: {dictInfo['Notes']}").set_placement((text_x, text_y - spacing))
-      text_height = set_text_props('Annotations', text)
-      spacing = ((text_height + text_spacing) * i) + initial_spacing
-      i = i + 1
       text = msp.add_text(f"PROCESS: {dictInfo['Process']}").set_placement((text_x, text_y - spacing))
       text_height = set_text_props('Annotations', text)
       spacing = ((text_height + text_spacing) * i) + initial_spacing
       i = i + 1
       
-      #Get the length of the longest string in the dictionary, this is added to the longest note heading (PART NUMBER) this is passed into the bin packer for correct spacing    
-      tempDict = {'Operations': dictInfo['Operations'], 'Part Number': dictInfo['PartNumber']}
-      strLength = len('PART NUMBER: ') + len(max(tempDict.values(), key=len))    
-      textWidth = strLength * text_height
-      return textWidth
+
       
       
       

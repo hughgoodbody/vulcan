@@ -29,7 +29,7 @@ def createOutputPdf(userData, inputList, prefix, orderId, orderIdStart, heading,
   else:
     fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_SUMMARY'
   pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading, supplier)
-  with open(os.path.join(f, fileName), 'wb+') as destFile:      
+  with open(os.path.join(f, fileName + '.pdf'), 'wb+') as destFile:      
       destFile.write(pdf.get_bytes()) 
   #app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
   return pdf
@@ -60,7 +60,7 @@ def goodsReceivedPdf(userData, inputList, prefix, orderId, orderIdStart, heading
   else:
     fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_RECEIVED'
   pdf = PDFRenderer(page_size='A4', landscape=False, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.goods_received_print', inputList, prefix, orderId, heading, supplier)
-  with open(os.path.join(f, fileName), 'wb+') as destFile:      
+  with open(os.path.join(f, fileName + '.pdf'), 'wb+') as destFile:      
     destFile.write(pdf.get_bytes()) 
   #app_tables.files.add_row(file=pdf, type=type, owner=userData['User'], supplier=supplier)
   return pdf
@@ -161,8 +161,9 @@ def processProfiles(userData, prefix, orderId, orderIdStart, supplier):
       material = "".join(c for c in part['Material'] if c.isalnum() or c in keepcharacters).rstrip()
       part['Material'] = material
       delimiter = user_data.namingConvention['Delimiter']
-      part['Operations'] = ''.join(filter(None, [part['Bend Operation'] , part['Tap Operation'] , part['Drill Operation'] , part['Etch Operation']]))
-      
+      #part['Operations2'] = ''.join(filter(None, [part['Bend Operation'] , part['Tap Operation'] , part['Drill Operation'] , part['Etch Operation']]))
+      #part['Operations'] = ''.join(part['Operations'])
+      print(part['Operations'])
       if part['Operations'] == '' or part['Operations'] == None:
         #Create dxf name  
         #dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + process + '.dxf'
