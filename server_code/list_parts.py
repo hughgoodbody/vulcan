@@ -110,7 +110,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'Delete': None,
                            'Drill template': None,
                            'Material': None,
-                           'Operations': [],
+                           'Operations': None,
                            'Bend Operation': None,
                            'Tap Operation': None,
                            'Drill Operation': None,

@@ -161,6 +161,7 @@ def processProfiles(userData, prefix, orderId, orderIdStart, supplier):
       material = "".join(c for c in part['Material'] if c.isalnum() or c in keepcharacters).rstrip()
       part['Material'] = material
       delimiter = user_data.namingConvention['Delimiter']
+      part['Operations'] = ''.join(filter(None, [part['Bend Operation'] , part['Tap Operation'] , part['Drill Operation'] , part['Etch Operation']]))
       
       if part['Operations'] == '' or part['Operations'] == None:
         #Create dxf name  

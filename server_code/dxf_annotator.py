@@ -84,6 +84,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       dictInfo['PartNumber'] = fileNameNoSuffix
       dictInfo['Thickness'] = partInfo['Thickness']      
       dictInfo['Material'] = partInfo['Material']
+      dictInfo['Operations'] = partInfo['Operations']
       dictInfo['Bend Operation'] = partInfo['Bend Operation']
       dictInfo['Tap Operation'] = partInfo['Tap Operation']
       dictInfo['Drill Operation'] = partInfo['Drill Operation']
