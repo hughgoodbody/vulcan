@@ -79,6 +79,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       #Create a list of entries to add to drawing, this will then give the multiplier for spacing and positioning of the text
       dictInfo = {}
       drawingNotes = []
+      dictInfo.clear()
       dictInfo['File Name'] = fileName
       dictInfo['PartNumber'] = fileNameNoSuffix
       dictInfo['Thickness'] = partInfo['Thickness']      
@@ -87,7 +88,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       dictInfo['Process'] = partInfo['Process']
       dictInfo['Supplier'] = partInfo['Supplier']
       dictInfo['Qty'] = partInfo['Quantity']
-      dictInfo['PD6'] = [partInfo['Operations']]
+      dictInfo['PD6'] = []
 
       if 'B' in partInfo['Operations']:
         dictInfo['PD6'].append('B')
