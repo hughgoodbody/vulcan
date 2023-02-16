@@ -95,6 +95,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       dictInfo['Qty'] = partInfo['Quantity']
       dictInfo['PD6'] = []
       dictInfo['Undersize Holes'] = partInfo['Undersize Holes']
+      dictInfo['Etch Part Number'] = partInfo['Etch Part Number']
+      dictInfo['PARTDATA18'] = ''
 
       if dictInfo['Bend Operation'] == 'B':
         dictInfo['PD6'].append('B')
@@ -104,13 +106,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         dictInfo['Operations'].append('TAPPING')     
         
       
-      if partInfo['Etch Part Number'] == True:
-        dictInfo['PARTDATA18'] = fileNameNoSuffix
-        dictInfo['Operations'].append('ETCHING')
-        dictInfo['Etch Operation'] = 'E'
-        dictInfo['PD6'].append('E')
-      else: 
-        dictInfo['PARTDATA18'] = None
+
 
 
     
@@ -335,7 +331,10 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           msp.add_line((cent[0], y1), (cent[0], y2), dxfattribs={'layer': 'Etch'})
           holeEntity.dxf.layer = 'Hole_Drilling'                   #Move hole circle to drilling layer
           holeEntity.dxf.color = drill_colour
-          dictInfo['Operations'].append('D')
+          drillVar = True
+      if drillVar == True:    
+        dictInfo['Operations'].append('DRILL')
+        dictInfo['PD6'].append('D')
     #Etch the holes
     if dictInfo['Undersize Holes'] == 'Etch':
       if 'ETCHING REQUIRED' not in drawingNotes:
@@ -352,8 +351,16 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           msp.add_line((cent[0], y1), (cent[0], y2), dxfattribs={'layer': 'Etch'})
           holeEntity.dxf.layer = 'Dont_Cut'                   #Move hole circle to No Cut layer
           holeEntity.dxf.color = no_cut_colour
-          if 'E' not in dictInfo['Operations']:
-            dictInfo['Operations'].append('E')
+          etchVar = True
+      if dictInfo['Etch Part Number'] == True:
+        dictInfo['PARTDATA18'] = fileNameNoSuffix
+      else:
+        dictInfo['PARTDATA18'] = ''        
+      if etchVar == True or dictInfo['Etch Part Number'] == True:         
+        dictInfo['Operations'].append('ETCH')
+        dictInfo['Etch Operation'] = 'E'
+        dictInfo['PD6'].append('E')
+
 
     '''      
     #Rename the operations field to account for the drilling and etchin of undersize holes

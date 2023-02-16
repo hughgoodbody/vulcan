@@ -80,7 +80,7 @@ class ConfigurationsPanel(ConfigurationsPanelTemplate):
       #No configurations
       self.ncLabel = ConfigurationTemplates.NoConfigsTemplate()
       self.pnlValues.add_component(self.ncLabel)
-      self.ncLabel.lblNoConfigs.text = 'No configurations'        
+      self.ncLabel.lblNoConfigs.text = 'No configurations available'        
 
     self.parent.parent.btnExecute.visible = True #Show execute button on parent form
     configNotification.hide()
