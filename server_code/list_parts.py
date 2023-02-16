@@ -213,7 +213,8 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
     
   #Get Bodies
   #print(f'All Parts: {allParts}')
-  for part in allParts:      
+  for part in allParts:  
+      foundPartsInformation['Operations'].clear()
       did = part['Document ID']
       wvm_type = part['WVM Type']
       wv = part['WVM ID']
