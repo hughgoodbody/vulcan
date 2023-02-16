@@ -94,6 +94,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       dictInfo['Supplier'] = partInfo['Supplier']
       dictInfo['Qty'] = partInfo['Quantity']
       dictInfo['PD6'] = []
+      dictInfo['Undersize Holes'] = partInfo['Undersize Holes']
 
       if dictInfo['Bend Operation'] == 'B':
         dictInfo['PD6'].append('B')
@@ -318,10 +319,10 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       
     #UNDERSIZE HOLES
     #Ignore Ratio
-    if partInfo['Undersize Holes'] == 'Ignore':
+    if dictInfo['Undersize Holes'] == 'Ignore':
       ratio = 0.01  
     #Drill the holes - still need etch marks though
-    if partInfo['Undersize Holes'] == 'Drill':
+    if dictInfo['Undersize Holes'] == 'Drill':
       for holeEntity in lstHolesOnDrawing:
         if round((holeEntity.dxf.radius*2),1) <= ratio * int(dictInfo['Thickness']):
           cent = holeEntity.dxf.center
@@ -336,7 +337,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           holeEntity.dxf.color = drill_colour
           dictInfo['Operations'].append('D')
     #Etch the holes
-    if partInfo['Undersize Holes'] == 'Etch':
+    if dictInfo['Undersize Holes'] == 'Etch':
       if 'ETCHING REQUIRED' not in drawingNotes:
         drawingNotes.append('ETCHING REQUIRED')
       for holeEntity in lstHolesOnDrawing:
