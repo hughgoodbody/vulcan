@@ -66,14 +66,14 @@ components:
       icon_align: left, spacing_below: small, italic: false, background: '', bold: true,
       underline: false, icon: ''}
     name: label_3
-    layout_properties: {row: JLBKTL, width_xs: 3, col_xs: 0, width: 188.6}
+    layout_properties: {row: JLBKTL, width_xs: 2, col_xs: 0, width: 188.6}
   - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Error',
       visible: true, text: Ref, font_size: 20, font: '', spacing_above: small, icon_align: left,
       spacing_below: small, italic: false, background: '', bold: true, underline: false,
       icon: ''}
     name: lblIdRef
-    layout_properties: {row: JLBKTL, width_xs: 3, col_xs: 3, width: 188.6}
+    layout_properties: {row: JLBKTL, width_xs: 3, col_xs: 2, width: 162.5}
   - type: Label
     properties: {role: null, align: right, tooltip: '', border: '', foreground: '',
       visible: true, text: 'Project Reference:', font_size: 20, font: '', spacing_above: small,
