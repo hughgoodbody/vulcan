@@ -358,7 +358,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       body['Part Thumbnail'] = imageStr
 
       #Get tapped holes
-      tappedHolesResult = True
+      tappedHolesResult = False
       if tappedHolesResult is not False:
         body['Hole Data'] =tappedHolesResult
         body['Tap Operation'] = 'T'
