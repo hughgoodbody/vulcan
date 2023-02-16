@@ -100,10 +100,10 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
 
       if dictInfo['Bend Operation'] == 'B':
         dictInfo['PD6'].append('B')
-        dictInfo['Operations'].append('BENDING')
+        dictInfo['Operations'].append('BEND')
       if dictInfo['Tap Operation'] == 'T':
         dictInfo['PD6'].append('T')
-        dictInfo['Operations'].append('TAPPING')     
+        dictInfo['Operations'].append('TAP')     
         
       
 
