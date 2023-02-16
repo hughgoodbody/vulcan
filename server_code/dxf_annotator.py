@@ -84,16 +84,19 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       dictInfo['PartNumber'] = fileNameNoSuffix
       dictInfo['Thickness'] = partInfo['Thickness']      
       dictInfo['Material'] = partInfo['Material']
-      dictInfo['Operations'] = []
+      dictInfo['Bend Operation'] = partInfo['Bend Operation']
+      dictInfo['Tap Operation'] = partInfo['Tap Operation']
+      dictInfo['Drill Operation'] = partInfo['Drill Operation']
+      dictInfo['Etch Operation'] = partInfo['Etch Operation']
       dictInfo['Process'] = partInfo['Process']
       dictInfo['Supplier'] = partInfo['Supplier']
       dictInfo['Qty'] = partInfo['Quantity']
-      dictInfo['PD6'] = []
+      dictInfo['PD6'] = None
 
-      if 'B' in partInfo['Operations']:
+      if dictInfo['Bend Operation'] == 'B':
         dictInfo['PD6'].append('B')
         dictInfo['Operations'].append('BENDING')
-      if 'T' in partInfo['Operations']:
+      if dictInfo['Tap Operation'] == 'T':
         dictInfo['PD6'].append('T')
         dictInfo['Operations'].append('TAPPING')     
         
@@ -101,6 +104,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       if partInfo['Etch Part Number'] == True:
         dictInfo['PARTDATA18'] = fileNameNoSuffix
         dictInfo['Operations'].append('ETCHING')
+        dictInfo['Etch Operation'] = 'E'
         dictInfo['PD6'].append('E')
       else: 
         dictInfo['PARTDATA18'] = None

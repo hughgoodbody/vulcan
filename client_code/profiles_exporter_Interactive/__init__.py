@@ -31,6 +31,9 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     self.panel2 = self.repeating_panel_2
     self.orderId = self.dataFromTable[0]['Order ID']
 
+    for j in self.panel.items:
+      print(j['Operations'])
+
     
 
     #Set thumbnail image from the 'thumbnail' field - decode from base64

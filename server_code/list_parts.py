@@ -111,6 +111,10 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
                            'Drill template': None,
                            'Material': None,
                            'Operations': [],
+                           'Bend Operation': None,
+                           'Tap Operation': None,
+                           'Drill Operation': None,
+                           'Etch Operation': None,
                            'Thickness': None,
                            'Undersize Holes': profileOptions['Hole Options'],
                            'Etch Part Number': profileOptions['Etch Part Number'],
@@ -221,7 +225,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       #If sheet metal, get body details of the flat part ID
       if part['Sheet Metal'] == True:
         pid = part['Flat Pattern ID'] 
-        foundPartsInformation['Operations'].append('B')
+        foundPartsInformation['Bend Operation'] = 'B'
       else:
         pid = part['Part ID'] 
       #print(f'Part ID: {pid}')  
@@ -355,7 +359,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       tappedHolesResult = True
       if tappedHolesResult is not False:
         foundPartsInformation['Hole Data'] =tappedHolesResult
-        foundPartsInformation['Operations'].append('T')
+        foundPartsInformation['Tap Operation'] = 'T'
         
       
       
