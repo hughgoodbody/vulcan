@@ -35,7 +35,8 @@ class RowTemplate(RowTemplateTemplate):
 
     #Set Multiplier and some hole options
     self.item['Quantity'] = (self.item['Quantity'] * self.item['Multiplier']) + self.item['Additional Qty']
-    #Set operations
+    #Set undersize hole options
+    self.item['Undersize Holes'] = self.dropHoles.selected_value
    
     if self.item['Etch Part Number'] is True or (self.item['Bend Line Marks'] is True and self.item['Sheet Metal'] is True):  
       self.item['Etch Operation'] = 'E'      
@@ -195,6 +196,7 @@ class RowTemplate(RowTemplateTemplate):
     pass
 
   def dropHoles_change(self, **event_args):
+    self.item['Undersize Holes'] = self.dropHoles.selected_value
 
     pass
 
