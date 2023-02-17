@@ -415,9 +415,10 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     
     
     #Save changes to the drawing
-    dwg.save()    
-    #os.rename(path\fileName, path\newFileName)
-    dxfFile.rename(newFileName)
+    dwg.save()  
+    f = Path(dxfFile)
+    #os.path.rename(fileName, newFileName)
+    f.rename(newFileName)
 
     
     #print(f"Bounding box: {finalBoundingBox}")
