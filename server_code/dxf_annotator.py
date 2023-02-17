@@ -405,17 +405,22 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       if finalBoundingBox.extmax[0] < 0:
         squareBoxMax[0] = -finalBoundingBox.extmax[1]
       else:
-         squareBoxMax[0] = finalBoundingBox.extmax[1]    
+         squareBoxMax[0] = finalBoundingBox.extmax[1]   
+
+    opSuffix = ''.join(dictInfo['PD6'])  
+    newFileName = fileNameNoSuffix + opSuffix + '.dxf'
+    dictInfo['File Name'] = newFileName
         
          
     
     
     #Save changes to the drawing
     dwg.save()    
-    #os.rename(fileName, dictInfo['File Name'] + '.dxf')
+    os.rename(r'path\fileName', r'path\newFileName')
+
     
     #print(f"Bounding box: {finalBoundingBox}")
-    binPackList.append({"File": fileName, "Bounding Box": [squareBoxMax, finalBoundingBox.extmin], "Pre Text Box": partBoundingBox, 'Scale Factor': imageScaleFactor, 'Text Height': text_height})
+    binPackList.append({"File": dictInfo['File Name'], "Bounding Box": [squareBoxMax, finalBoundingBox.extmin], "Pre Text Box": partBoundingBox, 'Scale Factor': imageScaleFactor, 'Text Height': text_height})
     #print(f"Bin Pack List: {binPackList}")
     
   
@@ -439,8 +444,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
             ipLasercsvGrade = "HR"
   
   
-    ipLasercsvList.append([dictInfo['File Name'], ipLasercsvMaterial, ipLasercsvGrade, dictInfo['Thickness'], csvGrain, csvOverride, dictInfo['Qty'], dictInfo['Notes'], csvDwgnfm])  
-    othercsvList.append([dictInfo['PartNumber'], dictInfo['Material'], dictInfo['Thickness'], csvGrain, csvOverride, dictInfo['Qty'], dictInfo['Notes'], csvDwgnfm])
+    ipLasercsvList.append([dictInfo['File Name'], ipLasercsvMaterial, ipLasercsvGrade, dictInfo['Thickness'], csvGrain, csvOverride, dictInfo['Qty'], dictInfo['Operations'], csvDwgnfm])  
+    othercsvList.append([dictInfo['PartNumber'], dictInfo['Material'], dictInfo['Thickness'], csvGrain, csvOverride, dictInfo['Qty'], dictInfo['Operations'], csvDwgnfm])
   
   #Get reference number from data table to build csv and zip file name
   

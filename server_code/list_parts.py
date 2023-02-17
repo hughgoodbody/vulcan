@@ -227,7 +227,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       if part['Sheet Metal'] == True:
         pid = part['Flat Pattern ID'] 
         part['Bend Operation'] = 'B'
-        part['Operations'] = 'B'
+        part['Operations2'] = 'B'
       else:
         pid = part['Part ID'] 
       #print(f'Part ID: {pid}')  
@@ -363,10 +363,10 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
         body['Hole Data'] =tappedHolesResult
         body['Tap Operation'] = 'T'
         #foundPartsInformation['Operations'] = foundPartsInformation['Operations'] + 'T'
-        if body['Operations'] is not None:
-          body['Operations'] = 'BT'
+        if body['Operations2'] is not None:
+          body['Operations2'] = 'BT'
         else:  
-          body['Operations'] = 'T'
+          body['Operations2'] = 'T'
         
       
       
