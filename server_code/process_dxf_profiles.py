@@ -124,7 +124,7 @@ def processProfiles(userData, prefix, orderId, orderIdStart, supplier):
           'destinationName': 'Export Flatpattern via API',
           'version': '2007',
           'flatten': True,
-          'includeBendCenterlines': False,
+          'includeBendCenterlines': True,
           'includeSketches': False,
           'sheetMetalFlat': True,
           'triggerAutoDownload': True,
@@ -168,7 +168,7 @@ def processProfiles(userData, prefix, orderId, orderIdStart, supplier):
         #Create dxf name  
         #dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + process + '.dxf'
         dxfName = (part[user_data.namingConvention['field0']] + delimiter + str(part[user_data.namingConvention['field1']]) + 'mm' + delimiter + part[user_data.namingConvention['field2']] + delimiter + str(part[user_data.namingConvention['field3']])
-        + delimiter + '.dxf')
+        + '.dxf')
       else:  
         #Create dxf name  
         #dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + operations + '_' + process + '.dxf'  

@@ -97,6 +97,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       dictInfo['Undersize Holes'] = partInfo['Undersize Holes']
       dictInfo['Etch Part Number'] = partInfo['Etch Part Number']
       dictInfo['PARTDATA18'] = ''
+      dictInfo['Bend Line Marks'] = partInfo['Bend Line Marks']
+      dictInfo['Sheet Metal'] = partInfo['Sheet Metal']
 
       if dictInfo['Bend Operation'] == 'B':
         dictInfo['PD6'].append('B')
@@ -270,7 +272,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       
       
     #### GET BEND LINES ####   
-    if partInfo['Sheet Metal'] == True: 
+    if dictInfo['Sheet Metal'] == True: 
       try:
         bendLines = msp.query('LINE[(layer=="SHEETMETAL_BEND_LINES_DOWN" | layer=="SHEETMETAL_BEND_LINES_UP")]')
         blEtchLength = 12
@@ -279,7 +281,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           bl.dxf.color = no_cut_colour
           dwg.layers.get('SHEETMETAL_BEND_LINES_DOWN').off()
           dwg.layers.get('SHEETMETAL_BEND_LINES_UP').off()
-          if bendLineMarks == True:
+          if dictInfo['Bend Line Marks'] == True:
             lenBendLine = math.sqrt(((bl.dxf.end[0] - bl.dxf.start[0])**2) + ((bl.dxf.end[1] - bl.dxf.start[1])**2))
             startEnd = ((bl.dxf.start[0] + (((bl.dxf.end[0] - bl.dxf.start[0])/lenBendLine) * blEtchLength)), (bl.dxf.start[1] + (((bl.dxf.end[1] - bl.dxf.start[1])/lenBendLine) * blEtchLength)))  
             endEnd = ((bl.dxf.end[0] - (((bl.dxf.end[0] - bl.dxf.start[0])/lenBendLine) * blEtchLength)), (bl.dxf.end[1] - (((bl.dxf.end[1] - bl.dxf.start[1])/lenBendLine) * blEtchLength)))          
@@ -357,12 +359,13 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           msp.add_line((cent[0], y1), (cent[0], y2), dxfattribs={'layer': 'Etch'})
           holeEntity.dxf.layer = 'Dont_Cut'                   #Move hole circle to No Cut layer
           holeEntity.dxf.color = no_cut_colour
+          global etchVar
           etchVar = True
       if dictInfo['Etch Part Number'] == True:
         dictInfo['PARTDATA18'] = fileNameNoSuffix
       else:
         dictInfo['PARTDATA18'] = ''        
-      if etchVar == True or dictInfo['Etch Part Number'] == True:         
+      if etchVar == True or dictInfo['Etch Part Number'] == True or (dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True):         
         dictInfo['Operations'].append('ETCH')
         dictInfo['Etch Operation'] = 'E'
         dictInfo['PD6'].append('E')
@@ -382,7 +385,17 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     dictInfo['File Name'] = newName
     '''
     #APPLY THE ANNOTATIONS TO THE DRAWING **************************************************************************************
-    #dimensionPrincipal(msp)
+    
+    #Amend the Part Number to account for the operations
+    opSuffix = ''.join(dictInfo['PD6'])
+    if opSuffix is not '':
+      newFileName = fileNameNoSuffix + '_' + opSuffix + '_' + dictInfo['Process Suffix'] + '.dxf'
+    else:
+      newFileName = fileNameNoSuffix + '_' + dictInfo['Process Suffix'] + '.dxf'
+    dictInfo['File Name'] = newFileName
+    dictInfo['PartNumber'] = newFileName
+    
+    
     #Get text height for dimension
     text_height, text_spacing = set_text_height()
     #dimensionBoundingBox(msp, partBoundingBox, text_height)
@@ -413,9 +426,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       else:
          squareBoxMax[0] = finalBoundingBox.extmax[1]   
 
-    opSuffix = ''.join(dictInfo['PD6'])  
-    newFileName = fileNameNoSuffix + opSuffix + dictInfo['Process Suffix'] + '.dxf'
-    dictInfo['File Name'] = newFileName
+    
         
          
     
@@ -521,8 +532,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     for a, b in  zip(x_1, y_1):
         for a1, b1 in zip(a, b):
           imageCoords.append((a1, b1,))
-    print(f'x_1 = {x_1}')
-    print(f'y_1 = {y_1}')
+    #print(f'x_1 = {x_1}')
+    #print(f'y_1 = {y_1}')
 
     for c in range(0,len(pageChunks)): 
       print(f'Len Page Chunks {len(pageChunks)}')
@@ -547,7 +558,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       positionGrid = sheetSize['imageStartPoint']
       
       for p in range(0,len(pageChunks[c])):
-        print(f'Len Page Chunks C {len(pageChunks[c])}')
+        #print(f'Len Page Chunks C {len(pageChunks[c])}')
         # Create a block 
         #blockName = str(os.path.basename(eachFile))    #Remove path      
         blockName = pageChunks[c][p]['File']
