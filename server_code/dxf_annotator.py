@@ -652,7 +652,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       # import source entities into target block
       importer.import_entities(ents, targetBlock)      
       msp.add_blockref('blk'+templateName,(0,0), dxfattribs={
-          'color': 0,
+          'color': 7,
       })
       #'''
       importer.finalize()
@@ -679,6 +679,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           #msp_properties.set_colors("#eaeaeaff")
           matplotlib.qsave(doc.modelspace(), fileNameNoSuffix+str(chunkId) + '.pdf', bg='#eaeaeaff', size_inches=(16.5,11.7))
           #FFFFFF00
+
       chunkId = chunkId + 1  
   
     
