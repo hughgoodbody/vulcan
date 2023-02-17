@@ -38,6 +38,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
   from ezdxf.addons.drawing import RenderContext, Frontend
   from ezdxf.addons.drawing.matplotlib import MatplotlibBackend
   from ezdxf.addons.drawing import matplotlib
+  from ezdxf.addons.drawing.properties import LayoutProperties
   from . import sheetSize
   import numpy as np
 
@@ -677,7 +678,17 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           fileNameNoSuffix = contactSheetName+str(chunkId).strip('.dxf')
           msp = doc.modelspace()
           #msp_properties.set_colors("#eaeaeaff")
-          matplotlib.qsave(doc.modelspace(), fileNameNoSuffix+str(chunkId) + '.pdf', bg='#eaeaeaff', size_inches=(16.5,11.7))
+          #matplotlib.qsave(doc.modelspace(), fileNameNoSuffix+str(chunkId) + '.pdf', bg='#eaeaeaff', size_inches=(16.5,11.7))
+          fig = plt.figure()
+          ax = fig.add_axes([0, 0, 1, 1])
+          ctx = RenderContext(doc)
+          # get the modelspace properties
+          msp_properties = LayoutProperties.from_layout(msp)          
+          # set light gray background color and black foreground color
+          msp_properties.set_colors("#eaeaeaff")
+          out = MatplotlibBackend(ax)
+          Frontend(ctx, out).draw_layout(doc.modelspace(), finalize=True, layout_properties=msp_properties)
+          fig.savefig(fileNameNoSuffix+str(chunkId) + '.pdf', dpi=100, transparent=True)
           #FFFFFF00
 
       chunkId = chunkId + 1  
@@ -685,3 +696,5 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     
     os.chdir('/tmp')   
   pass
+
+
