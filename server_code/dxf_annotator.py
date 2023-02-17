@@ -167,9 +167,18 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     except:
         pass
 
-    #Put all entities onto Profile layer
-    #for entity in msp:
-      #entity.dxf.layer = "Profile"
+    try:
+        print('Searching bend lines...')
+        bendLinesDown = msp.query('LINE(layer=="SHEETMETAL_BEND_LINES_DOWN"])')   
+        bendLinesUp = msp.query('LINE(layer=="SHEETMETAL_BEND_LINES_Up"])') 
+        #print(bendLinesDown)
+        #print(bendLinesUp)
+    except:
+      pass
+
+    #Put all entities onto Profile layer - otherwise the PDF doesn't work
+    for entity in msp:
+      entity.dxf.layer = "Profile"
     #### GET DRAWING LIMITS ####  
     extMin = dwg.header['$EXTMIN']
     extMax = dwg.header['$EXTMAX']
@@ -272,44 +281,39 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       
       
     #### GET BEND LINES ####   
-    if dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True: 
+    if dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True:       
+      blEtchLength = 12
       try:
-        print('Searching bend lines...')
-        bendLinesDown = msp.query('LINE(layer=="SHEETMETAL_BEND_LINES_DOWN"])')   
-        bendLinesUp = msp.query('LINE(layer=="SHEETMETAL_BEND_LINES_Up"])') 
-        print(bendLinesDown)
-        print(bendLinesUp)
-        blEtchLength = 12
-        try:
-          for bl in bendLinesDown:
-            print(f'Single bend line DOWN {bl}')
-            #Change bend line colour to no-cut and turn layer off
-            bl.dxf.color = no_cut_colour
-            dwg.layers.get('SHEETMETAL_BEND_LINES_DOWN').off()
-            #dwg.layers.get('SHEETMETAL_BEND_LINES_UP').off()            
-            lenBendLine = math.sqrt(((bl.dxf.end[0] - bl.dxf.start[0])**2) + ((bl.dxf.end[1] - bl.dxf.start[1])**2))
-            startEnd = ((bl.dxf.start[0] + (((bl.dxf.end[0] - bl.dxf.start[0])/lenBendLine) * blEtchLength)), (bl.dxf.start[1] + (((bl.dxf.end[1] - bl.dxf.start[1])/lenBendLine) * blEtchLength)))  
-            endEnd = ((bl.dxf.end[0] - (((bl.dxf.end[0] - bl.dxf.start[0])/lenBendLine) * blEtchLength)), (bl.dxf.end[1] - (((bl.dxf.end[1] - bl.dxf.start[1])/lenBendLine) * blEtchLength)))          
-            msp.add_line((bl.dxf.start), (startEnd), dxfattribs={'layer': 'Etch'})
-            msp.add_line((bl.dxf.end), (endEnd), dxfattribs={'layer': 'Etch'})
-        except:
-          pass
-        try:  
-          for bl in bendLinesUp:
-              print(f'Single bend line UP {bl}')
-              #Change bend line colour to no-cut and turn layer off
-              bl.dxf.color = no_cut_colour
-              #dwg.layers.get('SHEETMETAL_BEND_LINES_DOWN').off()
-              dwg.layers.get('SHEETMETAL_BEND_LINES_UP').off()
-              lenBendLine = math.sqrt(((bl.dxf.end[0] - bl.dxf.start[0])**2) + ((bl.dxf.end[1] - bl.dxf.start[1])**2))
-              startEnd = ((bl.dxf.start[0] + (((bl.dxf.end[0] - bl.dxf.start[0])/lenBendLine) * blEtchLength)), (bl.dxf.start[1] + (((bl.dxf.end[1] - bl.dxf.start[1])/lenBendLine) * blEtchLength)))  
-              endEnd = ((bl.dxf.end[0] - (((bl.dxf.end[0] - bl.dxf.start[0])/lenBendLine) * blEtchLength)), (bl.dxf.end[1] - (((bl.dxf.end[1] - bl.dxf.start[1])/lenBendLine) * blEtchLength)))          
-              msp.add_line((bl.dxf.start), (startEnd), dxfattribs={'layer': 'Etch'})
-              msp.add_line((bl.dxf.end), (endEnd), dxfattribs={'layer': 'Etch'})
-        except:
-          pass  
+        for bl in bendLinesDown:
+          bl.dxf.layer = "SHEETMETAL_BEND_LINES_DOWN"
+          print(f'Single bend line DOWN {bl}')
+          #Change bend line colour to no-cut and turn layer off
+          bl.dxf.color = no_cut_colour
+          dwg.layers.get('SHEETMETAL_BEND_LINES_DOWN').off()
+          #dwg.layers.get('SHEETMETAL_BEND_LINES_UP').off()            
+          lenBendLine = math.sqrt(((bl.dxf.end[0] - bl.dxf.start[0])**2) + ((bl.dxf.end[1] - bl.dxf.start[1])**2))
+          startEnd = ((bl.dxf.start[0] + (((bl.dxf.end[0] - bl.dxf.start[0])/lenBendLine) * blEtchLength)), (bl.dxf.start[1] + (((bl.dxf.end[1] - bl.dxf.start[1])/lenBendLine) * blEtchLength)))  
+          endEnd = ((bl.dxf.end[0] - (((bl.dxf.end[0] - bl.dxf.start[0])/lenBendLine) * blEtchLength)), (bl.dxf.end[1] - (((bl.dxf.end[1] - bl.dxf.start[1])/lenBendLine) * blEtchLength)))          
+          msp.add_line((bl.dxf.start), (startEnd), dxfattribs={'layer': 'Etch'})
+          msp.add_line((bl.dxf.end), (endEnd), dxfattribs={'layer': 'Etch'})
       except:
-          pass
+        pass
+      try:  
+        for bl in bendLinesUp:
+          bl.dxf.layer = "SHEETMETAL_BEND_LINES_UP"
+          print(f'Single bend line UP {bl}')
+          #Change bend line colour to no-cut and turn layer off
+          bl.dxf.color = no_cut_colour
+          #dwg.layers.get('SHEETMETAL_BEND_LINES_DOWN').off()
+          dwg.layers.get('SHEETMETAL_BEND_LINES_UP').off()
+          lenBendLine = math.sqrt(((bl.dxf.end[0] - bl.dxf.start[0])**2) + ((bl.dxf.end[1] - bl.dxf.start[1])**2))
+          startEnd = ((bl.dxf.start[0] + (((bl.dxf.end[0] - bl.dxf.start[0])/lenBendLine) * blEtchLength)), (bl.dxf.start[1] + (((bl.dxf.end[1] - bl.dxf.start[1])/lenBendLine) * blEtchLength)))  
+          endEnd = ((bl.dxf.end[0] - (((bl.dxf.end[0] - bl.dxf.start[0])/lenBendLine) * blEtchLength)), (bl.dxf.end[1] - (((bl.dxf.end[1] - bl.dxf.start[1])/lenBendLine) * blEtchLength)))          
+          msp.add_line((bl.dxf.start), (startEnd), dxfattribs={'layer': 'Etch'})
+          msp.add_line((bl.dxf.end), (endEnd), dxfattribs={'layer': 'Etch'})
+      except:
+        pass  
+
   
   
       
