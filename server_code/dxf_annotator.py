@@ -42,7 +42,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
   import numpy as np
 
   xTappingDict = {}
-  #List to generate CSV from
+  bendUp = []  
+  bendDown = []
   ipLasercsvList = [["NAME", "MATERIAL", "GRADE", "THICKNESS", "GRAIN", "OVERRIDE EXISTING", "QUANTITY", "NOTES", "DWG NOT FOR MANUFACTURE"]]
   othercsvList = [["NAME", "MATERIAL", "THICKNESS", "GRAIN", "OVERRIDE EXISTING", "QUANTITY", "NOTES", "DWG NOT FOR MANUFACTURE"]]
 
@@ -168,17 +169,29 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         pass
 
     try:
-        print('Searching bend lines...')
-        bendLinesDown = msp.query('LINE(layer=="SHEETMETAL_BEND_LINES_DOWN"])')   
-        bendLinesUp = msp.query('LINE(layer=="SHEETMETAL_BEND_LINES_Up"])') 
-        #print(bendLinesDown)
-        #print(bendLinesUp)
+      for bendLine in msp:
+        if bendline.dxf.layer == "SHEETMETAL_BEND_LINES_DOWN":
+          print('Down Bend Found')
+          bendDown.append(bendLine)
+          
+        if bendline.dxf.layer == "SHEETMETAL_BEND_LINES_UP":  
+          print('Up Bend Found')
+          bendUp.append(bendLine)
     except:
       pass
 
+    dwg.layers.get('SHEETMETAL_BEND_LINES_DOWN').off()
+    dwg.layers.get('SHEETMETAL_BEND_LINES_UP').off()
+    #print(bendLinesDown)
+    #print(bendLinesUp)
+
+
     #Put all entities onto Profile layer - otherwise the PDF doesn't work
-    for entity in msp:
-      entity.dxf.layer = "Profile"
+    #for entity in msp:
+      #if entity in bendUp or entity in bendDown:
+       # pass
+      #else:
+        #entity.dxf.layer = "Profile"
     #### GET DRAWING LIMITS ####  
     extMin = dwg.header['$EXTMIN']
     extMax = dwg.header['$EXTMAX']
@@ -284,7 +297,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     if dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True:       
       blEtchLength = 12
       try:
-        for bl in bendLinesDown:
+        for bl in bendDown:
           bl.dxf.layer = "SHEETMETAL_BEND_LINES_DOWN"
           print(f'Single bend line DOWN {bl}')
           #Change bend line colour to no-cut and turn layer off
@@ -299,7 +312,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       except:
         pass
       try:  
-        for bl in bendLinesUp:
+        for bl in bendUp:
           bl.dxf.layer = "SHEETMETAL_BEND_LINES_UP"
           print(f'Single bend line UP {bl}')
           #Change bend line colour to no-cut and turn layer off
