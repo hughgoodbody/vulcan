@@ -677,9 +677,10 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           fileNameNoSuffix = contactSheetName+str(chunkId).strip('.dxf')
           msp = doc.modelspace()
           #msp_properties.set_colors("#eaeaeaff")
-          matplotlib.qsave(doc.modelspace(), fileNameNoSuffix+str(chunkId) + '.pdf', bg='#FFFFFF00', size_inches=(16.5,11.7))
+          matplotlib.qsave(doc.modelspace(), fileNameNoSuffix+str(chunkId) + '.pdf', bg='#eaeaeaff', size_inches=(16.5,11.7))
+          #FFFFFF00
       chunkId = chunkId + 1  
-
+  
     
     os.chdir('/tmp')   
   pass
