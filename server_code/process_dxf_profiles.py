@@ -168,12 +168,12 @@ def processProfiles(userData, prefix, orderId, orderIdStart, supplier):
         #Create dxf name  
         #dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + process + '.dxf'
         dxfName = (part[user_data.namingConvention['field0']] + delimiter + str(part[user_data.namingConvention['field1']]) + 'mm' + delimiter + part[user_data.namingConvention['field2']] + delimiter + str(part[user_data.namingConvention['field3']])
-        + delimiter + part[user_data.namingConvention['field5']] + '.dxf')
+        + delimiter + '.dxf')
       else:  
         #Create dxf name  
         #dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + operations + '_' + process + '.dxf'  
         dxfName = (part[user_data.namingConvention['field0']] + delimiter + str(part[user_data.namingConvention['field1']]) + 'mm' + delimiter + part[user_data.namingConvention['field2']] + delimiter + str(part[user_data.namingConvention['field3']]) 
-        + delimiter + part[user_data.namingConvention['field4']] + delimiter + part[user_data.namingConvention['field5']] + '.dxf')
+        + delimiter + part[user_data.namingConvention['field4']] + '.dxf')
         
       #Add dxf filename to part information
       part['DXF Name'] = dxfName

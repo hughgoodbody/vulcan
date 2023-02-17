@@ -110,18 +110,24 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
 
 
     
-      if 'LAS' in dictInfo['Process']:  
+      if dictInfo['Process'] == 'Laser':  
         dictInfo['ProcessOnDrawing'] = "LASER"
-      elif 'WJ' in dictInfo['Process']:  
+        dictInfo['Process Suffix'] = "LAS"
+      elif dictInfo['Process'] == 'Waterjet':  
         dictInfo['ProcessOnDrawing'] = "WATERJET"
-      elif 'PLA' in dictInfo['Process']:  
+        dictInfo['Process Suffix'] = "WJ"
+      elif dictInfo['Process'] == 'Plasma':  
         dictInfo['ProcessOnDrawing'] = "PLASMA"
-      elif 'OXY' in dictInfo['Process']:  
+        dictInfo['Process Suffix'] = "PLA"
+      elif dictInfo['Process'] == 'Oxy-Fuel':  
         dictInfo['ProcessOnDrawing'] = "OXY-FUEL"
-      elif 'SAW' in dictInfo['Process']:  
+        dictInfo['Process Suffix'] = "OXY"
+      elif dictInfo['Process'] == 'Saw':  
         dictInfo['ProcessOnDrawing'] = "SAW"
-      elif 'MAN' in dictInfo['Process']:  
-        dictInfo['ProcessOnDrawing'] = "MANUAL"  
+        dictInfo['Process Suffix'] = "SAW"
+      elif dictInfo['Process'] == 'Manual':  
+        dictInfo['ProcessOnDrawing'] = "MANUAL"
+        dictInfo['Process Suffix'] = "MAN"
       else:
         dictInfo['ProcessOnDrawing'] = "" 
         
@@ -408,7 +414,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
          squareBoxMax[0] = finalBoundingBox.extmax[1]   
 
     opSuffix = ''.join(dictInfo['PD6'])  
-    newFileName = fileNameNoSuffix + opSuffix + '.dxf'
+    newFileName = fileNameNoSuffix + opSuffix + dictInfo['Process Suffix'] + '.dxf'
     dictInfo['File Name'] = newFileName
         
          
@@ -416,9 +422,10 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     
     #Save changes to the drawing
     dwg.save()  
-    f = Path(dxfFile)
-    #os.path.rename(fileName, newFileName)
-    f.rename(newFileName)
+    #f = Path(dxfFile)
+    os.chdir(path) 
+    os.rename(fileName, newFileName)
+    #f.rename(newFileName)
 
     
     #print(f"Bounding box: {finalBoundingBox}")
