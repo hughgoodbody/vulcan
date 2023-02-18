@@ -39,6 +39,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
   from ezdxf.addons.drawing.matplotlib import MatplotlibBackend
   from ezdxf.addons.drawing import matplotlib
   from ezdxf.addons.drawing.properties import LayoutProperties
+  from ezdxf.entities import DXFGraphic
   from . import sheetSize
   import numpy as np
 
@@ -101,6 +102,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       dictInfo['PARTDATA18'] = ''
       dictInfo['Bend Line Marks'] = partInfo['Bend Line Marks']
       dictInfo['Sheet Metal'] = partInfo['Sheet Metal']
+      dictInfo['Bend Line Marks'] = True
 
       if dictInfo['Bend Operation'] == 'B':
         dictInfo['PD6'].append('B')
@@ -585,7 +587,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       tdoc.layers.add(name='Annotations', color = annotations_colour)
       tdoc.layers.add(name='Dont_Cut', color = no_cut_colour)
       tdoc.layers.add(name='Hole_Tapping', color = tapping_colour)
-      tdoc.layers.add(name='Border')
+      tdoc.layers.add(name='Border', color = 0)
       tdoc.layers.add(name='Profile')
       
       xc = 0
@@ -595,13 +597,35 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       #for eachFile in searchfiles: 
       os.chdir(folder)
       positionGrid = sheetSize['imageStartPoint']
+
+      #'''
+      #Add border
+      #Get template     
+      templateRow = app_tables.drawingtemplates.get(size='A3', owner=userData['User'])
+      template = templateRow['template']
+      templateName = 'A3Template'
+      mediaObject = anvil.BlobMedia('.dxf', template.get_bytes(), name=templateName)  
+      with open(os.path.join(folder, templateName), 'wb+') as destFile:      
+        destFile.write(mediaObject.get_bytes())
+      sdoc = ezdxf.readfile(templateName) 
+      os.remove(templateName)
+      targetBlock = tdoc.blocks.new(name='blk'+templateName)
+      
+      #Import source modelspace into block 
+      importer = Importer(sdoc, tdoc)
+      ents = sdoc.modelspace().query('*')      
+      # import source entities into target block
+      importer.import_entities(ents, targetBlock)      
+      msp.add_blockref('blk'+templateName,(0,0), dxfattribs={
+          'color': 7,
+      })
+      #'''
       
       for p in range(0,len(pageChunks[c])):
         #print(f'Len Page Chunks C {len(pageChunks[c])}')
         # Create a block 
         #blockName = str(os.path.basename(eachFile))    #Remove path      
-        blockName = pageChunks[c][p]['File']
-        
+        blockName = pageChunks[c][p]['File']     
         
         #Source document
         #sdoc = ezdxf.readfile(eachFile)
@@ -635,27 +659,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         positionGrid = (positionGrid[0], positionGrid[1] + sheetSize['Box Height'])
         #xc = xc + 300
         #yc = yc + 0 
-      #'''
-      #Add border
-      #Get template     
-      templateRow = app_tables.drawingtemplates.get(size='A3', owner=userData['User'])
-      template = templateRow['template']
-      templateName = 'A3Template'
-      mediaObject = anvil.BlobMedia('.dxf', template.get_bytes(), name=templateName)  
-      with open(os.path.join(folder, templateName), 'wb+') as destFile:      
-        destFile.write(mediaObject.get_bytes())
-      sdoc = ezdxf.readfile(templateName) 
-      os.remove(templateName)
-      targetBlock = tdoc.blocks.new(name='blk'+templateName)
-      #Import source modelspace into block 
-      importer = Importer(sdoc, tdoc)
-      ents = sdoc.modelspace().query('*')      
-      # import source entities into target block
-      importer.import_entities(ents, targetBlock)      
-      msp.add_blockref('blk'+templateName,(0,0), dxfattribs={
-          'color': 7,
-      })
-      #'''
+
       importer.finalize()
       #Add reference detail to the contact sheet
       titleTextHeight = sheetSize['Title Text']     
@@ -677,8 +681,12 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       if not auditor.has_errors:
           fileNameNoSuffix = contactSheetName+str(chunkId).strip('.dxf')
           msp = doc.modelspace()
+          #Function to not render bend layers
+          def my_filter(e: DXFGraphic) -> bool:
+            return (e.dxf.layer != "SHEETMETAL_BEND_LINES_DOWN" or e.dxf.layer != "SHEETMETAL_BEND_LINES_UP")
           #msp_properties.set_colors("#eaeaeaff")
-          #matplotlib.qsave(doc.modelspace(), fileNameNoSuffix+str(chunkId) + '.pdf', bg='#eaeaeaff', size_inches=(16.5,11.7))
+          matplotlib.qsave(doc.modelspace(), fileNameNoSuffix+str(chunkId) + '.pdf', bg='#FFFFFFFF', size_inches=(16.5,11.7))
+          '''
           fig = plt.figure()
           ax = fig.add_axes([0, 0, 1, 1])
           ctx = RenderContext(doc)
@@ -687,8 +695,9 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           # set light gray background color and black foreground color
           msp_properties.set_colors("#eaeaeaff")
           out = MatplotlibBackend(ax)
-          Frontend(ctx, out).draw_layout(doc.modelspace(), finalize=True, layout_properties=msp_properties)
+          Frontend(ctx, out).draw_layout(doc.modelspace(), finalize=True, layout_properties=msp_properties, filter_func=my_filter)
           fig.savefig(fileNameNoSuffix+str(chunkId) + '.pdf', dpi=100, transparent=True)
+          '''
           #FFFFFF00
 
       chunkId = chunkId + 1  
@@ -696,5 +705,9 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     
     os.chdir('/tmp')   
   pass
+
+
+
+
 
 
