@@ -676,11 +676,12 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         refText = msp.add_text(f"ORDER ID: {numberRef}").set_placement(sheetSize['idStartPoint']) 
         
       refText.dxf.height = titleTextHeight
-      refText.dxf.layer = 'Annotations'    
-      tdoc.saveas(contactSheetName+str(chunkId))
+      refText.dxf.layer = 'Annotations'   
+      contactName = contactSheetName+str(chunkId).strip('.dxf')
+      tdoc.saveas(contactSheetName+str(chunkId)+ '.dxf')
   
       #Save contact sheet as PDF
-      doc, auditor = recover.readfile(contactSheetName+str(chunkId))
+      doc, auditor = recover.readfile(contactSheetName.strip('.dxf')+str(chunkId))
       if not auditor.has_errors:
           fileNameNoSuffix = contactSheetName+str(chunkId).strip('.dxf')
           msp = doc.modelspace()
