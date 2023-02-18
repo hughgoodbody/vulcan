@@ -40,6 +40,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
   from ezdxf.addons.drawing import matplotlib
   from ezdxf.addons.drawing.properties import LayoutProperties
   from ezdxf.entities import DXFGraphic
+  from ezdxf.addons.drawing.config import Configuration
   from . import sheetSize
   import numpy as np
 
@@ -102,7 +103,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       dictInfo['PARTDATA18'] = ''
       dictInfo['Bend Line Marks'] = partInfo['Bend Line Marks']
       dictInfo['Sheet Metal'] = partInfo['Sheet Metal']
-      dictInfo['Bend Line Marks'] = True
+      #dictInfo['Bend Line Marks'] = True
 
       if dictInfo['Bend Operation'] == 'B':
         dictInfo['PD6'].append('B')
@@ -170,24 +171,6 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         dwg.layers.add(name='Dimensions', color = no_cut_colour) #Seperate try here as likely someones dxf already has a Dimensions layer, dont want to throw exception with other layers
     except:
         pass
-
-    try:
-      for bendLine in msp:
-        if bendline.dxf.layer == "SHEETMETAL_BEND_LINES_DOWN":
-          print('Down Bend Found')
-          bendDown.append(bendLine)
-          
-        if bendline.dxf.layer == "SHEETMETAL_BEND_LINES_UP":  
-          print('Up Bend Found')
-          bendUp.append(bendLine)
-    except:
-      pass
-
-    dwg.layers.get('SHEETMETAL_BEND_LINES_DOWN').off()
-    dwg.layers.get('SHEETMETAL_BEND_LINES_UP').off()
-    #print(bendLinesDown)
-    #print(bendLinesUp)
-
 
     #Put all entities onto Profile layer - otherwise the PDF doesn't work
     #for entity in msp:
@@ -259,7 +242,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       text_height, text_spacing = set_text_height()
       initial_spacing = (text_height + (text_spacing * 3))
       
-      text = msp.add_text(f"PART NUMBER: {dictInfo['PartNumber']}").set_placement((text_x, text_y - initial_spacing))
+      text = msp.add_text(f"PART NUMBER: {dictInfo['Contact Sheet Part Number']}").set_placement((text_x, text_y - initial_spacing))
       text_height = set_text_props('Annotations', text)
       spacing = ((text_height + text_spacing) * i) + initial_spacing
       i = i + 1
@@ -295,7 +278,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
 
       
       
-      
+    '''  
     #### GET BEND LINES ####   
     if dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True:       
       blEtchLength = 12
@@ -328,9 +311,26 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           msp.add_line((bl.dxf.start), (startEnd), dxfattribs={'layer': 'Etch'})
           msp.add_line((bl.dxf.end), (endEnd), dxfattribs={'layer': 'Etch'})
       except:
-        pass  
+        pass'''  
 
-  
+    #### GET BEND LINES #### 
+    #print(f"Sheet Metal = {dictInfo['Sheet Metal']}--------Etch Bends = {dictInfo['Bend Line Marks']}")
+    if dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True: 
+      try:
+        bendLines = msp.query('LINE[(layer=="SHEETMETAL_BEND_LINES_DOWN" | layer=="SHEETMETAL_BEND_LINES_UP")]')
+        blEtchLength = 12
+        for bl in bendLines:
+          #Change bend line colour to no-cut and turn layer off
+          bl.dxf.color = no_cut_colour
+          dwg.layers.get('SHEETMETAL_BEND_LINES_DOWN').off()
+          dwg.layers.get('SHEETMETAL_BEND_LINES_UP').off()        
+          lenBendLine = math.sqrt(((bl.dxf.end[0] - bl.dxf.start[0])**2) + ((bl.dxf.end[1] - bl.dxf.start[1])**2))
+          startEnd = ((bl.dxf.start[0] + (((bl.dxf.end[0] - bl.dxf.start[0])/lenBendLine) * blEtchLength)), (bl.dxf.start[1] + (((bl.dxf.end[1] - bl.dxf.start[1])/lenBendLine) * blEtchLength)))  
+          endEnd = ((bl.dxf.end[0] - (((bl.dxf.end[0] - bl.dxf.start[0])/lenBendLine) * blEtchLength)), (bl.dxf.end[1] - (((bl.dxf.end[1] - bl.dxf.start[1])/lenBendLine) * blEtchLength)))          
+          msp.add_line((bl.dxf.start), (startEnd), dxfattribs={'layer': 'Etch'})
+          msp.add_line((bl.dxf.end), (endEnd), dxfattribs={'layer': 'Etch'})
+      except:
+        pass
   
       
     #### GET THE HOLES ####
@@ -433,6 +433,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       newFileName = fileNameNoSuffix + '_' + opSuffix + '_' + dictInfo['Process Suffix'] + '.dxf'
     else:
       newFileName = fileNameNoSuffix + '_' + dictInfo['Process Suffix'] + '.dxf'
+    dictInfo['Contact Sheet Part Number'] = fileNameNoSuffix + '_' + opSuffix + '_' + dictInfo['Process Suffix']
     dictInfo['File Name'] = newFileName
     dictInfo['PartNumber'] = newFileName
     
@@ -589,6 +590,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       tdoc.layers.add(name='Hole_Tapping', color = tapping_colour)
       tdoc.layers.add(name='Border', color = 0)
       tdoc.layers.add(name='Profile')
+      tdoc.layers.add(name='Visible', color = annotations_colour)
       
       xc = 0
       yc = 0
@@ -617,7 +619,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       # import source entities into target block
       importer.import_entities(ents, targetBlock)      
       msp.add_blockref('blk'+templateName,(0,0), dxfattribs={
-          'color': 7,
+          'color': 0,
+          'layer': 'Border',
       })
       #'''
       
@@ -681,22 +684,28 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       if not auditor.has_errors:
           fileNameNoSuffix = contactSheetName+str(chunkId).strip('.dxf')
           msp = doc.modelspace()
+          #Move border entities to same layer as profiles - Visible Layer
           #Function to not render bend layers
           def my_filter(e: DXFGraphic) -> bool:
             return (e.dxf.layer != "SHEETMETAL_BEND_LINES_DOWN" or e.dxf.layer != "SHEETMETAL_BEND_LINES_UP")
           #msp_properties.set_colors("#eaeaeaff")
           matplotlib.qsave(doc.modelspace(), fileNameNoSuffix+str(chunkId) + '.pdf', bg='#FFFFFFFF', size_inches=(16.5,11.7))
           '''
+          # setup drawing add-on configuration
+          config = Configuration.defaults()
+          config = config.with_changes(
+              lineweight_scaling=-0.5,  
+          )
           fig = plt.figure()
           ax = fig.add_axes([0, 0, 1, 1])
           ctx = RenderContext(doc)
           # get the modelspace properties
           msp_properties = LayoutProperties.from_layout(msp)          
           # set light gray background color and black foreground color
-          msp_properties.set_colors("#eaeaeaff")
+          msp_properties.set_colors("#ffffffff")
           out = MatplotlibBackend(ax)
-          Frontend(ctx, out).draw_layout(doc.modelspace(), finalize=True, layout_properties=msp_properties, filter_func=my_filter)
-          fig.savefig(fileNameNoSuffix+str(chunkId) + '.pdf', dpi=100, transparent=True)
+          Frontend(ctx, out, config=config).draw_layout(doc.modelspace(), finalize=True, layout_properties=msp_properties, filter_func=my_filter)
+          fig.savefig(fileNameNoSuffix+str(chunkId) + '.pdf', dpi=300, transparent=True)
           '''
           #FFFFFF00
 
