@@ -590,7 +590,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       tdoc.layers.add(name='Hole_Tapping', color = tapping_colour)
       tdoc.layers.add(name='Border', color = 0)
       tdoc.layers.add(name='Profile')
-      tdoc.layers.add(name='Visible', color = annotations_colour)
+      tdoc.layers.add(name='Visible', color = 0)
       
       xc = 0
       yc = 0
@@ -600,7 +600,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       os.chdir(folder)
       positionGrid = sheetSize['imageStartPoint']
 
-      #'''
+      '''
       #Add border
       #Get template     
       templateRow = app_tables.drawingtemplates.get(size='A3', owner=userData['User'])
@@ -622,7 +622,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           'color': 0,
           'layer': 'Border',
       })
-      #'''
+      '''
       
       for p in range(0,len(pageChunks[c])):
         #print(f'Len Page Chunks C {len(pageChunks[c])}')
@@ -685,6 +685,10 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           fileNameNoSuffix = contactSheetName+str(chunkId).strip('.dxf')
           msp = doc.modelspace()
           #Move border entities to same layer as profiles - Visible Layer
+          #borderEntities = msp.query('*[layer=="Border"]i')
+          #for e in borderEntities:
+            #e.dxf.layer = 'Visible'       
+        
           #Function to not render bend layers
           def my_filter(e: DXFGraphic) -> bool:
             return (e.dxf.layer != "SHEETMETAL_BEND_LINES_DOWN" or e.dxf.layer != "SHEETMETAL_BEND_LINES_UP")
