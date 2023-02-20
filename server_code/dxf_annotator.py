@@ -699,8 +699,9 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           #msp_properties.set_colors("#eaeaeaff")
           matplotlib.qsave(doc.modelspace(), contactSheetName + '_' + str(chunkId) + '.pdf', bg='#FFFFFFFF', size_inches=(16.5,11.7))
           merger.append(contactSheetName + '_' + str(chunkId) + '.pdf')
+          merger.write(combinedName + ".pdf")
           os.remove(contactSheetName + '_' + str(chunkId) + '.pdf')
-          os.remove(contactSheetName + '_' + str(chunkId) + '.dxf')
+          #os.remove(contactSheetName + '_' + str(chunkId) + '.dxf')
           '''
           # setup drawing add-on configuration
           config = Configuration.defaults()
