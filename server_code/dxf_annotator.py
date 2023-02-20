@@ -698,8 +698,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
             return (e.dxf.layer != "SHEETMETAL_BEND_LINES_DOWN" or e.dxf.layer != "SHEETMETAL_BEND_LINES_UP")
           #msp_properties.set_colors("#eaeaeaff")
           matplotlib.qsave(doc.modelspace(), contactSheetName + '_' + str(chunkId) + '.pdf', bg='#FFFFFFFF', size_inches=(16.5,11.7))     
-          
-          #os.remove(contactSheetName + '_' + str(chunkId) + '.dxf')
+          #Remove the DXF file
+          os.remove(contactSheetName + '_' + str(chunkId) + '.dxf')
           '''
           # setup drawing add-on configuration
           config = Configuration.defaults()
