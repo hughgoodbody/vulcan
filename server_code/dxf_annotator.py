@@ -43,6 +43,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
   from ezdxf.addons.drawing.config import Configuration
   from . import sheetSize
   import numpy as np
+  from PyPDF2 import PdfMerger
+  from glob import glob
 
   xTappingDict = {}
   bendUp = []  
@@ -541,9 +543,11 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
   #print(os.listdir(folder))    
   if inputData[0]['Contact Sheet'] == True: 
     if reference is not '':
-      contactSheetName = numberRef + '_' + reference + '_CONTACT SHEET' + '_' + supplier + ".dxf" 
+      contactSheetName = numberRef + '_' + reference + '_CONTACT SHEET' + '_' + supplier
+      combinedName = contactSheetName
     else:
-      contactSheetName = numberRef + '_CONTACT SHEET' + '_' + supplier + ".dxf" 
+      contactSheetName = numberRef + '_CONTACT SHEET' + '_' + supplier 
+      combinedName = contactSheetName
     #print(f"Text Width = {textWidth}")
     #packed, sheetWidth = binPack(binPackList, folder, contactSheetName, False, textWidth)   #Pass in name to save to, boolean save, textWidth comes from return value when annotations are applied 
     #print(f"Packed Items: {packed}")
@@ -677,13 +681,12 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         
       refText.dxf.height = titleTextHeight
       refText.dxf.layer = 'Annotations'   
-      contactName = contactSheetName+str(chunkId).strip('.dxf')
-      tdoc.saveas(contactSheetName+str(chunkId)+ '.dxf')
+      
+      tdoc.saveas(contactSheetName + '_' + str(chunkId) + '.dxf')
   
       #Save contact sheet as PDF
-      doc, auditor = recover.readfile(contactSheetName.strip('.dxf')+str(chunkId))
+      doc, auditor = recover.readfile(contactSheetName + '_' + str(chunkId) + '.dxf')
       if not auditor.has_errors:
-          fileNameNoSuffix = contactSheetName+str(chunkId).strip('.dxf')
           msp = doc.modelspace()
           #Move border entities to same layer as profiles - Visible Layer
           #borderEntities = msp.query('*[layer=="Border"]i')
@@ -694,7 +697,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           def my_filter(e: DXFGraphic) -> bool:
             return (e.dxf.layer != "SHEETMETAL_BEND_LINES_DOWN" or e.dxf.layer != "SHEETMETAL_BEND_LINES_UP")
           #msp_properties.set_colors("#eaeaeaff")
-          matplotlib.qsave(doc.modelspace(), fileNameNoSuffix+str(chunkId) + '.pdf', bg='#FFFFFFFF', size_inches=(16.5,11.7))
+          matplotlib.qsave(doc.modelspace(), contactSheetName + '_' + str(chunkId) + '.pdf', bg='#FFFFFFFF', size_inches=(16.5,11.7))
           '''
           # setup drawing add-on configuration
           config = Configuration.defaults()
@@ -716,7 +719,12 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
 
       chunkId = chunkId + 1  
   
-    
+    ''' Merges all the pdf files in current directory '''
+    merger = PdfMerger()
+    allpdfs = [a for a in glob("*.pdf")]
+    [merger.append(pdf) for pdf in allpdfs]
+    with open(combinedName + ".pdf", "wb") as new_file:
+        merger.write(new_file)
     os.chdir('/tmp')   
   pass
 
