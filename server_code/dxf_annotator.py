@@ -604,7 +604,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       os.chdir(folder)
       positionGrid = sheetSize['imageStartPoint']
 
-      '''
+      #'''
       #Add border
       #Get template     
       templateRow = app_tables.drawingtemplates.get(size='A3', owner=userData['User'])
@@ -626,7 +626,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           'color': 0,
           'layer': 'Border',
       })
-      '''
+      #'''
       
       for p in range(0,len(pageChunks[c])):
         #print(f'Len Page Chunks C {len(pageChunks[c])}')
@@ -662,6 +662,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         msp.add_blockref('blk'+blockName, (xpos,ypos), dxfattribs={
           'xscale': pageChunks[c][p]['Scale Factor'],
           'yscale': pageChunks[c][p]['Scale Factor'],
+          'layer': 'PROFILE'
           })
         positionGrid = (positionGrid[0], positionGrid[1] + sheetSize['Box Height'])
         #xc = xc + 300
@@ -699,12 +700,12 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           #msp_properties.set_colors("#eaeaeaff")
           matplotlib.qsave(doc.modelspace(), contactSheetName + '_' + str(chunkId) + '.pdf', bg='#FFFFFFFF', size_inches=(16.5,11.7))     
           #Remove the DXF file
-          os.remove(contactSheetName + '_' + str(chunkId) + '.dxf')
+          #os.remove(contactSheetName + '_' + str(chunkId) + '.dxf')
           '''
           # setup drawing add-on configuration
           config = Configuration.defaults()
           config = config.with_changes(
-              lineweight_scaling=-0.5,  
+              lineweight_scaling=0.001,  
           )
           fig = plt.figure()
           ax = fig.add_axes([0, 0, 1, 1])
@@ -712,10 +713,10 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           # get the modelspace properties
           msp_properties = LayoutProperties.from_layout(msp)          
           # set light gray background color and black foreground color
-          msp_properties.set_colors("#ffffffff")
+          msp_properties.set_colors("#FFFFFFFF")
           out = MatplotlibBackend(ax)
           Frontend(ctx, out, config=config).draw_layout(doc.modelspace(), finalize=True, layout_properties=msp_properties, filter_func=my_filter)
-          fig.savefig(fileNameNoSuffix+str(chunkId) + '.pdf', dpi=300, transparent=True)
+          fig.savefig(contactSheetName + '_' + str(chunkId) + '.pdf', dpi=300, transparent=True)
           '''
           #FFFFFF00
 
