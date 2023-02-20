@@ -25,9 +25,9 @@ def createOutputPdf(userData, inputList, prefix, orderId, orderIdStart, heading,
     #Make reference name file safe  
     keepcharacters = ('.','_', '-','%','(', ')')
     reference = "".join(c for c in reference if c.isalnum() or c in keepcharacters).rstrip()
-    fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_SUMMARY'
+    fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + 'SUMMARY'
   else:
-    fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_SUMMARY'
+    fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + 'SUMMARY'
   pdf = PDFRenderer(page_size='A4', landscape=True, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.profiles_exporter_Interactive_pdf_print', inputList, prefix, orderId, heading, supplier)
   with open(os.path.join(f, fileName + '.pdf'), 'wb+') as destFile:      
       destFile.write(pdf.get_bytes()) 
@@ -56,9 +56,9 @@ def goodsReceivedPdf(userData, inputList, prefix, orderId, orderIdStart, heading
   import anvil.pdf
   from anvil.pdf import PDFRenderer
   if reference is not None or reference != '':
-    fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_RECEIVED'
+    fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + 'RECEIVED'
   else:
-    fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + '_RECEIVED'
+    fileName =str(prefix) + str(orderId) + '_' + supplier + '_' + 'RECEIVED'
   pdf = PDFRenderer(page_size='A4', landscape=False, scale=0.5, filename=fileName + '.pdf').render_form('printTemplates.goods_received_print', inputList, prefix, orderId, heading, supplier)
   with open(os.path.join(f, fileName + '.pdf'), 'wb+') as destFile:      
     destFile.write(pdf.get_bytes()) 

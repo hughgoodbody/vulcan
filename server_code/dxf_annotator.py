@@ -51,6 +51,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
   bendDown = []
   ipLasercsvList = [["NAME", "MATERIAL", "GRADE", "THICKNESS", "GRAIN", "OVERRIDE EXISTING", "QUANTITY", "NOTES", "DWG NOT FOR MANUFACTURE"]]
   othercsvList = [["NAME", "MATERIAL", "THICKNESS", "GRAIN", "OVERRIDE EXISTING", "QUANTITY", "NOTES", "DWG NOT FOR MANUFACTURE"]]
+  boolEtch = False
 
   #List for bin packing
   binPackList = []
@@ -407,8 +408,13 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       if dictInfo['Etch Part Number'] == True:
         dictInfo['PARTDATA18'] = fileNameNoSuffix
       else:
-        dictInfo['PARTDATA18'] = ''        
-      if etchVar == True or dictInfo['Etch Part Number'] == True or (dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True):         
+        dictInfo['PARTDATA18'] = '' 
+      #Sort out etching  
+      if (dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True):
+        boolEtch = True
+      if etchVar == True or dictInfo['Etch Part Number'] == True: 
+        boolEtch = True
+      if boolEtch == True:  
         dictInfo['Operations'].append('ETCH')
         dictInfo['Etch Operation'] = 'E'
         dictInfo['PD6'].append('E')
@@ -606,7 +612,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
 
       #'''
       #Add border
-      #Get template     
+      '''Get template - Make sure all entities are on LAYER 0, Release 2013 minimum and corner of sheet is at 0,0  '''
       templateRow = app_tables.drawingtemplates.get(size='A3', owner=userData['User'])
       template = templateRow['template']
       templateName = 'A3Template'
@@ -622,10 +628,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       ents = sdoc.modelspace().query('*')      
       # import source entities into target block
       importer.import_entities(ents, targetBlock)      
-      msp.add_blockref('blk'+templateName,(0,0), dxfattribs={
-          'color': 0,
-          'layer': 'Border',
-      })
+      msp.add_blockref('blk'+templateName,(0,0))
       #'''
       
       for p in range(0,len(pageChunks[c])):
@@ -700,7 +703,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           #msp_properties.set_colors("#eaeaeaff")
           matplotlib.qsave(doc.modelspace(), contactSheetName + '_' + str(chunkId) + '.pdf', bg='#FFFFFFFF', size_inches=(16.5,11.7))     
           #Remove the DXF file
-          #os.remove(contactSheetName + '_' + str(chunkId) + '.dxf')
+          os.remove(contactSheetName + '_' + str(chunkId) + '.dxf')
           '''
           # setup drawing add-on configuration
           config = Configuration.defaults()

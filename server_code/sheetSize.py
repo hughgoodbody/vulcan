@@ -33,7 +33,7 @@ def sheetParameters():
   
   sheetInfo['Box Width'] = sheetInfo['Width'] / sheetInfo['Horizontal Boxes']
   sheetInfo['Box Height'] = sheetInfo['Height'] / sheetInfo['Vertical Boxes']  
-  sheetInfo['imageStartPoint'] = ((2*sheetInfo['Border'])+sheetInfo['Left Pad'], sheetInfo['Border']+sheetInfo['Bottom Pad']+(2*sheetInfo['Title Text'])+(2*sheetInfo['Spacing']))
+  sheetInfo['imageStartPoint'] = ((2*sheetInfo['Border'])+sheetInfo['Left Pad'], sheetInfo['Border']+sheetInfo['Bottom Pad']+(2*sheetInfo['Title Text'])+(2*sheetInfo['Spacing']) + 10)
   sheetInfo['supplierStartPoint'] = (sheetInfo['Border']+sheetInfo['Spacing'] + sheetInfo['Left Pad'], sheetInfo['Border']+sheetInfo['Bottom Pad']+(sheetInfo['Spacing'])+(sheetInfo['Title Text']))
   sheetInfo['idStartPoint'] = (sheetInfo['Border']+sheetInfo['Spacing'] + sheetInfo['Left Pad'], sheetInfo['Border']+sheetInfo['Bottom Pad'])
   sheetInfo['refStartPoint'] = (sheetInfo['Border']+sheetInfo['Spacing'] + sheetInfo['Left Pad'] + (sheetInfo['Width']/2), sheetInfo['Border']+sheetInfo['Bottom Pad'])
