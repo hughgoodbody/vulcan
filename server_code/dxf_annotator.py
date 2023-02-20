@@ -627,7 +627,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           'layer': 'Border',
       })
       '''
-      merger = PdfMerger()
+      
       for p in range(0,len(pageChunks[c])):
         #print(f'Len Page Chunks C {len(pageChunks[c])}')
         # Create a block 
@@ -697,10 +697,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           def my_filter(e: DXFGraphic) -> bool:
             return (e.dxf.layer != "SHEETMETAL_BEND_LINES_DOWN" or e.dxf.layer != "SHEETMETAL_BEND_LINES_UP")
           #msp_properties.set_colors("#eaeaeaff")
-          matplotlib.qsave(doc.modelspace(), contactSheetName + '_' + str(chunkId) + '.pdf', bg='#FFFFFFFF', size_inches=(16.5,11.7))
-          merger.append(contactSheetName + '_' + str(chunkId) + '.pdf')
-          merger.write(combinedName + ".pdf")
-          os.remove(contactSheetName + '_' + str(chunkId) + '.pdf')
+          matplotlib.qsave(doc.modelspace(), contactSheetName + '_' + str(chunkId) + '.pdf', bg='#FFFFFFFF', size_inches=(16.5,11.7))     
+          
           #os.remove(contactSheetName + '_' + str(chunkId) + '.dxf')
           '''
           # setup drawing add-on configuration
@@ -724,14 +722,16 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       chunkId = chunkId + 1  
   
     ''' Merges all the pdf files in current directory '''
-    '''merger = PdfMerger()
+    merger = PdfMerger()
     allpdfs = [a for a in glob("*.pdf")]
+    print(allpdfs)
     [merger.append(pdf) for pdf in allpdfs]
     with open(combinedName + ".pdf", "wb") as new_file:
-        merger.write(new_file)'''
+        merger.write(new_file)
+        for pdf in allpdfs:
+          os.remove(pdf)
 
-    merger.write(combinedName + ".pdf")
-    merger.close()  
+
     os.chdir('/tmp')   
   pass
 
