@@ -319,9 +319,10 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     #### GET BEND LINES #### 
     #print(f"Sheet Metal = {dictInfo['Sheet Metal']}--------Etch Bends = {dictInfo['Bend Line Marks']}")
     if dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True: 
+      boolEtch = True
       try:
         bendLines = msp.query('LINE[(layer=="SHEETMETAL_BEND_LINES_DOWN" | layer=="SHEETMETAL_BEND_LINES_UP")]')
-        blEtchLength = 12
+        blEtchLength = 12        
         for bl in bendLines:
           #Change bend line colour to no-cut and turn layer off
           bl.dxf.color = no_cut_colour
@@ -409,15 +410,15 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         dictInfo['PARTDATA18'] = fileNameNoSuffix
       else:
         dictInfo['PARTDATA18'] = '' 
-      #Sort out etching  
-      if (dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True):
-        boolEtch = True
       if etchVar == True or dictInfo['Etch Part Number'] == True: 
-        boolEtch = True
-      if boolEtch == True:  
-        dictInfo['Operations'].append('ETCH')
-        dictInfo['Etch Operation'] = 'E'
-        dictInfo['PD6'].append('E')
+        boolEtch = True  
+    #Sort out etching  
+    if (dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True):
+      boolEtch = True      
+    if boolEtch == True:  
+      dictInfo['Operations'].append('ETCH')
+      dictInfo['Etch Operation'] = 'E'
+      dictInfo['PD6'].append('E')
 
 
     '''      
@@ -518,7 +519,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     othercsvList.append([dictInfo['PartNumber'], dictInfo['Material'], dictInfo['Thickness'], csvGrain, csvOverride, dictInfo['Qty'], dictInfo['Operations'], csvDwgnfm])
   
   #Get reference number from data table to build csv and zip file name
-  
+  boolEtch = False
   #If no reference is entered by the user
   reference = inputData[0]['Customer Reference']
   
@@ -679,12 +680,16 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       supplierText.dxf.layer = 'Annotations'
       previousText = ('Supplier: ' + supplier)
       if reference is not '':
-        refText = msp.add_text(f"ORDER ID: {numberRef + '_' + reference}").set_placement(sheetSize['idStartPoint'])  
+        refText = msp.add_text(f"ORDER ID: {numberRef}").set_placement(sheetSize['idStartPoint'])  
       else:
         refText = msp.add_text(f"ORDER ID: {numberRef}").set_placement(sheetSize['idStartPoint']) 
         
       refText.dxf.height = titleTextHeight
       refText.dxf.layer = 'Annotations'   
+
+      prfText = msp.add_text(f"PROJECT REFERENCE: {reference}").set_placement(sheetSize['refStartPoint']) 
+      prfText.dxf.height = titleTextHeight
+      prfText.dxf.layer = 'Annotations' 
       
       tdoc.saveas(contactSheetName + '_' + str(chunkId) + '.dxf')
   

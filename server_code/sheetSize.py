@@ -36,6 +36,6 @@ def sheetParameters():
   sheetInfo['imageStartPoint'] = ((2*sheetInfo['Border'])+sheetInfo['Left Pad'], sheetInfo['Border']+sheetInfo['Bottom Pad']+(2*sheetInfo['Title Text'])+(2*sheetInfo['Spacing']) + 10)
   sheetInfo['supplierStartPoint'] = (sheetInfo['Border']+sheetInfo['Spacing'] + sheetInfo['Left Pad'], sheetInfo['Border']+sheetInfo['Bottom Pad']+(sheetInfo['Spacing'])+(sheetInfo['Title Text']))
   sheetInfo['idStartPoint'] = (sheetInfo['Border']+sheetInfo['Spacing'] + sheetInfo['Left Pad'], sheetInfo['Border']+sheetInfo['Bottom Pad'])
-  sheetInfo['refStartPoint'] = (sheetInfo['Border']+sheetInfo['Spacing'] + sheetInfo['Left Pad'] + (sheetInfo['Width']/2), sheetInfo['Border']+sheetInfo['Bottom Pad'])
+  sheetInfo['refStartPoint'] = ((sheetInfo['idStartPoint'][0] + (26*sheetInfo['Title Text'])), sheetInfo['Border']+sheetInfo['Bottom Pad'])
   return sheetInfo
 
