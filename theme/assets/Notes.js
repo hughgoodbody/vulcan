@@ -1,19 +1,13 @@
 
 2. Shims etc, remove operations
-
 4. Supplier bed size
 7. Create version
-
 9. Update table
 10. Processes in suppliers as a list rather than linked table 
 11. Clear data table at start of background task also
-12 Create new list of just hole tapping data and filename when doing the export
-
- 
+12 Create new list of just hole tapping data and filename when doing the export 
 15. Operations in pdf instead of warnings
-Hole options radio button
-No Configurations Positioning
-Notifications
+
 
 Annotate DXF's
 Update the list dictionary info with Drill Holes / Etch Holes information, as depends on circle diameter
@@ -25,13 +19,7 @@ Alert window - Upload sheet metal
 
 
 
-Create PDF - Order Summary
-Create PDF - Supplier Summary
-Create PDF - Goods Received
-Create PDF - DXF COntact Sheet
 
-Supplier Package = Supplier Summary, Profiles, Contact Sheet
-Merge all PDF's
 Download All
 
 Merge PDF's
