@@ -229,6 +229,7 @@ components:
   layout_properties: {grid_position: 'LEFWFI,MQCZBX'}
   event_bindings: {click: btnExecute_click}
 - type: Timer
-  properties: {}
+  properties: {interval: 0}
   name: timer_1
+  event_bindings: {tick: timer_1_tick}
 is_package: true

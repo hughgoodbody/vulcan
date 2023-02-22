@@ -79,8 +79,11 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
 
   def btnExecute_click(self, **event_args):
     """This method is called when the button is clicked"""
+    self.taskList = []
     
     #print(self.additionalParts)
+    processNotification = Notification("Creating profile DXF's... PLease Wait", timeout=None)
+    processNotification.show()
     
 
 
@@ -153,6 +156,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       start_time = time.time()
       app_tables.transfertable.add_row(data=supplierSpecificParts, type='supplierParts',owner=user_data.userData['User'], suppliername=s)
       self.processTask = anvil.server.call('launchProcessProfiles', user_data.userData, self.prefixRef, self.idRef, self.idRefStart, s)
+      self.taskList.append(self.processTask)
       print(f"Launch process profiles call duration{(time.time() - start_time)}")
       #Create goods received form
       #anvil.server.call_s('goodsReceivedPdf', user_data.userData, supplierSpecificParts, self.prefixRef, self.idRef, None, 'Goods Received', 'GOODSRECEIVED_PDF', s)
@@ -196,10 +200,25 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       listIndex = self.additionalList.index(self.dropAddSelector.selected_value)      
       self.txtAddMat.text = self.panel.items[listIndex]['Material']
       self.txtAddQty.text = self.panel.items[listIndex]['Quantity']
-      self.txtaddThk.text = self.panel.items[listIndex]['Thickness']
-    
+      self.txtaddThk.text = self.panel.items[listIndex]['Thickness']  
    
     pass
+
+  def timer_1_tick(self, **event_args):
+    """This method is called Every [interval] seconds. Does not trigger if [interval] is 0."""
+    for task in self.taskList:
+      if task.is_completed():
+        self.taskList.remove(task)
+      if len(self.taskList) == 0:
+        processNotification.hide()
+        open_form('profiles_output')
+
+      
+    pass
+
+
+
+
 
 
 

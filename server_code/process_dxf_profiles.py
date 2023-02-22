@@ -70,9 +70,10 @@ def goodsReceivedPdf(userData, inputList, prefix, orderId, orderIdStart, heading
 def launchProcessProfiles(userData, prefix, orderId, orderIdStart, supplier):
   #Process profiles for each supplier
   profilesTask = anvil.server.launch_background_task('processProfiles', userData, prefix, orderId, orderIdStart, supplier)
+  taskId = profilesTask.get_id()
   #Create master PDF
   return profilesTask
-  pass
+
 
 
 @anvil.server.background_task
