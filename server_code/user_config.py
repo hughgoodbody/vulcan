@@ -19,6 +19,7 @@ def userConfig():
    "Order Reference":None
 }
   currentUser = anvil.users.get_user()
+
   if currentUser is not None:
     currentUserConfig['User'] = currentUser
     currentUserConfig['Access Key'] = anvil.secrets.decrypt_with_key('vc_onshape_encryption_key', currentUser['onshape_access_key_encrypted'])
@@ -40,6 +41,7 @@ def userConfig():
     return currentUserConfig
   else:
     return None
+
 
 @anvil.server.callable
 def onshapeApiKeyCheck(user):  

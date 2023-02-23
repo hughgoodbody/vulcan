@@ -25,5 +25,11 @@ class index(indexTemplate):
     open_form('main') 
     pass
 
+  def link_1_click(self, **event_args):
+    """This method is called when the link is clicked"""
+    open_form('settings')
+    pass
+
+
 
 

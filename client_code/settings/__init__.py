@@ -12,12 +12,17 @@ class settings(settingsTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    self.user = user_data.userData['User']
-    func = anvil.server.call('onshapeApiKeyCheck', self.user)
-    if func == False:
-      self.btnOnshapeKey.text = 'Delete API Key'
-    else:
+    try:
+      self.user = user_data.userData['User']
+      func = anvil.server.call('onshapeApiKeyCheck', self.user)
+      if func == False:
+        self.btnOnshapeKey.text = 'Delete API Key'
+      else:
+        self.btnOnshapeKey.text = 'Add API Key'
+    except:
+      self.user = anvil.users.get_user()
       self.btnOnshapeKey.text = 'Add API Key'
+      
 
     # Any code you write here will run before the form opens.
 
