@@ -44,6 +44,8 @@ class profiles_start(profiles_startTemplate):
       if c == False or c == None:
         return
     else: 
+      self.executeNotification = Notification("Getting parts...",timeout=None)
+      self.executeNotification.show()
       self.profileOptions['Hole Options'] = self.dxfOptions.radRatio.get_group_value()
       self.profileOptions['Etch Part Number'] = self.dxfOptions.chkEtchPart.checked
       self.profileOptions['Bend Line Marks'] = self.dxfOptions.chkEtchBend.checked
@@ -51,14 +53,15 @@ class profiles_start(profiles_startTemplate):
       self.profileOptions['CSV File'] = self.dxfOptions.chkCsvFile.checked
       self.profileOptions['Supplier'] = self.dxfOptions.dropSupplier.selected_value
       self.profileOptions['Max Thickness'] = self.dxfOptions.txtThickness.text
-      self.profileOptions['Reference'] = self.dxfOptions.txtRef.text
+      self.profileOptions['Customer Reference'] = self.dxfOptions.txtRef.text
       self.profileOptions['Multiplier'] = self.dxfOptions.txtMultiplier.text
       user_data.profileOptions = self.profileOptions
       #print(self.profileOptions)
 
       #Encode configurations and then lauch task to get parts
-      self.configStr = ConfigurationsPanel.configurating(self.configs)  
-      configurationString, self.searchPartsTask = anvil.server.call('launch_list_parts', user_data.userData, user_data.configSelectedParams, user_data.profileOptions, user_data.documentInfo, user_data.elementType)
+      self.configStr = ConfigurationsPanel.configurating(self.configs) 
+      self.materialTask = anvil.server.call('launchGetMaterials', user_data.userData)
+      configurationString, self.searchPartsTask = anvil.server.call('launch_list_parts',user_data.userData, user_data.configSelectedParams, user_data.profileOptions, user_data.documentInfo, user_data.elementType)
       user_data.configurationString = configurationString
       #print(user_data.configurationString)
       self.timer_1.interval = 0.5
@@ -69,6 +72,8 @@ class profiles_start(profiles_startTemplate):
     if self.searchPartsTask.is_completed() == True:
       self.timer_1.interval = 0
       open_form('profiles_exporter_Interactive')
+      self.executeNotification.hide()
+      
     pass
 
 

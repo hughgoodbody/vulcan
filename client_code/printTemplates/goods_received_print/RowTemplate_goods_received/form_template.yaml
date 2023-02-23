@@ -1,0 +1,36 @@
+container:
+  type: DataRowPanel
+  data_bindings: []
+components:
+- type: Image
+  properties: {height: 49}
+  name: image_1
+  layout_properties: {column: GDKJOS}
+  data_bindings:
+  - {property: source, code: 'self.item[''Part Thumbnail'']'}
+- type: Link
+  properties: {role: null, url: '', align: left, tooltip: '', border: '', foreground: '',
+    visible: true, text: '', font_size: null, wrap_on: mobile, font: '', col_spacing: medium,
+    spacing_above: small, icon_align: left, col_widths: '', spacing_below: small,
+    italic: false, background: '', bold: false, underline: false, icon: 'fa:link'}
+  name: lnkUrl
+  layout_properties: {column: QWHKOW}
+  data_bindings:
+  - {property: text, code: 'self.item[''Part Number'']'}
+- type: TextBox
+  properties: {}
+  name: text_box_1
+  layout_properties: {column: VFIFDG}
+- type: TextBox
+  properties: {}
+  name: text_box_2
+  layout_properties: {column: GPEIJT}
+- type: TextBox
+  properties: {}
+  name: text_box_3
+  layout_properties: {column: QAUUYQ}
+- type: TextBox
+  properties: {}
+  name: text_box_4
+  layout_properties: {column: ZUEEEX}
+is_package: true

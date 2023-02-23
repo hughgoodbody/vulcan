@@ -8,12 +8,13 @@ components:
   layout_properties: {column: GDKJOS}
   data_bindings:
   - {property: source, code: 'self.item[''Part Thumbnail'']'}
-- type: TextBox
+- type: DropDown
   properties: {}
-  name: txtMaterial
+  name: dropMaterial
   layout_properties: {column: ATMSYC}
   data_bindings:
-  - {property: text, code: 'self.item[''Material'']', writeback: true}
+  - {property: selected_value, code: 'self.item[''Material'']', writeback: true}
+  event_bindings: {change: txtMaterial_change}
 - type: TextBox
   properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
     border: '', enabled: true, foreground: '', visible: true, text: '0', font_size: null,
@@ -22,39 +23,33 @@ components:
   name: txtQtyAdd
   layout_properties: {column: XVOHMG}
   data_bindings:
-  - {property: text, code: 'self.item[''Additional'']', writeback: true}
+  - {property: text, code: 'self.item[''Additional Qty'']', writeback: true}
+  event_bindings: {change: txtQtyAdd_change}
 - type: DropDown
   properties: {}
   name: dropHoles
   layout_properties: {column: AGNYFH}
   data_bindings:
   - {property: selected_value, code: 'self.item[''Undersize Holes'']', writeback: true}
-- type: CheckBox
-  properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-    foreground: '', allow_indeterminate: false, visible: true, text: '', font_size: null,
-    font: '', spacing_above: small, spacing_below: small, italic: false, background: '',
-    bold: false, checked: false, underline: false}
-  name: chkDrillTemplate
-  layout_properties: {column: EMERFH}
-  data_bindings:
-  - {property: checked, code: 'self.item[''Drill Template'']', writeback: true}
+  event_bindings: {change: dropHoles_change}
 - type: DropDown
   properties: {}
   name: dropProcess
   layout_properties: {column: SBTZDI}
   data_bindings:
   - {property: selected_value, code: 'self.item[''Process'']', writeback: true}
+  event_bindings: {change: dropProcess_change}
 - type: DropDown
   properties: {}
   name: dropSupplier
   layout_properties: {column: BQHQSP}
-  event_bindings: {}
+  event_bindings: {change: dropSupplier_change}
   data_bindings:
   - {property: selected_value, code: 'self.item[''Supplier'']', writeback: true}
 - type: Label
   properties: {role: null, align: left, tooltip: '', border: '', foreground: '', visible: true,
     text: '', font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small,
-    italic: false, background: '', bold: false, underline: false, icon: 'fa:exclamation-triangle'}
+    italic: false, background: '', bold: false, underline: false, icon: ''}
   name: lblWarnings
   layout_properties: {column: DQQXAI}
 - type: CheckBox
@@ -65,6 +60,8 @@ components:
   name: chkDelete
   layout_properties: {column: NPOWRL}
   event_bindings: {}
+  data_bindings:
+  - {property: checked, code: 'self.item[''Remove'']', writeback: true}
 - type: Link
   properties: {role: null, url: '', align: left, tooltip: '', border: '', foreground: '',
     visible: true, text: '', font_size: null, wrap_on: mobile, font: '', col_spacing: medium,
@@ -74,4 +71,14 @@ components:
   layout_properties: {column: QWHKOW}
   data_bindings:
   - {property: text, code: 'self.item[''Part Number'']'}
+- type: CheckBox
+  properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+    foreground: '', allow_indeterminate: false, visible: true, text: '', font_size: null,
+    font: '', spacing_above: small, spacing_below: small, italic: false, background: '',
+    bold: false, checked: false, underline: false}
+  name: chkDrillTemplate
+  layout_properties: {column: EMERFH}
+  data_bindings:
+  - {property: checked, code: 'self.item[''Drill Template'']', writeback: true}
+  event_bindings: {change: chkDrillTemplate_change}
 is_package: true

@@ -20,7 +20,14 @@ startup: {type: form, module: index}
 package_name: Vulcan
 allow_embedding: false
 name: Vulcan
-runtime_options: {version: 2, client_version: '3', server_version: python3-full, server_spec: null}
+runtime_options:
+  version: 2
+  client_version: '3'
+  server_version: python3-full
+  server_spec: {base: python310-standard}
+  server_spec_disabled: {requirements: 'ezdxf==1.0.0rc2
+
+      matplotlib==3.7.0rc1', base: python310-standard}
 startup_form: null
 db_schema:
   users:
@@ -58,9 +65,12 @@ db_schema:
     - name: onshape_secret_key_encrypted
       admin_ui: {width: 262}
       type: string
+    - name: materialLibraryUrl
+      admin_ui: {width: 200}
+      type: string
   files:
     title: Files
-    client: none
+    client: search
     server: full
     columns:
     - name: path
@@ -73,10 +83,13 @@ db_schema:
       admin_ui: {width: 200}
       type: string
     - name: owner
-      admin_ui: {width: 200}
+      admin_ui: {width: 265}
       type: link_single
       target: users
     - name: type
+      admin_ui: {width: 200}
+      type: string
+    - name: supplier
       admin_ui: {width: 200}
       type: string
   suppliers:
@@ -121,26 +134,32 @@ db_schema:
     - name: process
       admin_ui: {width: 200}
       type: string
+    - name: code
+      admin_ui: {width: 200}
+      type: string
   numbers:
     title: Numbers
-    client: search
+    client: full
     server: full
     columns:
     - name: RefPrefix
       admin_ui: {width: 200}
       type: string
     - name: RefNumber
-      admin_ui: {width: 200}
+      admin_ui: {width: 232}
       type: number
     - name: owner
-      admin_ui: {width: 200}
+      admin_ui: {width: 282}
       type: link_single
       target: users
   transfertable:
     title: TransferTable
-    client: search
+    client: full
     server: full
     columns:
+    - name: data
+      admin_ui: {width: 314}
+      type: simpleObject
     - name: type
       admin_ui: {width: 200}
       type: string
@@ -148,9 +167,29 @@ db_schema:
       admin_ui: {width: 200}
       type: link_single
       target: users
-    - name: data
+    - name: suppliername
       admin_ui: {order: 3, width: 200}
-      type: simpleObject
+      type: string
+  namingconvention:
+    title: NamingConvention
+    client: none
+    server: full
+    columns: []
+  drawingtemplates:
+    title: drawingTemplates
+    client: none
+    server: full
+    columns:
+    - name: template
+      admin_ui: {width: 200}
+      type: media
+    - name: owner
+      admin_ui: {width: 200}
+      type: link_single
+      target: users
+    - name: size
+      admin_ui: {width: 200}
+      type: string
 secrets:
   vc_onshape_encryption_key:
     type: key

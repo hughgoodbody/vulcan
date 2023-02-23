@@ -37,7 +37,7 @@ components:
   layout_properties: {grid_position: 'TSTCXY,TBDDVZ', full_width_row: false}
 - type: TextBox
   properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: Paste URL here,
-    border: '', enabled: true, foreground: '', visible: true, text: 'https://cad.onshape.com/documents/676d347f07a05b925c755e92/w/a1022ae3094b9d2ae98ee308/e/203712ceb41b0d4547e688b5',
+    border: '', enabled: true, foreground: '', visible: true, text: 'https://cad.onshape.com/documents/676d347f07a05b925c755e92/w/a1022ae3094b9d2ae98ee308/e/6dc1674bdfe17f0002dd56b7',
     font_size: null, font: '', spacing_above: small, type: text, spacing_below: small,
     italic: true, background: '', bold: false, underline: false}
   name: txtUrl

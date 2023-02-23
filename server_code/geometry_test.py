@@ -16,7 +16,7 @@ def dotProduct(vector1, vector2):
 
 
 def pointDistance(point1, point2):
-    dist = math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2 + (point1[2] - point2[2])**2)
+    dist = math.sqrt((point1['x'] - point2['x'])**2 + (point1['y'] - point2['y'])**2 + (point1['z'] - point2['z'])**2)
     #print(f'Distance between points: {dist}')
     return dist
 
@@ -29,13 +29,13 @@ def findExportFaces(body):
     faceInfo = {}   #Create dictionary of export data
     faceInfo['Operations'] = None
     tolerance = 0.0001
-    tolerance2 = 0.0000000001
+    tolerance2 = 0.00000001
     perimeter = 0
     qtyFaces = len(body['Faces'])
     facesList = body['Faces'].copy()
     #print("There are ", qtyFaces, " faces")
     #Create a list of only the planar faces
-    planarFaces = [i for i in facesList if i['surface']['type'] == 'plane'] # COuld replace facesList here with bodyDetails['bodies'][ibody]['faces'], one less list to worry about
+    planarFaces = [i for i in facesList if i['surface']['type'] == 'PLANE'] # COuld replace facesList here with bodyDetails['bodies'][ibody]['faces'], one less list to worry about
     #Changed from ==0 to <2 to allow for no error if part with no planar faces such a sphere, or one planar face such as a cone is tested
     if len(planarFaces) <2:
         #print("No Planar faces")
@@ -55,9 +55,9 @@ def findExportFaces(body):
         '''Coplanar Check
         if (planarFaces[descendingAreaList[0]]['surface']['normal'][0] / planarFaces[descendingAreaList[1]]['surface']['normal'][0]) == (planarFaces[descendingAreaList[0]]['surface']['normal'][1] / planarFaces[descendingAreaList[1]]['surface']['normal'][1]) and (planarFaces[descendingAreaList[0]]['surface']['normal'][1] / planarFaces[descendingAreaList[1]]['surface']['normal'][1]) == (planarFaces[descendingAreaList[0]]['surface']['normal'][2] / planarFaces[descendingAreaList[1]]['surface']['normal'][2]):
             print('Largest Planes are Coplanar')'''
-        parallelCheck = abs((planarFaces[descendingAreaList[0]]['surface']['normal'][0] * planarFaces[descendingAreaList[1]]['surface']['normal'][0])
-        + (planarFaces[descendingAreaList[0]]['surface']['normal'][1] * planarFaces[descendingAreaList[1]]['surface']['normal'][1])
-        + (planarFaces[descendingAreaList[0]]['surface']['normal'][2] * planarFaces[descendingAreaList[1]]['surface']['normal'][2]))
+        parallelCheck = abs((planarFaces[descendingAreaList[0]]['surface']['normal']['x'] * planarFaces[descendingAreaList[1]]['surface']['normal']['x'])
+        + (planarFaces[descendingAreaList[0]]['surface']['normal']['y'] * planarFaces[descendingAreaList[1]]['surface']['normal']['y'])
+        + (planarFaces[descendingAreaList[0]]['surface']['normal']['z'] * planarFaces[descendingAreaList[1]]['surface']['normal']['z']))
 
         #print(parallelCheck)
         if abs(parallelCheck - 1) <= tolerance2:
@@ -116,6 +116,7 @@ def findExportFaces(body):
             test_edge = get_face_edges(i)
             bool = (any(elem in largestFace0_Edges  for elem in test_edge)) and (any(elem in largestFace1_Edges  for elem in test_edge))
             if bool == False:
+                #print('Face is not adjacent')
                 return False
 
             return True
@@ -135,11 +136,11 @@ def findExportFaces(body):
                 if i == largestFace0_index or i == largestFace1_index:
                     continue
 
-                if facesList[i]['surface']['type'] == 'plane':
-                    global test_normal
+                if facesList[i]['surface']['type'] == 'PLANE':
+                    
                     test_normal = facesList[i]['surface']['normal']
-                    i_1 = abs((normal1[0] * test_normal[0]) + (normal1[1] * test_normal[1]) + (normal1[2] * test_normal[2]))
-                    i_2 = abs((normal2[0] * test_normal[0]) + (normal2[1] * test_normal[1]) + (normal2[2] * test_normal[2]))
+                    i_1 = abs((normal1['x'] * test_normal['x']) + (normal1['y'] * test_normal['y']) + (normal1['z'] * test_normal['z']))
+                    i_2 = abs((normal2['x'] * test_normal['x']) + (normal2['y'] * test_normal['y']) + (normal2['z'] * test_normal['z']))
                     #print(f"Perpendicularity Planar Logging: i_1 = {i_1},  i_2 = {i_2}")
                     #Dot product should be = 0
                     #if i_1 != ((1-i_1) <= tolerance) and ((1-i_2) <= tolerance) != 0:
@@ -148,21 +149,41 @@ def findExportFaces(body):
                         #print('Planes are not Perpendicular')
                         return False
 
-                else:
-                    try:
-                        test_normal = facesList[i]['surface']['axis']
-                        #Axis needs to be parallel to main surfaces, ie dot product = 1
+                elif facesList[i]['surface']['type'] == 'CYLINDER':
+                    
+                    test_normal = {'x': facesList[i]['surface']['axis']['x'], 'y': facesList[i]['surface']['axis']['y'], 'z': facesList[i]['surface']['axis']['z']}
+                    i_1 = abs((normal1['x'] * test_normal['x']) + (normal1['y'] * test_normal['y']) + (normal1['z'] * test_normal['z']))
+                    i_2 = abs((normal2['x'] * test_normal['x']) + (normal2['y'] * test_normal['y']) + (normal2['z'] * test_normal['z']))
+                    #print(f"Perpendicularity Planar Logging: i_1 = {i_1},  i_2 = {i_2}")
+                    #Dot product should be = 0
+                    #if i_1 != ((1-i_1) <= tolerance) and ((1-i_2) <= tolerance) != 0:
+                    #print(abs(i_1 - 1))
+                    if abs(i_1 - 1) >= tolerance2 and abs(i_1 - 1) >= tolerance2:
+                        #Faces are NOT perpendicular
+                        #print('Cylinders are not Perpendicular')
+                        return False      
 
-                        i_1 = abs((normal1[0] * test_normal[0]) + (normal1[1] * test_normal[1]) + (normal1[2] * test_normal[2]))
-                        i_2 = abs((normal2[0] * test_normal[0]) + (normal2[1] * test_normal[1]) + (normal2[2] * test_normal[2]))
-                        #print(f"Perpendicularity Axis Logging: i_1 = {i_1},  i_2 = {i_2}")
-                        #if i_1 != 1 and i_2 != 1:
-                        if abs(i_1 - 1) >= tolerance2 and abs(i_1 - 1) >= tolerance2:
-                            #Axis not parallel to surface normals
-                            #print('Axis is not perpendicular')
-                            return False
-                    except:
+                else:
+                  #test_normal = {'x': facesList[i]['surface']['direction']['x'], 'y': facesList[i]['surface']['direction']['y'], 'z': facesList[i]['surface']['direction']['z']}
+                  #print(test_normal)
+                  try:
+                    #test_normal = facesList[i]['surface']['axis']
+                    test_normal = {'x': facesList[i]['surface']['direction']['x'], 'y': facesList[i]['surface']['direction']['y'], 'z': facesList[i]['surface']['direction']['z']}
+                    #print(test_normal)
+                  
+                    #Axis needs to be parallel to main surfaces, ie dot product = 1
+  
+                    i_1 = abs((normal1['x'] * test_normal ['x']) + (normal1['y'] * test_normal['y']) + (normal1['z'] * test_normal['z']))
+                    i_2 = abs((normal2['x'] * test_normal['x']) + (normal2['y'] * test_normal['y']) + (normal2['z'] * test_normal['z']))
+                    #print(f"Perpendicularity Axis Logging: i_1 = {i_1},  i_2 = {i_2}")
+                    #if i_1 != 1 and i_2 != 1:
+                    if abs(i_1 - 1) >= tolerance2 and abs(i_1 - 1) >= tolerance2:
+                        #Axis not parallel to surface normals
+                        #print('Sweep Axis is not perpendicular')
                         return False
+                  except:
+                    #print('Axis Not Identified')
+                    return False
 
             return True
 
@@ -179,7 +200,7 @@ def findExportFaces(body):
             #print(f"Integer: = {a}")
             #print(f"Testing Edge: = {a}")
             longestEdgeIndex = search(body['Edges'], "id", a)
-            if str(body['Edges'][longestEdgeIndex]['curve']['type']) == 'line':
+            if str(body['Edges'][longestEdgeIndex]['curve']['type']) == 'LINE':
                 edgeLength = (body['Edges'][longestEdgeIndex]['geometry']['length'])
                 if edgeLength >= longestLinear:
                     longestLinear = edgeLength
@@ -206,27 +227,29 @@ def findExportFaces(body):
         longestEdgeIndex = search(body['Edges'], "id", longestEdgeID)
 
         #x = 0,1,2
-        viewMatrix[0] = body['Edges'][longestEdgeIndex]['geometry']['startVector'][0]                 #longestEdgeIndex['edges']['geometry']['startVector'][0]
-        viewMatrix[1] = body['Edges'][longestEdgeIndex]['geometry']['startVector'][1]
-        viewMatrix[2] = body['Edges'][longestEdgeIndex]['geometry']['startVector'][2]
+        viewMatrix[0] = body['Edges'][longestEdgeIndex]['geometry']['startVector']['x']                 #longestEdgeIndex['edges']['geometry']['startVector'][0]
+        viewMatrix[1] = body['Edges'][longestEdgeIndex]['geometry']['startVector']['y']
+        viewMatrix[2] = body['Edges'][longestEdgeIndex]['geometry']['startVector']['z']
 
         #y = 4,5,6
         '''Use numpy to find the cross product of x axis (startVector) and the face normal to give y axis'''
-        yAxis = numpy.cross(body['Edges'][longestEdgeIndex]['geometry']['startVector'],facesList[largestFace0_index]['surface']['normal'] )
+        yAxis = numpy.cross([body['Edges'][longestEdgeIndex]['geometry']['startVector']['x'], body['Edges'][longestEdgeIndex]['geometry']['startVector']['y'], body['Edges'][longestEdgeIndex]['geometry']['startVector']['z']],
+                            [facesList[largestFace0_index]['surface']['normal']['x'], facesList[largestFace0_index]['surface']['normal']['y'], facesList[largestFace0_index]['surface']['normal']['z']])
+          
         viewMatrix[4] = -yAxis[0]
         viewMatrix[5] = -yAxis[1]
         viewMatrix[6] = -yAxis[2]
 
 
         #z = 8,9,10 - Normal
-        viewMatrix[8] = facesList[largestFace0_index]['surface']['normal'][0]
-        viewMatrix[9] = facesList[largestFace0_index]['surface']['normal'][1]
-        viewMatrix[10] = facesList[largestFace0_index]['surface']['normal'][2]
+        viewMatrix[8] = facesList[largestFace0_index]['surface']['normal']['x']
+        viewMatrix[9] = facesList[largestFace0_index]['surface']['normal']['y']
+        viewMatrix[10] = facesList[largestFace0_index]['surface']['normal']['z']
 
         #Transform = 12,13,14 - Face origin - World origin
-        viewMatrix[12] = facesList[largestFace0_index]['surface']['origin'][0] - 0
-        viewMatrix[13] = facesList[largestFace0_index]['surface']['origin'][1] - 0
-        viewMatrix[14] = facesList[largestFace0_index]['surface']['origin'][2] - 0
+        viewMatrix[12] = facesList[largestFace0_index]['surface']['origin']['x'] - 0
+        viewMatrix[13] = facesList[largestFace0_index]['surface']['origin']['y'] - 0
+        viewMatrix[14] = facesList[largestFace0_index]['surface']['origin']['z'] - 0
 
         #print(f"View Matrix: {viewMatrix}")
         return viewMatrix
@@ -247,12 +270,12 @@ def findExportFaces(body):
     if body['Sheet Metal'] == True:
         adj = True
         perp = True
-        faceInfo['Operations'] = faceInfo['Operations'] + 'B'
+        faceInfo['Operations'] = 'B'
     else:
         adj = check_adjacent_faces()
         perp = check_perpendicular_faces()
-    #print("Faces adjacent result = ", adj)
-    #print("Perpendicularity result = ", perp)
+    print("Faces adjacent result = ", adj)
+    print("Perpendicularity result = ", perp)
 
     if adj and perp == True:
         #Get perimeter of edge_list
@@ -261,6 +284,7 @@ def findExportFaces(body):
         longestEdge = getLongestEdge()
         #print("Longest Edge = ", longestEdge)
         viewMatrix = createViewMatrix(longestEdge)
+        #print(viewMatrix)
         #Find the longest edge and it's direction vector - Used to set the x axis for the view matrix
         #Take care with a cylinder though, x direction needs to be perpendicular to its cylindrical axis.
         #https://math.stackexchange.com/questions/1502026/creating-a-bounding-box-for-2-points-with-a-custimizable-width

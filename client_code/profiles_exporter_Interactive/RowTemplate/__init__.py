@@ -16,23 +16,54 @@ class RowTemplate(RowTemplateTemplate):
     self.init_components(**properties)
 
     # Any code you write here will run before the form opens.
-    if self.item['Cut List Qty'] != 0:
-      self.item['Quantity'] = self.item['BOM Qty'] * self.item['Cut List Qty']
+
+    self.item['Customer Reference'] = user_data.profileOptions['Customer Reference']
+    
+    #Set Part Number or Name
+    self.lnkUrl.url = self.item['Part URL']
+    if self.item['Part Number'] is None:
+      self.lnkUrl.text = self.item['Part Name']
     else:  
-      self.item['Quantity'] = self.item['BOM Qty']
+      self.lnkUrl.text = self.item['Part Number']
 
     #Set thumbnail image from the 'thumbnail' field - decode from base64
     #print(self.item['Thumbnail'])
-    self.imgdata = base64.b64decode(self.item['Part Thumbnail'])    
+    self.imgdata = base64.b64decode(self.item['Part Thumbnail']) 
+    
     mymedia = anvil.BlobMedia('image/png', self.imgdata)
     self.image_1.source = mymedia 
 
+    #Set Multiplier and some hole options
+    self.item['Quantity'] = (self.item['Quantity'] * self.item['Multiplier']) + self.item['Additional Qty']
+    #Set undersize hole options
+    self.item['Undersize Holes'] = self.dropHoles.selected_value
+   
+    if self.item['Etch Part Number'] is True or (self.item['Bend Line Marks'] is True and self.item['Sheet Metal'] is True):  
+      self.item['Etch Operation'] = 'E'      
+    if self.item['Process'] == 'Laser':
+      self.item['Process'] = 'LAS'
+    elif self.item['Process'] == 'Waterjet':
+      self.item['Process'] = 'WJ'
+    elif self.item['Process'] == 'Plasma':
+      self.item['Process'] = 'PLA'
+    elif self.item['Process'] == 'Oxy-Fuel':
+      self.item['Process'] = 'OXY'
+    elif self.item['Process'] == 'Saw':
+      self.item['Process'] = 'SAW'
+    elif self.item['Process'] == 'Manual':
+      self.item['Process'] = 'MAN' 
+
     #Set Material and row colour
-    self.txtMaterial.text = self.item['Material']
-    if self.txtMaterial.text == '':      
+    self.dropMaterial.items = user_data.materialLibrary 
+    self.dropMaterial.selected_value = self.item['Material']
+    #self.txtMaterial.text = self.item['Material']
+    if self.dropMaterial.selected_value == '' or self.dropMaterial.selected_value == None:      
       self.background = 'theme:Material Warning'
       #self.item['Warnings'] = 'No material'
       self.lblWarnings.text = 'No material'
+      self.lblWarnings.icon = 'fa:exclamation-triangle'
+
+
 
     #Create supplier drop down box 
     supplier = self.item['Supplier']      
@@ -64,6 +95,113 @@ class RowTemplate(RowTemplateTemplate):
     #Set drill template option
     self.chkDrillTemplate.align = 'center'
     self.item['Drill Template'] = self.chkDrillTemplate.checked  
+
+    #Set drill template option
+    self.chkDrillTemplate.align = 'center'
+    self.item['Drill Template'] = self.chkDrillTemplate.checked
+
+
+  def dropSupplier_change(self, **event_args):
+    """This method is called when an item is selected"""
+    supplier = self.dropSupplier.selected_value
+    #Create the process list
+    processList = []
+    for i in user_data.userData['Users Suppliers']:
+      if i['supplierName'] == supplier:
+        for j in i['process']:
+          #print(j[0][1])
+          processList.append(j[0][1])
+    self.dropProcess.items = processList
+    self.dropProcess.selected_value = self.dropProcess.items[0]  
+    self.item['Process'] = self.dropProcess.selected_value    
+    #Set row colours
+    if self.dropProcess.selected_value == 'Waterjet' and self.dropMaterial.selected_value == '':
+      self.background = 'theme:Material Warning'
+      self.lblWarnings.text = 'No material'
+      self.lblWarnings.icon = 'fa:exclamation-triangle'
+    else:      
+      if self.dropMaterial.selected_value == '' or self.dropMaterial.selected_value == None or self.dropMaterial.selected_value == '<Invalid value>':   
+        #print(self.txtMaterial.text)
+        self.background = 'theme:Material Warning'
+        #self.item['Warnings'] = 'No material'
+        self.lblWarnings.text = 'No material'
+        self.lblWarnings.icon = 'fa:exclamation-triangle'
+      
+      elif self.dropProcess.selected_value == 'Waterjet':
+        self.background = 'theme:Waterjet'
+        self.lblWarnings.text = None
+      else:
+        self.background = 'theme:Default'
+        self.lblWarnings.text = None
+
+    pass
+
+  def dropProcess_change(self, **event_args):
+    """This method is called when an item is selected"""
+    self.item['Process'] = self.dropProcess.selected_value
+    #Set row colours
+    if self.dropProcess.selected_value == 'Waterjet' and self.dropMaterial.selected_value == '':
+      self.background = 'theme:Material Warning' 
+      self.lblWarnings.text = 'No material'
+      self.lblWarnings.icon = 'fa:exclamation-triangle'
+    else:      
+      if self.dropMaterial.selected_value == '' or self.dropMaterial.selected_value == None or self.dropMaterial.selected_value == '<Invalid value>':   
+        #print(self.txtMaterial.text)
+        self.background = 'theme:Material Warning'
+        #self.item['Warnings'] = 'No material'
+        self.lblWarnings.text = 'No material'
+        self.lblWarnings.icon = 'fa:exclamation-triangle'
+      
+      elif self.dropProcess.selected_value == 'Waterjet':
+        self.background = 'theme:Waterjet' 
+        self.lblWarnings.text = None
+      else:
+        self.background = 'theme:Default'
+        self.lblWarnings.text = None
+
+  def txtMaterial_change(self, **event_args):
+    """This method is called when the TextBox loses focus"""
+    #print(self.txtMaterial.select())
+    #Set row colours
+    if self.dropProcess.selected_value == 'Waterjet' and self.dropMaterial.selected_value == '':
+      self.background = 'theme:Material Warning'
+      self.lblWarnings.text = 'No material'
+      self.lblWarnings.icon = 'fa:exclamation-triangle'
+    else:      
+      if self.dropMaterial.selected_value == '' or self.dropMaterial.selected_value == None or self.dropMaterial.selected_value == '<Invalid value>':    
+        #print(self.txtMaterial.text)
+        self.background = 'theme:Material Warning'
+        #self.item['Warnings'] = 'No material' 
+        self.lblWarnings.text = 'No material'
+        self.lblWarnings.icon = 'fa:exclamation-triangle'
+      
+      elif self.dropProcess.selected_value == 'Waterjet':
+        self.background = 'theme:Waterjet' 
+        self.lblWarnings.text = None
+        self.lblWarnings.icon = None
+      else:
+        self.background = 'theme:Default' 
+        self.lblWarnings.text = None
+        self.lblWarnings.icon = None
+      pass    
+
+  def chkDrillTemplate_change(self, **event_args):
+    """This method is called when this checkbox is checked or unchecked"""
+    pass
+
+  #Add additional quantity to Quantity in item
+  def txtQtyAdd_change(self, **event_args):
+    """This method is called when the user presses Enter in this text box"""
+    self.item['Additional Qty'] = self.txtQtyAdd.text
+    pass
+
+  def dropHoles_change(self, **event_args):
+    self.item['Undersize Holes'] = self.dropHoles.selected_value
+
+    pass
+
+
+
 
 
 

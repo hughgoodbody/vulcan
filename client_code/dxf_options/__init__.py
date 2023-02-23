@@ -14,9 +14,11 @@ class dxf_options(dxf_optionsTemplate):
     self.init_components(**properties)
 
     # Any code you write here will run before the form opens.
-
+    self.chkContactSheet.checked = True
     self.dropSupplier.items = [(r['supplierName']) for r in user_data.userData['Users Suppliers']]
     self.txtThickness.text = 25
     self.txtMultiplier.text = 1
+    self.radRatio.selected = True
+
 
 
