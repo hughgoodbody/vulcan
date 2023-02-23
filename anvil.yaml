@@ -66,6 +66,9 @@ db_schema:
       admin_ui: {width: 262}
       type: string
     - name: materialLibraryUrl
+      admin_ui: {width: 485}
+      type: string
+    - name: email_confirmation_key
       admin_ui: {width: 200}
       type: string
   files:
@@ -164,11 +167,11 @@ db_schema:
       admin_ui: {width: 200}
       type: string
     - name: owner
-      admin_ui: {width: 200}
+      admin_ui: {width: 291}
       type: link_single
       target: users
     - name: suppliername
-      admin_ui: {order: 3, width: 200}
+      admin_ui: {width: 200}
       type: string
   namingconvention:
     title: NamingConvention
@@ -183,13 +186,13 @@ db_schema:
     - name: template
       admin_ui: {width: 200}
       type: media
+    - name: size
+      admin_ui: {width: 200}
+      type: string
     - name: owner
       admin_ui: {width: 200}
       type: link_single
       target: users
-    - name: size
-      admin_ui: {width: 200}
-      type: string
 secrets:
   vc_onshape_encryption_key:
     type: key

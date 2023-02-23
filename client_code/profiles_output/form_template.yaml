@@ -1,6 +1,6 @@
 container:
   type: ColumnPanel
-  properties: {col_widths: '{}'}
+  properties: {col_widths: '{"HPFLEP":4,"CZDQTV":16,"ESYZQL":19,"QDWMQN":16,"LLGMPK":5}'}
 components:
 - type: Image
   properties: {role: null, vertical_align: center, height: 142, tooltip: '', border: '',
@@ -17,9 +17,42 @@ components:
   properties: {role: title, align: center, tooltip: '', border: '', foreground: '',
     visible: true, text: DOWNLOAD LINKS, font_size: null, font: '', spacing_above: small,
     icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
-    underline: false, icon: 'fa:download'}
+    underline: false, icon: ''}
   name: label_1
   layout_properties: {grid_position: 'JJLDPN,UISCAG'}
+- type: Spacer
+  properties: {height: 32}
+  name: spacer_3
+  layout_properties: {grid_position: 'MQSEUH,RSVFAA'}
+- type: Spacer
+  properties: {height: 32}
+  name: spacer_4
+  layout_properties: {grid_position: 'RQLFLJ,HPFLEP', full_width_row: true}
+- type: Label
+  properties: {role: null, align: center, tooltip: '', border: '', foreground: '',
+    visible: true, text: PROFILE DOWNLOAD LINKS, font_size: null, font: '', spacing_above: small,
+    icon_align: left, spacing_below: small, italic: false, background: '', bold: true,
+    underline: false, icon: ''}
+  name: label_3
+  layout_properties: {grid_position: 'RQLFLJ,CZDQTV', full_width_row: true}
+- type: Label
+  properties: {role: null, align: center, tooltip: '', border: '', foreground: '',
+    visible: true, text: ADD ADDITIONAL FILES, font_size: null, font: '', spacing_above: small,
+    icon_align: left, spacing_below: small, italic: false, background: '', bold: true,
+    underline: false, icon: ''}
+  name: label_4
+  layout_properties: {grid_position: 'RQLFLJ,ESYZQL', full_width_row: true}
+- type: Label
+  properties: {role: null, align: center, tooltip: '', border: '', foreground: '',
+    visible: true, text: Email, font_size: null, font: '', spacing_above: small, icon_align: left,
+    spacing_below: small, italic: false, background: '', bold: true, underline: false,
+    icon: ''}
+  name: label_5
+  layout_properties: {grid_position: 'RQLFLJ,QDWMQN', full_width_row: true}
+- type: Spacer
+  properties: {height: 32}
+  name: spacer_5
+  layout_properties: {grid_position: 'RQLFLJ,LLGMPK', full_width_row: true}
 - type: RepeatingPanel
   properties: {role: null, tooltip: '', border: '', foreground: '', items: null, visible: true,
     spacing_above: small, spacing_below: small, item_template: profiles_output.downloadTemplate,
