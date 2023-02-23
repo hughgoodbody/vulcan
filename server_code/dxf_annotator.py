@@ -52,6 +52,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
   ipLasercsvList = [["NAME", "MATERIAL", "GRADE", "THICKNESS", "GRAIN", "OVERRIDE EXISTING", "QUANTITY", "NOTES", "DWG NOT FOR MANUFACTURE"]]
   othercsvList = [["NAME", "MATERIAL", "THICKNESS", "GRAIN", "OVERRIDE EXISTING", "QUANTITY", "NOTES", "DWG NOT FOR MANUFACTURE"]]
   boolEtch = False
+  etchVar = False
 
   #List for bin packing
   binPackList = []
@@ -319,9 +320,10 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     #### GET BEND LINES #### 
     #print(f"Sheet Metal = {dictInfo['Sheet Metal']}--------Etch Bends = {dictInfo['Bend Line Marks']}")
     if dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True: 
-      boolEtch = True
+      
       try:
         bendLines = msp.query('LINE[(layer=="SHEETMETAL_BEND_LINES_DOWN" | layer=="SHEETMETAL_BEND_LINES_UP")]')
+        boolEtch = True
         blEtchLength = 12        
         for bl in bendLines:
           #Change bend line colour to no-cut and turn layer off
@@ -404,7 +406,6 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           msp.add_line((cent[0], y1), (cent[0], y2), dxfattribs={'layer': 'Etch'})
           holeEntity.dxf.layer = 'Dont_Cut'                   #Move hole circle to No Cut layer
           holeEntity.dxf.color = no_cut_colour
-          global etchVar
           etchVar = True
       if dictInfo['Etch Part Number'] == True:
         dictInfo['PARTDATA18'] = fileNameNoSuffix
@@ -412,9 +413,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         dictInfo['PARTDATA18'] = '' 
       if etchVar == True or dictInfo['Etch Part Number'] == True: 
         boolEtch = True  
-    #Sort out etching  
-    if (dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True):
-      boolEtch = True      
+    #Sort out etching    
     if boolEtch == True:  
       dictInfo['Operations'].append('ETCH')
       dictInfo['Etch Operation'] = 'E'
