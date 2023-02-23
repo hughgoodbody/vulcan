@@ -31,7 +31,7 @@ class profiles_exporter_Interactive_pdf_print(profiles_exporter_Interactive_pdf_
     self.lnkAssemblyLink.url = self.panel.items[0]['Parent URL']
     self.lnkAssemblyLink.text = self.panel.items[0]['Parent Document Name'] + ' / ' + self.panel.items[0]['Parent Element Name']
     self.lblIdRef.text = prefix + str(orderId)
-    self.txtReference.text = self.panel.items[0]['Order Reference']
+    self.txtReference.text = self.panel.items[0]['Customer Reference']
     
     self.lblHeading.text = heading
 

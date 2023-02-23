@@ -189,6 +189,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
   def txtReference_change(self, **event_args):
     """This method is called when the text is changed"""
     user_data.profileOptions['Customer Reference'] = self.txtReference.text
+    #self.dataFromTable[0]['Customer Reference'] = self.txtReference.text
     pass
 
 

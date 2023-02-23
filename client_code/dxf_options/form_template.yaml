@@ -186,6 +186,6 @@ components:
     name: txtRef
     layout_properties: {row: LOPQPY, width_xs: 8, col_xs: 3, width: 604.667}
     data_bindings:
-    - {property: text, code: 'self.item[''Reference'']', writeback: true}
+    - {property: text, code: 'self.item[''Customer Reference'']', writeback: true}
   data_bindings: []
 is_package: true
