@@ -419,7 +419,8 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       dictInfo['Operations'].append('ETCH')
       dictInfo['Etch Operation'] = 'E'
       dictInfo['PD6'].append('E')
-
+    booletch = False
+    etchVar = False
 
     '''      
     #Rename the operations field to account for the drilling and etchin of undersize holes
