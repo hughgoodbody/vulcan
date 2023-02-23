@@ -70,7 +70,7 @@ db_schema:
       type: string
   files:
     title: Files
-    client: none
+    client: search
     server: full
     columns:
     - name: path

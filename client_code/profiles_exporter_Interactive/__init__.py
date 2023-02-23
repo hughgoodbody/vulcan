@@ -82,8 +82,8 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
     self.taskList = []
     
     #print(self.additionalParts)
-    processNotification = Notification("Creating profile DXF's... PLease Wait", timeout=None)
-    processNotification.show()
+    self.processNotification = Notification("Creating profile DXF's... PLease Wait", timeout=None)
+    self.processNotification.show()
     
 
 
@@ -210,7 +210,7 @@ class profiles_exporter_Interactive(profiles_exporter_InteractiveTemplate):
       if task.is_completed():
         self.taskList.remove(task)
       if len(self.taskList) == 0:
-        processNotification.hide()
+        self.processNotification.hide()
         open_form('profiles_output')
 
       

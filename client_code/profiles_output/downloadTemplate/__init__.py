@@ -13,3 +13,5 @@ class downloadTemplate(downloadTemplateTemplate):
     self.init_components(**properties)
 
     # Any code you write here will run before the form opens.
+    self.lnkDownloadSupplier.text = self.item['file'].name
+    self.lnkDownloadSupplier.url = self.item['file']
