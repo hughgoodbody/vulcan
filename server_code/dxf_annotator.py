@@ -319,11 +319,14 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
 
     #### GET BEND LINES #### 
     #print(f"Sheet Metal = {dictInfo['Sheet Metal']}--------Etch Bends = {dictInfo['Bend Line Marks']}")
-    if dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True: 
-      
+    if dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True:       
       try:
+        global bendLines
         bendLines = msp.query('LINE[(layer=="SHEETMETAL_BEND_LINES_DOWN" | layer=="SHEETMETAL_BEND_LINES_UP")]')
         boolEtch = True
+      except:
+        pass
+      if len(bendLines) != 0:        
         blEtchLength = 12        
         for bl in bendLines:
           #Change bend line colour to no-cut and turn layer off
@@ -335,8 +338,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
           endEnd = ((bl.dxf.end[0] - (((bl.dxf.end[0] - bl.dxf.start[0])/lenBendLine) * blEtchLength)), (bl.dxf.end[1] - (((bl.dxf.end[1] - bl.dxf.start[1])/lenBendLine) * blEtchLength)))          
           msp.add_line((bl.dxf.start), (startEnd), dxfattribs={'layer': 'Etch'})
           msp.add_line((bl.dxf.end), (endEnd), dxfattribs={'layer': 'Etch'})
-      except:
-        pass
+
   
       
     #### GET THE HOLES ####
