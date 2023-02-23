@@ -51,8 +51,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
   bendDown = []
   ipLasercsvList = [["NAME", "MATERIAL", "GRADE", "THICKNESS", "GRAIN", "OVERRIDE EXISTING", "QUANTITY", "NOTES", "DWG NOT FOR MANUFACTURE"]]
   othercsvList = [["NAME", "MATERIAL", "THICKNESS", "GRAIN", "OVERRIDE EXISTING", "QUANTITY", "NOTES", "DWG NOT FOR MANUFACTURE"]]
-  boolEtch = False
-  etchVar = False
+  
 
   #List for bin packing
   binPackList = []
@@ -68,6 +67,9 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
   path = Path(folder)
   searchfiles = path.glob('*.dxf')
   for dxfFile in searchfiles:
+    boolEtch = False
+    etchVar = False
+    bendLines = []
     textWidth = 0
     fileName = str(os.path.basename(dxfFile))    #Remove path
     #print(f"Processing {fileName}")
@@ -321,7 +323,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     #print(f"Sheet Metal = {dictInfo['Sheet Metal']}--------Etch Bends = {dictInfo['Bend Line Marks']}")
     if dictInfo['Sheet Metal'] == True and dictInfo['Bend Line Marks'] == True:       
       try:
-        global bendLines
+        
         bendLines = msp.query('LINE[(layer=="SHEETMETAL_BEND_LINES_DOWN" | layer=="SHEETMETAL_BEND_LINES_UP")]')
         boolEtch = True
       except:
