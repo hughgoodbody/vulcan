@@ -67,7 +67,7 @@ def findExportFaces(body):
             partThk = float(numpy.round(partThk, 3))  #Round number
             #print(f'Part Thickness: {partThk}')
             #partThk = round(partThk*1000)
-            if partThk > body['Max Thickness']:
+            if partThk > body['Max Thickness']/1000:
                 #print("Part is too thick")
                 return False
             #print(partThk)
