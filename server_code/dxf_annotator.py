@@ -219,9 +219,15 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
 
     imageScaleFactor = 1
     if imageHeight > gridBoxHeight/2:
-      imageScaleFactor = (gridBoxHeight/2) / imageHeight    
-    if imageWidth > gridBoxWidth/2:
-      imageScaleFactor = (gridBoxWidth/2) / imageWidth    
+      imageScaleFactor = (gridBoxHeight/2) / imageHeight  
+
+    if (imageScaleFactor * imageWidth) > gridBoxWidth:
+      imageScaleFactor = (gridBoxWidth) / imageWidth  
+      
+
+      
+    #if imageWidth > gridBoxWidth:
+      #imageScaleFactor = (gridBoxWidth) / imageWidth    
     
       
       
