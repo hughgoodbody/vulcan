@@ -216,13 +216,14 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
     imageHeight = partBoundingBox.extmax[1] - partBoundingBox.extmin[1]
     gridBoxWidth = (sheetSize.sheetSize['Width'] - (2 * sheetSize.sheetSize['Border'])) / (sheetSize.sheetSize['Horizontal Boxes'])
     gridBoxHeight = (sheetSize.sheetSize['Height'] - (2 * sheetSize.sheetSize['Border']) - 20) / (sheetSize.sheetSize['Vertical Boxes']) # 20 here is the sheet title at the foot
-    
+
+    imageScaleFactor = 1
     if imageHeight > gridBoxHeight/2:
       imageScaleFactor = (gridBoxHeight/2) / imageHeight    
-    elif imageWidth > gridBoxWidth:
-      imageScaleFactor = gridBoxWidth / imageWidth    
-    else:
-      imageScaleFactor = 1
+    if imageWidth > gridBoxWidth/2:
+      imageScaleFactor = (gridBoxWidth/2) / imageWidth    
+    
+      
       
     dictInfo['Bounding Box'] = partBoundingBox
       
