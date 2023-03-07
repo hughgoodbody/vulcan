@@ -63,7 +63,7 @@ def findExportFaces(body):
         if abs(parallelCheck - 1) <= tolerance2:
 
             #Check thickness between faces
-            #unit normal . (o2x-01x, o2y-01y, o2z-01z)
+            #Unit Normal multiplied by distance between each coordinate point == unit normal . (o2x-01x, o2y-01y, o2z-01z)
             distanceVector = (planarFaces[descendingAreaList[0]]['surface']['origin']['x'] - planarFaces[descendingAreaList[1]]['surface']['origin']['x'],
                               planarFaces[descendingAreaList[0]]['surface']['origin']['y'] - planarFaces[descendingAreaList[1]]['surface']['origin']['y'],
                               planarFaces[descendingAreaList[0]]['surface']['origin']['z'] - planarFaces[descendingAreaList[1]]['surface']['origin']['z'])
