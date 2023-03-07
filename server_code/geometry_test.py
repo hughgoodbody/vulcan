@@ -63,7 +63,14 @@ def findExportFaces(body):
         if abs(parallelCheck - 1) <= tolerance2:
 
             #Check thickness between faces
-            partThk = pointDistance(planarFaces[descendingAreaList[0]]['surface']['origin'], planarFaces[descendingAreaList[1]]['surface']['origin']) #v1 API
+            #unit normal . (o2x-01x, o2y-01y, o2z-01z)
+            distanceVector = (planarFaces[descendingAreaList[0]]['surface']['origin']['x'] - planarFaces[descendingAreaList[1]]['surface']['origin']['x'],
+                              planarFaces[descendingAreaList[0]]['surface']['origin']['y'] - planarFaces[descendingAreaList[1]]['surface']['origin']['y'],
+                              planarFaces[descendingAreaList[0]]['surface']['origin']['z'] - planarFaces[descendingAreaList[1]]['surface']['origin']['z'])
+
+            unitNormal = [planarFaces[descendingAreaList[0]]['surface']['normal']['x'], planarFaces[descendingAreaList[0]]['surface']['normal']['y'], planarFaces[descendingAreaList[0]]['surface']['normal']['z']]
+            partThk =abs(dotProduct(distanceVector, unitNormal))
+            #partThk = pointDistance(planarFaces[descendingAreaList[0]]['surface']['origin'], planarFaces[descendingAreaList[1]]['surface']['origin']) #v1 API
             partThk = float(numpy.round(partThk, 3))  #Round number
             #print(f'Part Thickness: {partThk}')
             #partThk = round(partThk*1000)
