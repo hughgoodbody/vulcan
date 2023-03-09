@@ -8,10 +8,10 @@ components:
   layout_properties: {grid_position: 'RDMVQT,XRSTEJ'}
   components:
   - type: Label
-    properties: {role: null, align: center, tooltip: '', border: '', foreground: 'theme:Error',
-      visible: true, text: '', font_size: null, font: '', spacing_above: small, icon_align: left,
-      spacing_below: small, italic: false, background: '', bold: true, underline: false,
-      icon: ''}
+    properties: {role: Feedback-OK, align: center, tooltip: '', border: '', foreground: 'theme:Config
+        Options', visible: true, text: '', font_size: null, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: true,
+      underline: false, icon: ''}
     name: lblNoConfigs
     layout_properties: {row: PQNUOV, width_xs: 10, col_xs: 1, width: 803.333}
 is_package: true

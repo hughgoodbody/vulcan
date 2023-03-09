@@ -55,9 +55,9 @@ components:
     properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: Delete API Key, font_size: null, font: '',
       spacing_above: small, icon_align: left, spacing_below: small, italic: false,
-      background: '', bold: false, underline: false, icon: ''}
+      background: '', bold: false, underline: false, icon: 'fa:key'}
     name: btnOnshapeKey
-    layout_properties: {row: CLSLSD, width_xs: 3, col_xs: 2, width: 136.667}
+    layout_properties: {row: CLSLSD, width_xs: 3, col_xs: 2, width: 220}
     event_bindings: {click: btnOnshapeKey_click}
   - type: Link
     properties: {role: null, url: '', align: left, tooltip: '', border: '', foreground: '',

@@ -51,6 +51,7 @@ roles:
   components: [TextBox, TextArea, DatePicker, DropDown]
 - {name: config-options}
 - {name: dxf-options}
+- {name: Feedback-OK}
 color_scheme:
   preset_groups:
   - name: Colour Scheme
@@ -338,3 +339,4 @@ color_scheme:
   - {name: Material Warning, color: 'rgba(245,248,67,0.51)'}
   - {name: Config Options, color: 'rgba(63,191,80,0.2)'}
   - {name: DXF Options, color: 'rgba(63,191,184,0.2)'}
+  - {name: Feedback Green, color: '#0F9D58'}
