@@ -237,6 +237,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
       params = {'configuration': part['Configuration']}
       body_details = onshape.request(method, url, query=params, body=payload)        
       body_details = json.loads(body_details.content)
+      print(body_details)
       if len(body_details['bodies']) == 1: #Then we have only one body, therefore add the face and edge details to the dictionary
         part['Faces'] = body_details['bodies'][0]['faces']
         part['Edges'] = body_details['bodies'][0]['edges']
