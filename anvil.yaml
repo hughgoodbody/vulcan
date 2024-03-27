@@ -17,9 +17,9 @@ services:
   client_config: {}
   server_config: {}
 startup: {type: form, module: index}
-package_name: Vulcan
+package_name: _Vulcan
 allow_embedding: false
-name: Vulcan
+name: .Vulcan
 runtime_options:
   version: 2
   client_version: '3'
