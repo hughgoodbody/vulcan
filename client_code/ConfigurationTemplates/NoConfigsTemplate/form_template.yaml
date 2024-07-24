@@ -1,8 +1,6 @@
 container:
   type: ColumnPanel
-  properties: {role: null, tooltip: '', border: '', foreground: 'theme:Feedback Green',
-    visible: true, wrap_on: mobile, col_spacing: medium, spacing_above: small, col_widths: '{}',
-    spacing_below: small, background: ''}
+  properties: {role: null, tooltip: '', border: '', foreground: 'theme:Feedback Green', visible: true, wrap_on: mobile, col_spacing: medium, spacing_above: small, col_widths: '{}', spacing_below: small, background: ''}
 components:
 - type: GridPanel
   properties: {}
@@ -10,10 +8,7 @@ components:
   layout_properties: {grid_position: 'RDMVQT,XRSTEJ'}
   components:
   - type: Label
-    properties: {role: null, align: center, tooltip: '', border: '', foreground: 'theme:Feedback
-        Green', visible: true, text: '', font_size: 22, font: '', spacing_above: small,
-      icon_align: left, spacing_below: small, italic: false, background: '', bold: true,
-      underline: false, icon: ''}
+    properties: {role: null, align: center, tooltip: '', border: '', foreground: 'theme:Feedback Green', visible: true, text: '', font_size: 22, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: true, underline: false, icon: ''}
     name: lblNoConfigs
     layout_properties: {row: PQNUOV, width_xs: 10, col_xs: 1, width: 803.333}
 is_package: true

@@ -8,10 +8,7 @@ components:
   - {property: selected_value, code: 'self.item[''Part Number'']', writeback: true}
   event_bindings: {}
 - type: TextBox
-  properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
-    border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null,
-    font: '', spacing_above: small, type: number, spacing_below: small, italic: false,
-    background: '', bold: false, underline: false}
+  properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '', border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null, font: '', spacing_above: small, type: number, spacing_below: small, italic: false, background: '', bold: false, underline: false}
   name: text_box_1
   layout_properties: {column: SJNAOT}
   data_bindings:
@@ -23,10 +20,7 @@ components:
   data_bindings:
   - {property: text, code: 'self.item[''Material'']', writeback: true}
 - type: TextBox
-  properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
-    border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null,
-    font: '', spacing_above: small, type: number, spacing_below: small, italic: false,
-    background: '', bold: false, underline: false}
+  properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '', border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null, font: '', spacing_above: small, type: number, spacing_below: small, italic: false, background: '', bold: false, underline: false}
   name: text_box_3
   layout_properties: {column: MEVHUE}
   data_bindings:
