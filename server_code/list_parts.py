@@ -144,7 +144,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
     api_bom['rows'][:] = [x for x in api_bom['rows'] if x['headerIdToValue'].get(headerDict['Exclude From Laser Search']) == False]
   except:
     pass
-  api_bom['rows'][:] = [x for x in api_bom['rows'] if x['headerIdToValue'].get(headerDict['Exclude from BOM']) == False]
+  api_bom['rows'][:] = [x for x in api_bom['rows'] if x['headerIdToValue'].get(headerDict['Exclude from all BOMs']) == False]
   api_bom['rows'][:] = [x for x in api_bom['rows'] if x['itemSource'].get('isStandardContent') == False]
   #pprint(api_bom['rows'])
 

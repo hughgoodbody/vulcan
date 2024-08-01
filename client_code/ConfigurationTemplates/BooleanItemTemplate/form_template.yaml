@@ -3,8 +3,7 @@ container:
   properties: {col_widths: '{}'}
 components:
 - type: GridPanel
-  properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
-    border: '', visible: true, role: null, tooltip: ''}
+  properties: {spacing_above: small, spacing_below: small, background: '', foreground: '', border: '', visible: true, role: null, tooltip: ''}
   name: grid_panel_1
   layout_properties: {grid_position: 'OHKWTO,ECCRZC', full_width_row: true}
   components:
@@ -13,10 +12,7 @@ components:
     name: lblBoolean
     layout_properties: {row: LBGGKR, width_xs: 3, col_xs: 3}
   - type: CheckBox
-    properties: {role: config-options, align: left, tooltip: '', border: '', enabled: true,
-      foreground: '', allow_indeterminate: false, visible: true, text: '', font_size: null,
-      font: '', spacing_above: small, spacing_below: small, italic: false, background: '',
-      bold: false, checked: false, underline: false}
+    properties: {role: config-options, align: left, tooltip: '', border: '', enabled: true, foreground: '', allow_indeterminate: false, visible: true, text: '', font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false, background: '', bold: false, checked: false, underline: false}
     name: chkBoolean
     layout_properties: {row: LBGGKR, width_xs: 2, col_xs: 6, width: 153}
 is_package: true
