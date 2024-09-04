@@ -1,33 +1,33 @@
-container:
-  type: DataRowPanel
-  data_bindings: []
 components:
-- type: Image
-  properties: {height: 49}
-  name: image_1
+- data_bindings:
+  - {code: 'self.item[''Part Thumbnail'']', property: source}
   layout_properties: {column: GDKJOS}
-  data_bindings:
-  - {property: source, code: 'self.item[''Part Thumbnail'']'}
-- type: Link
-  properties: {role: null, url: '', align: left, tooltip: '', border: '', foreground: '', visible: true, text: '', font_size: null, wrap_on: mobile, font: '', col_spacing: medium, spacing_above: small, icon_align: left, col_widths: '', spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: 'fa:link'}
-  name: lnkUrl
+  name: image_1
+  properties: {height: 49}
+  type: Image
+- data_bindings:
+  - {code: 'self.item[''Part Number'']', property: text}
   layout_properties: {column: QWHKOW}
-  data_bindings:
-  - {property: text, code: 'self.item[''Part Number'']'}
-- type: TextBox
-  properties: {}
+  name: lnkUrl
+  properties: {align: left, background: '', bold: false, border: '', col_spacing: medium, col_widths: '', font: '', font_size: null, foreground: '', icon: 'fa:link', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: '', tooltip: '', underline: false, url: '', visible: true, wrap_on: mobile}
+  type: Link
+- layout_properties: {column: VFIFDG}
   name: text_box_1
-  layout_properties: {column: VFIFDG}
-- type: TextBox
   properties: {}
+  type: TextBox
+- layout_properties: {column: GPEIJT}
   name: text_box_2
-  layout_properties: {column: GPEIJT}
-- type: TextBox
   properties: {}
+  type: TextBox
+- layout_properties: {column: QAUUYQ}
   name: text_box_3
-  layout_properties: {column: QAUUYQ}
-- type: TextBox
   properties: {}
+  type: TextBox
+- layout_properties: {column: ZUEEEX}
   name: text_box_4
-  layout_properties: {column: ZUEEEX}
+  properties: {}
+  type: TextBox
+container:
+  data_bindings: []
+  type: DataRowPanel
 is_package: true

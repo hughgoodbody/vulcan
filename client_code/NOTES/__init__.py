@@ -1,3 +1,4 @@
+import anvil.server
 
 ERRORS:
 Error when using custom BOM tables

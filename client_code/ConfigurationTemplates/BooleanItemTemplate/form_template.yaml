@@ -1,18 +1,18 @@
-container:
-  type: ColumnPanel
-  properties: {col_widths: '{}'}
 components:
-- type: GridPanel
-  properties: {spacing_above: small, spacing_below: small, background: '', foreground: '', border: '', visible: true, role: null, tooltip: ''}
-  name: grid_panel_1
-  layout_properties: {grid_position: 'OHKWTO,ECCRZC', full_width_row: true}
-  components:
-  - type: Label
-    properties: {}
+- components:
+  - layout_properties: {col_xs: 3, row: LBGGKR, width_xs: 3}
     name: lblBoolean
-    layout_properties: {row: LBGGKR, width_xs: 3, col_xs: 3}
-  - type: CheckBox
-    properties: {role: config-options, align: left, tooltip: '', border: '', enabled: true, foreground: '', allow_indeterminate: false, visible: true, text: '', font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false, background: '', bold: false, checked: false, underline: false}
+    properties: {}
+    type: Label
+  - layout_properties: {col_xs: 6, row: LBGGKR, width: 153, width_xs: 2}
     name: chkBoolean
-    layout_properties: {row: LBGGKR, width_xs: 2, col_xs: 6, width: 153}
+    properties: {align: left, allow_indeterminate: false, background: '', bold: false, border: '', checked: false, enabled: true, font: '', font_size: null, foreground: '', italic: false, role: config-options, spacing_above: small, spacing_below: small, text: '', tooltip: '', underline: false, visible: true}
+    type: CheckBox
+  layout_properties: {full_width_row: true, grid_position: 'OHKWTO,ECCRZC'}
+  name: grid_panel_1
+  properties: {background: '', border: '', foreground: '', role: null, spacing_above: small, spacing_below: small, tooltip: '', visible: true}
+  type: GridPanel
+container:
+  properties: {col_widths: '{}'}
+  type: ColumnPanel
 is_package: true

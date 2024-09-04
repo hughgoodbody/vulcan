@@ -1,30 +1,30 @@
-container:
-  type: ColumnPanel
-  properties: {col_widths: '{"ZGFXTS":17,"FBBLZF":22,"PDBNVX":10,"ZMVAFF":16,"FBRIKT":7}'}
 components:
-- type: Button
-  properties: {role: filled-button, align: center, tooltip: '', border: '', enabled: true, foreground: '', visible: true, text: Retrieve Document, font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: 'fa:files-o'}
+- event_bindings: {click: btnGetConfigs_click}
+  layout_properties: {full_width_row: false, grid_position: 'JLOEUP,FEVFJO'}
   name: btnGetConfigs
-  layout_properties: {grid_position: 'JLOEUP,FEVFJO', full_width_row: false}
-  event_bindings: {click: btnGetConfigs_click}
-- type: Spacer
-  properties: {height: 32}
+  properties: {align: center, background: '', bold: false, border: '', enabled: true, font: '', font_size: null, foreground: '', icon: 'fa:files-o', icon_align: left, italic: false, role: filled-button, spacing_above: small, spacing_below: small, text: Retrieve Document, tooltip: '', underline: false, visible: true}
+  type: Button
+- layout_properties: {full_width_row: true, grid_position: 'NBFCVU,PDBNVX'}
   name: spacer_1
-  layout_properties: {grid_position: 'NBFCVU,PDBNVX', full_width_row: true}
-- type: ColumnPanel
-  properties: {role: null, tooltip: '', border: '', foreground: '', visible: true, wrap_on: mobile, col_spacing: medium, spacing_above: small, col_widths: '', spacing_below: small, background: ''}
-  name: panelConfigPanel
-  layout_properties: {grid_position: 'NBFCVU,ZMVAFF', full_width_row: true}
-- type: ColumnPanel
-  properties: {}
-  name: pnlValues
-  layout_properties: {grid_position: 'NBFCVU,ZGFXTS', full_width_row: true}
-- type: ColumnPanel
-  properties: {}
-  name: pnlCheck
-  layout_properties: {grid_position: 'NBFCVU,FBBLZF', full_width_row: true}
-- type: Spacer
   properties: {height: 32}
+  type: Spacer
+- layout_properties: {full_width_row: true, grid_position: 'NBFCVU,ZMVAFF'}
+  name: panelConfigPanel
+  properties: {background: '', border: '', col_spacing: medium, col_widths: '', foreground: '', role: null, spacing_above: small, spacing_below: small, tooltip: '', visible: true, wrap_on: mobile}
+  type: ColumnPanel
+- layout_properties: {full_width_row: true, grid_position: 'NBFCVU,ZGFXTS'}
+  name: pnlValues
+  properties: {}
+  type: ColumnPanel
+- layout_properties: {full_width_row: true, grid_position: 'NBFCVU,FBBLZF'}
+  name: pnlCheck
+  properties: {}
+  type: ColumnPanel
+- layout_properties: {full_width_row: true, grid_position: 'NBFCVU,FBRIKT'}
   name: spacer_2
-  layout_properties: {grid_position: 'NBFCVU,FBRIKT', full_width_row: true}
+  properties: {height: 32}
+  type: Spacer
+container:
+  properties: {col_widths: '{"ZGFXTS":17,"FBBLZF":22,"PDBNVX":10,"ZMVAFF":16,"FBRIKT":7}'}
+  type: ColumnPanel
 is_package: true

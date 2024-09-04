@@ -1,28 +1,180 @@
-dependencies: []
-services:
-- source: /runtime/services/tables.yml
-  client_config: {}
-  server_config: {}
-- source: /runtime/services/anvil/users.yml
-  client_config: {allow_signup: true, enable_automatically: true, use_email: true, confirm_email: true, allow_remember_me: true, remember_me_days: 0.3333}
-  server_config: {user_table: users}
-- source: /runtime/services/anvil/secrets.yml
-  client_config: {}
-  server_config: {}
-- source: /runtime/services/stripe.yml
-  client_config: {}
-  server_config: {}
-- source: /runtime/services/anvil/email.yml
-  client_config: {}
-  server_config: {}
-startup: {type: form, module: index}
-package_name: Vulcan
 allow_embedding: false
+db_schema:
+  drawingtemplates:
+    client: none
+    columns:
+    - admin_ui: {width: 200}
+      name: template
+      type: media
+    - admin_ui: {width: 200}
+      name: size
+      type: string
+    - admin_ui: {width: 200}
+      name: owner
+      target: users
+      type: link_single
+    - admin_ui: {order: 3, width: 200}
+      name: type
+      type: string
+    server: full
+    title: drawingTemplates
+  files:
+    client: search
+    columns:
+    - admin_ui: {width: 200}
+      name: path
+      type: string
+    - admin_ui: {order: 1, width: 348}
+      name: file
+      type: media
+    - admin_ui: {width: 200}
+      name: file_version
+      type: string
+    - admin_ui: {width: 265}
+      name: owner
+      target: users
+      type: link_single
+    - admin_ui: {width: 200}
+      name: type
+      type: string
+    - admin_ui: {width: 200}
+      name: supplier
+      type: string
+    server: full
+    title: Files
+  namingconvention:
+    client: none
+    columns: []
+    server: full
+    title: NamingConvention
+  numbers:
+    client: full
+    columns:
+    - admin_ui: {width: 200}
+      name: RefPrefix
+      type: string
+    - admin_ui: {width: 232}
+      name: RefNumber
+      type: number
+    - admin_ui: {width: 282}
+      name: owner
+      target: users
+      type: link_single
+    server: full
+    title: Numbers
+  process:
+    client: none
+    columns:
+    - admin_ui: {width: 200}
+      name: process
+      type: string
+    - admin_ui: {width: 200}
+      name: code
+      type: string
+    server: full
+    title: Process
+  suppliers:
+    client: none
+    columns:
+    - admin_ui: {width: 200}
+      name: supplierName
+      type: string
+    - admin_ui: {width: 200}
+      name: owner
+      target: users
+      type: link_multiple
+    - admin_ui: {width: 200}
+      name: process
+      target: process
+      type: link_multiple
+    - admin_ui: {width: 200}
+      name: bedLength
+      type: number
+    - admin_ui: {width: 200}
+      name: bedWidth
+      type: number
+    - admin_ui: {width: 200}
+      name: steelThickness
+      type: number
+    - admin_ui: {width: 200}
+      name: aluminiumThickness
+      type: number
+    - admin_ui: {width: 200}
+      name: stainlessThickness
+      type: number
+    - admin_ui: {width: 200}
+      name: email
+      type: string
+    - admin_ui: {order: 9, width: 200}
+      name: type
+      type: string
+    server: full
+    title: Suppliers
+  transfertable:
+    client: full
+    columns:
+    - admin_ui: {width: 314}
+      name: data
+      type: simpleObject
+    - admin_ui: {width: 200}
+      name: type
+      type: string
+    - admin_ui: {width: 291}
+      name: owner
+      target: users
+      type: link_single
+    - admin_ui: {width: 200}
+      name: suppliername
+      type: string
+    server: full
+    title: TransferTable
+  users:
+    client: none
+    columns:
+    - admin_ui: {width: 200}
+      name: email
+      type: string
+    - admin_ui: {width: 200}
+      name: enabled
+      type: bool
+    - admin_ui: {width: 200}
+      name: last_login
+      type: datetime
+    - admin_ui: {width: 200}
+      name: password_hash
+      type: string
+    - admin_ui: {width: 200}
+      name: n_password_failures
+      type: number
+    - admin_ui: {width: 200}
+      name: confirmed_email
+      type: bool
+    - admin_ui: {width: 200}
+      name: remembered_logins
+      type: simpleObject
+    - admin_ui: {width: 200}
+      name: signed_up
+      type: datetime
+    - admin_ui: {width: 167}
+      name: onshape_access_key_encrypted
+      type: string
+    - admin_ui: {width: 262}
+      name: onshape_secret_key_encrypted
+      type: string
+    - admin_ui: {width: 485}
+      name: materialLibraryUrl
+      type: string
+    - admin_ui: {width: 200}
+      name: email_confirmation_key
+      type: string
+    server: full
+    title: Users
+dependencies: []
 name: Vulcan
+package_name: Vulcan
+renamed: true
 runtime_options:
-  version: 2
   client_version: '3'
-  server_version: python3-full
   server_spec: {base: python310-standard}
   server_spec_disabled:
     base: python310-standard
@@ -30,179 +182,27 @@ runtime_options:
       ezdxf==1.0.0rc2
       matplotlib==3.7.0rc1
       PyPDF2==3.0.1
-startup_form: null
-db_schema:
-  users:
-    title: Users
-    client: none
-    server: full
-    columns:
-    - name: email
-      admin_ui: {width: 200}
-      type: string
-    - name: enabled
-      admin_ui: {width: 200}
-      type: bool
-    - name: last_login
-      admin_ui: {width: 200}
-      type: datetime
-    - name: password_hash
-      admin_ui: {width: 200}
-      type: string
-    - name: n_password_failures
-      admin_ui: {width: 200}
-      type: number
-    - name: confirmed_email
-      admin_ui: {width: 200}
-      type: bool
-    - name: remembered_logins
-      admin_ui: {width: 200}
-      type: simpleObject
-    - name: signed_up
-      admin_ui: {width: 200}
-      type: datetime
-    - name: onshape_access_key_encrypted
-      admin_ui: {width: 167}
-      type: string
-    - name: onshape_secret_key_encrypted
-      admin_ui: {width: 262}
-      type: string
-    - name: materialLibraryUrl
-      admin_ui: {width: 485}
-      type: string
-    - name: email_confirmation_key
-      admin_ui: {width: 200}
-      type: string
-  files:
-    title: Files
-    client: search
-    server: full
-    columns:
-    - name: path
-      admin_ui: {width: 200}
-      type: string
-    - name: file
-      admin_ui: {order: 1, width: 348}
-      type: media
-    - name: file_version
-      admin_ui: {width: 200}
-      type: string
-    - name: owner
-      admin_ui: {width: 265}
-      type: link_single
-      target: users
-    - name: type
-      admin_ui: {width: 200}
-      type: string
-    - name: supplier
-      admin_ui: {width: 200}
-      type: string
-  suppliers:
-    title: Suppliers
-    client: none
-    server: full
-    columns:
-    - name: supplierName
-      admin_ui: {width: 200}
-      type: string
-    - name: owner
-      admin_ui: {width: 200}
-      type: link_multiple
-      target: users
-    - name: process
-      admin_ui: {width: 200}
-      type: link_multiple
-      target: process
-    - name: bedLength
-      admin_ui: {width: 200}
-      type: number
-    - name: bedWidth
-      admin_ui: {width: 200}
-      type: number
-    - name: steelThickness
-      admin_ui: {width: 200}
-      type: number
-    - name: aluminiumThickness
-      admin_ui: {width: 200}
-      type: number
-    - name: stainlessThickness
-      admin_ui: {width: 200}
-      type: number
-    - name: email
-      admin_ui: {width: 200}
-      type: string
-    - name: type
-      admin_ui: {order: 9, width: 200}
-      type: string
-  process:
-    title: Process
-    client: none
-    server: full
-    columns:
-    - name: process
-      admin_ui: {width: 200}
-      type: string
-    - name: code
-      admin_ui: {width: 200}
-      type: string
-  numbers:
-    title: Numbers
-    client: full
-    server: full
-    columns:
-    - name: RefPrefix
-      admin_ui: {width: 200}
-      type: string
-    - name: RefNumber
-      admin_ui: {width: 232}
-      type: number
-    - name: owner
-      admin_ui: {width: 282}
-      type: link_single
-      target: users
-  transfertable:
-    title: TransferTable
-    client: full
-    server: full
-    columns:
-    - name: data
-      admin_ui: {width: 314}
-      type: simpleObject
-    - name: type
-      admin_ui: {width: 200}
-      type: string
-    - name: owner
-      admin_ui: {width: 291}
-      type: link_single
-      target: users
-    - name: suppliername
-      admin_ui: {width: 200}
-      type: string
-  namingconvention:
-    title: NamingConvention
-    client: none
-    server: full
-    columns: []
-  drawingtemplates:
-    title: drawingTemplates
-    client: none
-    server: full
-    columns:
-    - name: template
-      admin_ui: {width: 200}
-      type: media
-    - name: size
-      admin_ui: {width: 200}
-      type: string
-    - name: owner
-      admin_ui: {width: 200}
-      type: link_single
-      target: users
-    - name: type
-      admin_ui: {order: 3, width: 200}
-      type: string
+  server_version: python3-full
+  version: 2
 secrets:
   vc_onshape_encryption_key:
     type: key
     value: {? '' : baHAvO8UwKy2WL1314YiiJKZlQRTp0R62AY1GEF5+gr+h2xNVCZ9m5zGb+8n17oBp+vRSlte3wk/EMKo4CH9FcitLYHgC9fyLEuQmy9uoqV0rKxuGCn/25ZD1gOw0Rwu9nmX38y4qA3GOPUCnNV9vZc3MwP7mJc=}
-renamed: true
+services:
+- client_config: {}
+  server_config: {}
+  source: /runtime/services/tables.yml
+- client_config: {allow_remember_me: true, allow_signup: true, confirm_email: true, enable_automatically: true, remember_me_days: 0.3333, use_email: true}
+  server_config: {user_table: users}
+  source: /runtime/services/anvil/users.yml
+- client_config: {}
+  server_config: {}
+  source: /runtime/services/anvil/secrets.yml
+- client_config: {}
+  server_config: {}
+  source: /runtime/services/stripe.yml
+- client_config: {}
+  server_config: {}
+  source: /runtime/services/anvil/email.yml
+startup: {module: index, type: form}
+startup_form: null

@@ -1,14 +1,14 @@
-container:
-  type: ColumnPanel
-  properties: {role: null, tooltip: '', border: '', foreground: 'theme:Feedback Green', visible: true, wrap_on: mobile, col_spacing: medium, spacing_above: small, col_widths: '{}', spacing_below: small, background: ''}
 components:
-- type: GridPanel
-  properties: {}
-  name: grid_panel_1
-  layout_properties: {grid_position: 'RDMVQT,XRSTEJ'}
-  components:
-  - type: Label
-    properties: {role: null, align: center, tooltip: '', border: '', foreground: 'theme:Feedback Green', visible: true, text: '', font_size: 22, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: true, underline: false, icon: ''}
+- components:
+  - layout_properties: {col_xs: 1, row: PQNUOV, width: 803.333, width_xs: 10}
     name: lblNoConfigs
-    layout_properties: {row: PQNUOV, width_xs: 10, col_xs: 1, width: 803.333}
+    properties: {align: center, background: '', bold: true, border: '', font: '', font_size: 22, foreground: 'theme:Feedback Green', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: '', tooltip: '', underline: false, visible: true}
+    type: Label
+  layout_properties: {grid_position: 'RDMVQT,XRSTEJ'}
+  name: grid_panel_1
+  properties: {}
+  type: GridPanel
+container:
+  properties: {background: '', border: '', col_spacing: medium, col_widths: '{}', foreground: 'theme:Feedback Green', role: null, spacing_above: small, spacing_below: small, tooltip: '', visible: true, wrap_on: mobile}
+  type: ColumnPanel
 is_package: true

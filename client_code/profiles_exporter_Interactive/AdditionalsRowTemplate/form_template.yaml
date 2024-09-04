@@ -1,28 +1,28 @@
-container: {type: DataRowPanel}
 components:
-- type: DropDown
-  properties: {}
-  name: drop_down_1
-  layout_properties: {column: UKHRXT}
-  data_bindings:
-  - {property: selected_value, code: 'self.item[''Part Number'']', writeback: true}
+- data_bindings:
+  - {code: 'self.item[''Part Number'']', property: selected_value, writeback: true}
   event_bindings: {}
-- type: TextBox
-  properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '', border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null, font: '', spacing_above: small, type: number, spacing_below: small, italic: false, background: '', bold: false, underline: false}
-  name: text_box_1
-  layout_properties: {column: SJNAOT}
-  data_bindings:
-  - {property: text, code: 'self.item[''Thickness'']', writeback: true}
-- type: TextBox
+  layout_properties: {column: UKHRXT}
+  name: drop_down_1
   properties: {}
-  name: text_box_2
+  type: DropDown
+- data_bindings:
+  - {code: 'self.item[''Thickness'']', property: text, writeback: true}
+  layout_properties: {column: SJNAOT}
+  name: text_box_1
+  properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: null, foreground: '', hide_text: false, italic: false, placeholder: '', role: null, spacing_above: small, spacing_below: small, text: '', tooltip: '', type: number, underline: false, visible: true}
+  type: TextBox
+- data_bindings:
+  - {code: 'self.item[''Material'']', property: text, writeback: true}
   layout_properties: {column: GHXHLX}
-  data_bindings:
-  - {property: text, code: 'self.item[''Material'']', writeback: true}
-- type: TextBox
-  properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '', border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null, font: '', spacing_above: small, type: number, spacing_below: small, italic: false, background: '', bold: false, underline: false}
-  name: text_box_3
+  name: text_box_2
+  properties: {}
+  type: TextBox
+- data_bindings:
+  - {code: 'self.item[''Quantity'']', property: text, writeback: true}
   layout_properties: {column: MEVHUE}
-  data_bindings:
-  - {property: text, code: 'self.item[''Quantity'']', writeback: true}
+  name: text_box_3
+  properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: null, foreground: '', hide_text: false, italic: false, placeholder: '', role: null, spacing_above: small, spacing_below: small, text: '', tooltip: '', type: number, underline: false, visible: true}
+  type: TextBox
+container: {type: DataRowPanel}
 is_package: true

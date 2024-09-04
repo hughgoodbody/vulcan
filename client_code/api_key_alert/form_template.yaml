@@ -1,28 +1,28 @@
-container:
-  type: ColumnPanel
-  properties: {col_widths: '{}'}
 components:
-- type: GridPanel
-  properties: {}
-  name: grid_panel_1
-  layout_properties: {grid_position: 'DTGGGB,XEITDT'}
-  components:
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: '', visible: true, text: Access Key, font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+- components:
+  - layout_properties: {col_xs: 2, grid_position: 'JYFOVH,JYVIEM', row: EYLHOL, width_xs: 2}
     name: label_1
-    layout_properties: {grid_position: 'JYFOVH,JYVIEM', row: EYLHOL, width_xs: 2, col_xs: 2}
-  - type: TextBox
-    properties: {}
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: null, foreground: '', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: Access Key, tooltip: '', underline: false, visible: true}
+    type: Label
+  - event_bindings: {change: txtAccessKey_change}
+    layout_properties: {col_xs: 4, grid_position: 'BBUBOE,EVEYZD', row: EYLHOL, width_xs: 6}
     name: txtAccessKey
-    layout_properties: {grid_position: 'BBUBOE,EVEYZD', row: EYLHOL, width_xs: 6, col_xs: 4}
-    event_bindings: {change: txtAccessKey_change}
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: '', visible: true, text: Secret Key, font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
-    name: label_2
-    layout_properties: {grid_position: 'BBUBOE,OAGKYN', row: MJZUNN, width_xs: 2, col_xs: 2}
-  - type: TextBox
     properties: {}
+    type: TextBox
+  - layout_properties: {col_xs: 2, grid_position: 'BBUBOE,OAGKYN', row: MJZUNN, width_xs: 2}
+    name: label_2
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: null, foreground: '', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: Secret Key, tooltip: '', underline: false, visible: true}
+    type: Label
+  - event_bindings: {change: txtSecretKey_change}
+    layout_properties: {col_xs: 4, grid_position: 'JYFOVH,XQCMKR', row: MJZUNN, width_xs: 6}
     name: txtSecretKey
-    layout_properties: {grid_position: 'JYFOVH,XQCMKR', row: MJZUNN, width_xs: 6, col_xs: 4}
-    event_bindings: {change: txtSecretKey_change}
+    properties: {}
+    type: TextBox
+  layout_properties: {grid_position: 'DTGGGB,XEITDT'}
+  name: grid_panel_1
+  properties: {}
+  type: GridPanel
+container:
+  properties: {col_widths: '{}'}
+  type: ColumnPanel
 is_package: true

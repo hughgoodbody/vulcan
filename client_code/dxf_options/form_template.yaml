@@ -1,136 +1,136 @@
-container:
-  type: ColumnPanel
-  properties: {col_widths: '{}'}
 components:
-- type: GridPanel
-  properties: {spacing_above: small, spacing_below: small, background: '', foreground: '', border: '', visible: true, role: null, tooltip: ''}
-  name: grid_panel_1
-  layout_properties: {grid_position: 'QPHHKN,MRETHF'}
-  components:
-  - type: Label
-    properties: {role: null, align: center, tooltip: '', border: '', foreground: '', visible: true, text: 'Hole Options:', font_size: 18, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: true, underline: false, icon: ''}
+- components:
+  - layout_properties: {col_xs: 0, row: ZOLXJE, width: 303.333, width_xs: 4}
     name: label_1
-    layout_properties: {row: ZOLXJE, width_xs: 4, col_xs: 0, width: 303.333}
-  - type: Label
-    properties: {role: null, align: center, tooltip: '', border: '', foreground: '', visible: true, text: 'Marking Options:', font_size: 18, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: true, underline: false, icon: ''}
+    properties: {align: center, background: '', bold: true, border: '', font: '', font_size: 18, foreground: '', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: 'Hole Options:', tooltip: '', underline: false, visible: true}
+    type: Label
+  - layout_properties: {col_xs: 4, row: ZOLXJE, width: 303.333, width_xs: 4}
     name: label_2
-    layout_properties: {row: ZOLXJE, width_xs: 4, col_xs: 4, width: 303.333}
-  - type: Label
-    properties: {role: null, align: center, tooltip: '', border: '', foreground: '', visible: true, text: 'Other Options:', font_size: 18, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: true, underline: false, icon: ''}
+    properties: {align: center, background: '', bold: true, border: '', font: '', font_size: 18, foreground: '', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: 'Marking Options:', tooltip: '', underline: false, visible: true}
+    type: Label
+  - layout_properties: {col_xs: 8, row: ZOLXJE, width: 303.333, width_xs: 4}
     name: label_3
-    layout_properties: {row: ZOLXJE, width_xs: 4, col_xs: 8, width: 303.333}
-  - type: RadioButton
-    properties: {role: dxf-options, selected: true, align: left, tooltip: '', border: '', enabled: true, foreground: '', value: Ignore, visible: true, text: Ignore thickness / diameter ratio, font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false, background: '', bold: false, group_name: radGroupHoleOptions, underline: false}
+    properties: {align: center, background: '', bold: true, border: '', font: '', font_size: 18, foreground: '', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: 'Other Options:', tooltip: '', underline: false, visible: true}
+    type: Label
+  - data_bindings:
+    - {code: 'self.item[''Hole Options'']', property: selected}
+    layout_properties: {col_xs: 0, row: VKFPQE, width: 230, width_xs: 4}
     name: radRatio
-    layout_properties: {row: VKFPQE, width_xs: 4, col_xs: 0, width: 230}
-    data_bindings:
-    - {property: selected, code: 'self.item[''Hole Options'']'}
-  - type: CheckBox
-    properties: {role: dxf-options, align: left, tooltip: '', border: '', enabled: true, foreground: '', allow_indeterminate: false, visible: true, text: Etch component part number, font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false, background: '', bold: false, checked: false, underline: false}
+    properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: null, foreground: '', group_name: radGroupHoleOptions, italic: false, role: dxf-options, selected: true, spacing_above: small, spacing_below: small, text: Ignore thickness / diameter ratio, tooltip: '', underline: false, value: Ignore, visible: true}
+    type: RadioButton
+  - data_bindings:
+    - {code: 'self.item[''Etch Part Number'']', property: checked, writeback: true}
+    layout_properties: {col_xs: 4, row: VKFPQE, width: 303.333, width_xs: 4}
     name: chkEtchPart
-    layout_properties: {row: VKFPQE, width_xs: 4, col_xs: 4, width: 303.333}
-    data_bindings:
-    - {property: checked, code: 'self.item[''Etch Part Number'']', writeback: true}
-  - type: CheckBox
-    properties: {role: dxf-options, align: left, tooltip: '', border: '', enabled: true, foreground: '', allow_indeterminate: false, visible: true, text: Create contact sheet, font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false, background: '', bold: false, checked: true, underline: false}
+    properties: {align: left, allow_indeterminate: false, background: '', bold: false, border: '', checked: false, enabled: true, font: '', font_size: null, foreground: '', italic: false, role: dxf-options, spacing_above: small, spacing_below: small, text: Etch component part number, tooltip: '', underline: false, visible: true}
+    type: CheckBox
+  - data_bindings:
+    - {code: 'self.item[''Contact Sheet'']', property: checked, writeback: true}
+    layout_properties: {col_xs: 8, row: VKFPQE, width: 303.333, width_xs: 4}
     name: chkContactSheet
-    layout_properties: {row: VKFPQE, width_xs: 4, col_xs: 8, width: 303.333}
-    data_bindings:
-    - {property: checked, code: 'self.item[''Contact Sheet'']', writeback: true}
-  - type: RadioButton
-    properties: {role: dxf-options, selected: false, align: left, tooltip: '', border: '', enabled: true, foreground: '', value: Etch, visible: true, text: Etch undersize holes, font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false, background: '', bold: false, group_name: radGroupHoleOptions, underline: false}
-    name: radEtchHoles
-    layout_properties: {row: ZWDNNL, width_xs: 4, col_xs: 0, width: 230}
+    properties: {align: left, allow_indeterminate: false, background: '', bold: false, border: '', checked: true, enabled: true, font: '', font_size: null, foreground: '', italic: false, role: dxf-options, spacing_above: small, spacing_below: small, text: Create contact sheet, tooltip: '', underline: false, visible: true}
+    type: CheckBox
+  - data_bindings:
+    - {code: 'self.item[''Hole Options'']', property: selected}
     event_bindings: {}
-    data_bindings:
-    - {property: selected, code: 'self.item[''Hole Options'']'}
-  - type: CheckBox
-    properties: {role: dxf-options, align: left, tooltip: '', border: '', enabled: true, foreground: '', allow_indeterminate: false, visible: true, text: Etch bend line marks, font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false, background: '', bold: false, checked: false, underline: false}
+    layout_properties: {col_xs: 0, row: ZWDNNL, width: 230, width_xs: 4}
+    name: radEtchHoles
+    properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: null, foreground: '', group_name: radGroupHoleOptions, italic: false, role: dxf-options, selected: false, spacing_above: small, spacing_below: small, text: Etch undersize holes, tooltip: '', underline: false, value: Etch, visible: true}
+    type: RadioButton
+  - data_bindings:
+    - {code: 'self.item[''Bend Line Marks'']', property: checked, writeback: true}
+    layout_properties: {col_xs: 4, row: ZWDNNL, width: 303.333, width_xs: 4}
     name: chkEtchBend
-    layout_properties: {row: ZWDNNL, width_xs: 4, col_xs: 4, width: 303.333}
-    data_bindings:
-    - {property: checked, code: 'self.item[''Bend Line Marks'']', writeback: true}
-  - type: CheckBox
-    properties: {role: dxf-options, align: left, tooltip: '', border: '', enabled: true, foreground: '', allow_indeterminate: false, visible: true, text: Create CSV file, font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false, background: '', bold: false, checked: false, underline: false}
+    properties: {align: left, allow_indeterminate: false, background: '', bold: false, border: '', checked: false, enabled: true, font: '', font_size: null, foreground: '', italic: false, role: dxf-options, spacing_above: small, spacing_below: small, text: Etch bend line marks, tooltip: '', underline: false, visible: true}
+    type: CheckBox
+  - data_bindings:
+    - {code: 'self.item[''CSV File'']', property: checked, writeback: true}
+    layout_properties: {col_xs: 8, row: ZWDNNL, width: 303.333, width_xs: 4}
     name: chkCsvFile
-    layout_properties: {row: ZWDNNL, width_xs: 4, col_xs: 8, width: 303.333}
-    data_bindings:
-    - {property: checked, code: 'self.item[''CSV File'']', writeback: true}
-  - type: RadioButton
-    properties: {role: dxf-options, selected: false, align: left, tooltip: '', border: '', enabled: true, foreground: '', value: Drill, visible: true, text: Drill undersize holes, font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false, background: '', bold: false, group_name: radGroupHoleOptions, underline: false}
+    properties: {align: left, allow_indeterminate: false, background: '', bold: false, border: '', checked: false, enabled: true, font: '', font_size: null, foreground: '', italic: false, role: dxf-options, spacing_above: small, spacing_below: small, text: Create CSV file, tooltip: '', underline: false, visible: true}
+    type: CheckBox
+  - data_bindings:
+    - {code: 'self.item[''Hole Options'']', property: selected}
+    layout_properties: {col_xs: 0, row: JYBATV, width: 230, width_xs: 4}
     name: radDrillHoles
-    layout_properties: {row: JYBATV, width_xs: 4, col_xs: 0, width: 230}
-    data_bindings:
-    - {property: selected, code: 'self.item[''Hole Options'']'}
-  - type: CheckBox
-    properties: {role: dxf-options, align: left, tooltip: '', border: '', enabled: true, foreground: '', allow_indeterminate: false, visible: true, text: Upload results to Onshape, font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false, background: '', bold: false, checked: false, underline: false}
+    properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: null, foreground: '', group_name: radGroupHoleOptions, italic: false, role: dxf-options, selected: false, spacing_above: small, spacing_below: small, text: Drill undersize holes, tooltip: '', underline: false, value: Drill, visible: true}
+    type: RadioButton
+  - layout_properties: {col_xs: 8, row: JYBATV, width: 303.333, width_xs: 4}
     name: chkOnshape
-    layout_properties: {row: JYBATV, width_xs: 4, col_xs: 8, width: 303.333}
-  - type: Spacer
-    properties: {height: 3}
+    properties: {align: left, allow_indeterminate: false, background: '', bold: false, border: '', checked: false, enabled: true, font: '', font_size: null, foreground: '', italic: false, role: dxf-options, spacing_above: small, spacing_below: small, text: Upload results to Onshape, tooltip: '', underline: false, visible: true}
+    type: CheckBox
+  - layout_properties: {col_xs: 3, row: JQABPL, width_xs: 3}
     name: spacer_1
-    layout_properties: {row: JQABPL, width_xs: 3, col_xs: 3}
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: '', visible: true, text: Multiplier, font_size: 16, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+    properties: {height: 3}
+    type: Spacer
+  - layout_properties: {col_xs: 3, row: JSVRPN, width: 136.667, width_xs: 2}
     name: label_4
-    layout_properties: {row: JSVRPN, width_xs: 2, col_xs: 3, width: 136.667}
-  - type: TextBox
-    properties: {role: dxf-options, align: left, hide_text: false, tooltip: '', placeholder: '', border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null, font: '', spacing_above: small, type: number, spacing_below: small, italic: false, background: '', bold: false, underline: false}
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: 16, foreground: '', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: Multiplier, tooltip: '', underline: false, visible: true}
+    type: Label
+  - data_bindings:
+    - {code: 'self.item[''Multiplier'']', property: text, writeback: true}
+    layout_properties: {col_xs: 6, row: JSVRPN, width: 104.667, width_xs: 2}
     name: txtMultiplier
-    layout_properties: {row: JSVRPN, width_xs: 2, col_xs: 6, width: 104.667}
-    data_bindings:
-    - {property: text, code: 'self.item[''Multiplier'']', writeback: true}
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: '', visible: true, text: Max Thickness, font_size: 16, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+    properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: null, foreground: '', hide_text: false, italic: false, placeholder: '', role: dxf-options, spacing_above: small, spacing_below: small, text: '', tooltip: '', type: number, underline: false, visible: true}
+    type: TextBox
+  - layout_properties: {col_xs: 3, row: HFRWTO, width: 136.667, width_xs: 2}
     name: label_5
-    layout_properties: {row: HFRWTO, width_xs: 2, col_xs: 3, width: 136.667}
-  - type: TextBox
-    properties: {role: dxf-options, align: left, hide_text: false, tooltip: '', placeholder: '', border: '', enabled: true, foreground: '', visible: true, text: '25', font_size: null, font: '', spacing_above: small, type: number, spacing_below: small, italic: false, background: '', bold: false, underline: false}
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: 16, foreground: '', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: Max Thickness, tooltip: '', underline: false, visible: true}
+    type: Label
+  - data_bindings:
+    - {code: 'self.item[''Max Thickness'']', property: text, writeback: true}
+    layout_properties: {col_xs: 6, row: HFRWTO, width: 104.667, width_xs: 2}
     name: txtThickness
-    layout_properties: {row: HFRWTO, width_xs: 2, col_xs: 6, width: 104.667}
-    data_bindings:
-    - {property: text, code: 'self.item[''Max Thickness'']', writeback: true}
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: '', visible: true, text: Default Supplier, font_size: 16, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+    properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: null, foreground: '', hide_text: false, italic: false, placeholder: '', role: dxf-options, spacing_above: small, spacing_below: small, text: '25', tooltip: '', type: number, underline: false, visible: true}
+    type: TextBox
+  - layout_properties: {col_xs: 3, row: RMNRUE, width: 136.667, width_xs: 2}
     name: label_6
-    layout_properties: {row: RMNRUE, width_xs: 2, col_xs: 3, width: 136.667}
-  - type: DropDown
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: 16, foreground: '', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: Default Supplier, tooltip: '', underline: false, visible: true}
+    type: Label
+  - data_bindings:
+    - {code: 'self.item[''Supplier'']', property: selected_value, writeback: true}
+    layout_properties: {col_xs: 6, row: RMNRUE, width: 220, width_xs: 3}
+    name: dropSupplier
     properties:
-      role: dxf-options
       align: full
-      tooltip: ''
-      placeholder: ''
-      border: ''
-      enabled: true
-      foreground: ''
-      items: []
-      visible: true
-      font_size: null
-      font: ''
-      spacing_above: small
-      spacing_below: small
-      italic: false
       background: ''
       bold: false
-      underline: false
+      border: ''
+      enabled: true
+      font: ''
+      font_size: null
+      foreground: ''
       include_placeholder: false
-    name: dropSupplier
-    layout_properties: {row: RMNRUE, width_xs: 3, col_xs: 6, width: 220}
-    data_bindings:
-    - {property: selected_value, code: 'self.item[''Supplier'']', writeback: true}
-  - type: Spacer
-    properties: {height: 6}
+      italic: false
+      items: []
+      placeholder: ''
+      role: dxf-options
+      spacing_above: small
+      spacing_below: small
+      tooltip: ''
+      underline: false
+      visible: true
+    type: DropDown
+  - layout_properties: {col_xs: 6, row: EQYXAB, width_xs: 3}
     name: spacer_2
-    layout_properties: {row: EQYXAB, width_xs: 3, col_xs: 6}
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: '', visible: true, text: Project Reference, font_size: 16, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+    properties: {height: 6}
+    type: Spacer
+  - layout_properties: {col_xs: 1, row: LOPQPY, width: 100, width_xs: 2}
     name: label_7
-    layout_properties: {row: LOPQPY, width_xs: 2, col_xs: 1, width: 100}
-  - type: TextBox
-    properties: {role: dxf-options, align: left, hide_text: false, tooltip: '', placeholder: '', border: '', enabled: true, foreground: '', visible: true, text: '', font_size: null, font: '', spacing_above: small, type: text, spacing_below: small, italic: false, background: 'theme:DXF Options', bold: false, underline: false}
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: 16, foreground: '', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: Project Reference, tooltip: '', underline: false, visible: true}
+    type: Label
+  - data_bindings:
+    - {code: 'self.item[''Customer Reference'']', property: text, writeback: true}
+    layout_properties: {col_xs: 3, row: LOPQPY, width: 604.667, width_xs: 8}
     name: txtRef
-    layout_properties: {row: LOPQPY, width_xs: 8, col_xs: 3, width: 604.667}
-    data_bindings:
-    - {property: text, code: 'self.item[''Customer Reference'']', writeback: true}
+    properties: {align: left, background: 'theme:DXF Options', bold: false, border: '', enabled: true, font: '', font_size: null, foreground: '', hide_text: false, italic: false, placeholder: '', role: dxf-options, spacing_above: small, spacing_below: small, text: '', tooltip: '', type: text, underline: false, visible: true}
+    type: TextBox
   data_bindings: []
+  layout_properties: {grid_position: 'QPHHKN,MRETHF'}
+  name: grid_panel_1
+  properties: {background: '', border: '', foreground: '', role: null, spacing_above: small, spacing_below: small, tooltip: '', visible: true}
+  type: GridPanel
+container:
+  properties: {col_widths: '{}'}
+  type: ColumnPanel
 is_package: true
