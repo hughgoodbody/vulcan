@@ -1,15 +1,112 @@
 import numpy as np
+import json
+import requests
+import pprint
 
-def get_model_tapped_holes(onshape, pid):
+def get_model_tapped_holes(onshape, did, wvm_type, wv, eid, pid):
 
   url = '/api/partstudios/d/%s/%s/%s/e/%s/featurescript' % (did, wvm_type, wv, eid)
   method = 'POST'
   payload = {
     'script': """function(context is Context, queries is map){
-            // Define the function's action
+            
+        var tappedHoles = {};
+        var holeTotals = [];
+        var tempHoles = [];
+        var holeTallyMap = {};
+        var onshapeTappedHoles = [];
+        var holeQty = 0;
+        var allBodies = qEverything(EntityType.BODY);
 
+        for (var body in evaluateQuery(context, allBodies))
+        {
+            //println(body.transientId);
+            if (body.transientId == definition.transId)
+            {
+                //debug(context, body, DebugColor.RED);
+                var internals = qOwnedByBody(body, EntityType.FACE);
+                var holes = qHoleFaces(internals);
+                var evHoles = evaluateQuery(context, holes);
+                //println(evHoles);
+                for (var item in evHoles)
+                {
+                    var holeAtts = getAttributes(context, {
+                            "entities" : item,
 
-  return tappedHoleDict;
+                        });
+                    if ((size(holeAtts) == 0))
+                    {
+                        //println("Hole not tapped");
+                    }
+                    else
+                    {
+                        //println(holeAtts);
+                        //Get coordinates of edges of face
+                        var holeEdges = qAdjacent(item, AdjacencyType.EDGE, EntityType.EDGE);
+                        //debug(context, holeEdges, DebugColor.GREEN);
+                        var evHoleEdges = evaluateQuery(context, holeEdges);
+                        for (var i = 0; i < size(evHoleEdges); i += 1)
+                        {
+                            var centre = evCurveDefinition(context, {
+                                    "edge" : evHoleEdges[i]
+                                });
+                            //println("Centre coordinates" ~ centre.coordSystem.origin);
+
+                            //Strip down to just numbers
+                            //Place circle coordinates into tapped holes map
+                            if (i == 1)
+                            {
+                                tappedHoles.cEdge1 = [centre.coordSystem.origin[0].value, centre.coordSystem.origin[1].value, centre.coordSystem.origin[2].value];
+                            }
+                            else
+                            {
+                                tappedHoles.cEdge2 = [centre.coordSystem.origin[0].value, centre.coordSystem.origin[1].value, centre.coordSystem.origin[2].value];
+                            }
+                            tappedHoles.Size = toString(holeAtts[0].tapSize);
+                            tappedHoles.Size = '"' ~ tappedHoles.Size ~ '"';
+                            
+                        }
+                        //println(tappedHoles);
+                        onshapeTappedHoles = append(onshapeTappedHoles, tappedHoles);
+                    }
+                }
+                //Create temp list of discrete hole sizes
+                for (var item in onshapeTappedHoles)
+                {
+                    if (isIn(item.Size, tempHoles))
+                    {
+                        
+                    }
+                    else
+                    {
+                        tempHoles = append(tempHoles,item.Size);
+                    }
+                }
+                //Find quantity of each discrete hole size
+                for (var thitem in tempHoles)
+                {
+                    for (var item in onshapeTappedHoles)
+                    {
+                        if (item.Size == thitem)
+                        {
+                          holeQty = holeQty + 1;  
+                        }
+                    }
+                    holeTotals = append(holeTotals, {"Size": thitem, "Qty": holeQty});
+                    holeQty = 0;
+                }
+                //println(onshapeTappedHoles);
+                //println(tempHoles);
+                //println(holeTotals);
+                var output = {"Holes": onshapeTappedHoles, "Totals": holeTotals};
+                println(output);
+               
+                //debug(context, holes, DebugColor.RED);
+            }
+        }
+        
+    
+  return output;
   }
   """,
     'queries': [{ "key" : "id", "value" : [ pid ] }]
@@ -17,8 +114,9 @@ def get_model_tapped_holes(onshape, pid):
   params = {}
   resp = onshape.request(method, url, query=params, body=payload)
   resp = json.loads(resp.content)
-
-  return tappedHoles
+  pprint(f"Tapped Hole Output: {resp}")
+  # Going to be something like this: resp['result']['message']['value']
+  return resp
 
 
 
