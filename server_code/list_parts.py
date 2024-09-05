@@ -242,6 +242,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
         part['Faces'] = body_details['bodies'][0]['faces']
         part['Edges'] = body_details['bodies'][0]['edges']
         part['Quantity'] = part['BOM Qty']
+        part['Primitives Quantity'] = 1
         if body_details['bodies'][0]['properties']['material'] is not None:            
           part['Material'] = body_details['bodies'][0]['properties']['material']['name']
         partsAndFacesToTest.append(part)
