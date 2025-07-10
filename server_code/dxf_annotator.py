@@ -76,6 +76,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
  
     #Get input data for the selected file, find out if part number is in fileName
     for partInfo in inputData:
+      print(f"Part Info (dxf_annotator): {partInfo}")
       renameOps = []
       if partInfo['Part Number'] not in fileName:
         continue
@@ -110,7 +111,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       dictInfo['Bend Line Marks'] = partInfo['Bend Line Marks']
       dictInfo['Sheet Metal'] = partInfo['Sheet Metal']
       #dictInfo['Bend Line Marks'] = True
-
+      print(f"Dict Info - Process (dxf_annotator): {dictInfo['Process']}")
       if dictInfo['Bend Operation'] == 'B':
         dictInfo['PD6'].append('B')
         dictInfo['Operations'].append('BEND')
@@ -143,7 +144,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
         dictInfo['Process Suffix'] = "MAN"
       else:
         dictInfo['ProcessOnDrawing'] = "" 
-        
+      print(f"Dict Info - Process (dxf_annotator): {dictInfo['Process']}")  
       
       dictInfo['Notes'] = drawingNotes
       #PARTDATA6 = dictInfo['Operations']  

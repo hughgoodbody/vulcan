@@ -161,8 +161,7 @@ def processProfiles(userData, prefix, orderId, orderIdStart, supplier):
       #Make material name file safe  
       keepcharacters = ('.','_', '-','%','(', ')')
       print(f"Part Material 100725: {part['Material']}")
-      material = "S275"
-      #material = "".join(c for c in part['Material'] if c.isalnum() or c in keepcharacters).rstrip()
+      material = "".join(c for c in part['Material'] if c.isalnum() or c in keepcharacters).rstrip()
       print(f"Part Material Name Cleaned Up 100725: {part['Material']}")
       part['Material'] = material
 
