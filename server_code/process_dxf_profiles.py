@@ -160,12 +160,16 @@ def processProfiles(userData, prefix, orderId, orderIdStart, supplier):
 
       #Make material name file safe  
       keepcharacters = ('.','_', '-','%','(', ')')
-      material = "".join(c for c in part['Material'] if c.isalnum() or c in keepcharacters).rstrip()
+      print(f"Part Material 100725: {part['Material']}")
+      material = "S275"
+      #material = "".join(c for c in part['Material'] if c.isalnum() or c in keepcharacters).rstrip()
+      print(f"Part Material Name Cleaned Up 100725: {part['Material']}")
       part['Material'] = material
+
       delimiter = user_data.namingConvention['Delimiter']
       #part['Operations2'] = ''.join(filter(None, [part['Bend Operation'] , part['Tap Operation'] , part['Drill Operation'] , part['Etch Operation']]))
       #part['Operations'] = ''.join(part['Operations'])
-      print(part['Operations'])
+      print(f"Operations Required: {part['Operations']}")
       if part['Operations'] == '' or part['Operations'] == None:
         #Create dxf name  
         #dxfName = part['Part Number'] + '_' + str(part['Thickness']) + 'mm' + '_' + material + '_' + str(part['Quantity']) + '_' + process + '.dxf'
