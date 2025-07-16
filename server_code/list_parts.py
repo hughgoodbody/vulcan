@@ -141,7 +141,7 @@ def list_parts_assembly(userData, documentInfo, configurationString, profileOpti
   
   #Remove items excluded from laser Search
   try:
-    api_bom['rows'][:] = [x for x in api_bom['rows'] if x['headerIdToValue'].get(headerDict['Exclude From Laser Search']) == False]
+    api_bom['rows'][:] = [x for x in api_bom['rows'] if not x['headerIdToValue'].get(headerDict['Exclude From Laser Search'])]
   except:
     pass
   api_bom['rows'][:] = [x for x in api_bom['rows'] if x['headerIdToValue'].get(headerDict['Exclude from all BOMs']) == False]
