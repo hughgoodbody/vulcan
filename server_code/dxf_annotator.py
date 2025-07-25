@@ -614,6 +614,7 @@ def annotateDxf(userData, folder, inputData, prefix, orderId, supplier):
       tdoc.layers.add(name='Border', color = 0)
       tdoc.layers.add(name='Profile')
       tdoc.layers.add(name='Visible', color = 0)
+      tdoc.layers.add(name='SHEETMETAL_CUT_LINES', color = 0)
       
       xc = 0
       yc = 0
